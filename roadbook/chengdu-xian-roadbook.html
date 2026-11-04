@@ -1,0 +1,525 @@
+<title>蓉长安路书</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@700;900&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: 单列路书，像一张展开的高速指路牌 + 行车记录卡；绿色取自国内高速指示牌，红色只留给医疗与警示 */
+:root{
+  --bg:#f6f7f4; --paper:#ffffff; --ink:#18221d; --muted:#5b6862; --line:#d9ded9;
+  --sign:#0f6b45; --sign-ink:#ffffff; --med:#c62f2f; --med-soft:#fbecec;
+  --warn:#b7791f; --warn-soft:#fbf3e3; --ok:#2f7d4f; --ok-soft:#e8f3ec; --sky:#2c6a9a; --sky-soft:#e7f0f7;
+  --f-display:"Noto Serif SC","Source Han Serif SC","Songti SC","WenQuanYi Zen Hei",serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei","WenQuanYi Zen Hei",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#111613; --paper:#18201b; --ink:#e6ece8; --muted:#9aa8a0; --line:#2c3730;
+  --sign:#1f8a5b; --sign-ink:#ffffff; --med:#ef6b6b; --med-soft:#3a1f1f;
+  --warn:#e0a84a; --warn-soft:#3a2f1a; --ok:#6cc08d; --ok-soft:#1d3125; --sky:#7fb4dd; --sky-soft:#1a2a36; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#111613; --paper:#18201b; --ink:#e6ece8; --muted:#9aa8a0; --line:#2c3730;
+  --sign:#1f8a5b; --sign-ink:#ffffff; --med:#ef6b6b; --med-soft:#3a1f1f;
+  --warn:#e0a84a; --warn-soft:#3a2f1a; --ok:#6cc08d; --ok-soft:#1d3125; --sky:#7fb4dd; --sky-soft:#1a2a36; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:40px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.3;margin:0}
+h2{font-size:1.5rem;display:flex;align-items:baseline;gap:12px}
+h2 .no{font-family:var(--f-mono);font-size:.8rem;color:var(--sign);border:1.5px solid var(--sign);border-radius:4px;padding:0 6px;letter-spacing:.05em}
+h3{font-size:1.1rem}
+p{margin:0}
+section{display:flex;flex-direction:column;gap:16px}
+.lead{color:var(--muted);max-width:68ch}
+.num{font-variant-numeric:tabular-nums}
+a{color:var(--sky)}
+:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+
+/* Hero = 高速指路牌 */
+.sign{background:var(--sign);color:var(--sign-ink);border-radius:0 0 10px 10px;padding:28px 28px 24px;display:flex;flex-direction:column;gap:14px;
+  box-shadow:inset 0 0 0 4px var(--sign),inset 0 0 0 6px rgba(255,255,255,.85)}
+.sign .eyebrow{font-size:.8rem;letter-spacing:.2em;opacity:.85}
+.sign h1{font-size:clamp(1.9rem,5vw,3rem);font-weight:900;display:flex;flex-wrap:wrap;align-items:center;gap:.3em 18px}
+.sign h1 .arrow{font-family:var(--f-body);font-weight:400}
+.sign .meta{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:.95rem}
+.sign .meta b{font-family:var(--f-mono);font-weight:500}
+.shield{display:inline-flex;align-items:center;justify-content:center;background:var(--med);color:#fff;font-family:var(--f-mono);font-size:.9rem;border-radius:4px;padding:2px 8px;border:2px solid #fff}
+.shield.g{background:#c8102e}
+
+.verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.verdict > div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;min-width:0}
+.verdict .k{font-size:.78rem;letter-spacing:.12em;color:var(--muted)}
+.verdict .v{font-weight:700;font-size:1.05rem}
+
+.callout{border-left:4px solid var(--warn);background:var(--warn-soft);padding:12px 16px;border-radius:0 6px 6px 0}
+.callout.med{border-color:var(--med);background:var(--med-soft)}
+.callout.ok{border-color:var(--ok);background:var(--ok-soft)}
+
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.92rem}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.78rem;letter-spacing:.08em;color:var(--muted);font-weight:500;background:var(--bg)}
+tr:last-child td{border-bottom:0}
+.pill{display:inline-block;font-size:.78rem;padding:1px 8px;border-radius:999px;white-space:nowrap;font-weight:500}
+.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.warn{background:var(--warn-soft);color:var(--warn)} .pill.bad{background:var(--med-soft);color:var(--med)} .pill.sky{background:var(--sky-soft);color:var(--sky)}
+
+/* strip map */
+.map{overflow-x:auto;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 0}
+.map svg{display:block;min-width:900px;width:100%;height:auto}
+.map text{font-family:var(--f-body);fill:var(--ink)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.85rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+
+/* timeline */
+.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.day{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.day header{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.day header small{color:var(--muted)}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.steps li{display:grid;grid-template-columns:58px 1fr;gap:10px;padding:8px 0;border-top:1px dashed var(--line)}
+.steps li:first-child{border-top:0}
+.steps time{font-family:var(--f-mono);font-size:.88rem;color:var(--sign);padding-top:2px}
+.steps .t{font-weight:700}
+.steps .d{color:var(--muted);font-size:.88rem}
+
+/* hospitals */
+.hosp-group{display:flex;flex-direction:column;gap:10px}
+.hosp-group > h3{display:flex;align-items:center;gap:10px}
+.hosp-group > h3 .km{font-family:var(--f-mono);font-size:.78rem;color:var(--muted);font-weight:500}
+.hosps{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.h{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.h .name{font-weight:700;display:flex;gap:8px;align-items:flex-start}
+.h .name::before{content:"+";flex:none;width:20px;height:20px;border-radius:4px;background:var(--med);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:900;line-height:1;margin-top:3px}
+.h .addr{font-size:.86rem;color:var(--muted)}
+.h .tag{font-size:.82rem}
+.tel{display:flex;flex-direction:column;gap:4px}
+.tel div{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:.9rem}
+.tel .lbl{color:var(--muted);font-size:.8rem;min-width:5.5em}
+.tel .n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;user-select:all;font-weight:500}
+.copy{font:inherit;font-size:.75rem;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:4px;padding:0 8px;cursor:pointer}
+.copy:hover{border-color:var(--sign)}
+.gap{border:1.5px dashed var(--warn);border-radius:8px;padding:12px 16px;background:var(--warn-soft);font-size:.92rem}
+
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.box ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+.check{list-style:none;padding:0 !important}
+.check label{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
+.check input{margin-top:6px;accent-color:var(--sign);flex:none}
+.danger li{color:var(--ink)}
+.danger li::marker{color:var(--med)}
+
+.sos{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.sos div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px;text-align:center}
+.sos b{display:block;font-family:var(--f-mono);font-size:1.6rem;color:var(--med)}
+.sos span{font-size:.85rem;color:var(--muted)}
+
+.src{font-size:.82rem;color:var(--muted)}
+.src ol{padding-left:1.4em;margin:0;display:flex;flex-direction:column;gap:2px}
+footer{font-size:.82rem;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+
+@media (max-width:520px){.sign{padding:22px 18px}.steps li{grid-template-columns:50px 1fr}}
+@media print{
+  body{background:#fff;color:#000;font-size:10.5pt;padding:0}
+  .wrap{gap:18px;max-width:none}
+  .copy,.noprint{display:none!important}
+  .sign{border-radius:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .pill,.callout,.gap,.h .name::before,.shield,th{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .map svg{min-width:0}
+  section{break-inside:auto}
+  .h,.day,.box,.callout,tr{break-inside:avoid}
+  h2{break-after:avoid}
+  .pb{break-before:page}
+}
+@page{size:A4;margin:12mm 11mm}
+</style>
+
+<div class="wrap">
+
+<header class="sign">
+  <div class="eyebrow">自驾路书 · 携新生儿出行版</div>
+  <h1><span>成都</span><span class="arrow">→</span><span>西安</span></h1>
+  <div class="meta">
+    <span>经 <span class="shield g">G5</span> 京昆高速（成绵 · 绵广 · 广陕 · 勉宁 · 西汉）</span>
+    <span>全程约 <b>730</b> km</span>
+    <span>纯驾驶约 <b>8.5</b> 小时</span>
+    <span>2026-11-06（周五）出发</span>
+  </div>
+</header>
+
+<section>
+  <div class="verdict">
+    <div><div class="k">推荐路线</div><div class="v">G5 京昆高速，过秦岭走西汉段</div></div>
+    <div><div class="k">推荐节奏</div><div class="v">分两天：6 日到汉中住一晚，7 日上午进西安</div></div>
+    <div><div class="k">天气关键点</div><div class="v">6 日陕南多云；7 日陕西转小雨、降温 4–6℃</div></div>
+    <div><div class="k">宝宝规则</div><div class="v">每 1.5–2 小时必停，停车再喂奶</div></div>
+  </div>
+  <div class="callout med"><b>出发前一定先做的事：</b>请带宝宝的儿科医生（或产科出院时的新生儿医生）确认宝宝适合长途乘车，尤其是早产、出生不足 2 周、有黄疸或在治疗中的情况。下文医院电话来自公开网络资料，可能有变动，请在 11 月 5 日晚上逐个拨打核实，并把它们存进手机通讯录。</div>
+</section>
+
+<section>
+  <h2><span class="no">01</span>为什么选这条路</h2>
+  <p class="lead">成都到西安有三条常用的高速走法。把 11 月 6–7 日的天气预报、山区路段长短和沿途医院条件放在一起比，G5 京昆高速最合适。</p>
+  <div class="tbl"><table>
+    <thead><tr><th>路线</th><th>里程</th><th>沿途天气（6–7 日）</th><th>山区与风险</th><th>沿途新生儿救治</th><th>结论</th></tr></thead>
+    <tbody>
+      <tr><td><b>A · G5 京昆</b><br>成都—德阳—绵阳—广元—汉中—西汉高速—西安</td><td class="num">约 730 km</td><td>四川盆地 6 日起有小雨；陕南 6 日多云间阴，局地小雨（0.1–2 mm）；7 日关中转小雨</td><td>秦岭段隧道和桥梁连续，最高处秦岭服务区海拔 1600 多米</td><td>德阳、绵阳、广元、汉中、西安五个地级市都有三甲医院和新生儿科</td><td><span class="pill ok">推荐</span></td></tr>
+      <tr><td><b>B · 东线 G65 包茂</b><br>成都—南充—达州—安康—终南山隧道—西安</td><td class="num">约 850 km</td><td>四川公路气象预报提示川东有雾，点名包茂高速大竹段</td><td>多绕 120 km，团雾路段，秦岭终南山隧道约 18 km</td><td>达州、安康之间医院间距大</td><td><span class="pill bad">不推荐</span></td></tr>
+      <tr><td><b>C · 宝汉线</b><br>汉中—G85 宝汉高速—宝鸡—G30—西安</td><td class="num">约 800 km</td><td>与 A 线相近，但穿越秦岭腹地更长</td><td>翻越秦岭主脊路段更长，入冬早，降温后结冰风险更高</td><td>汉中到宝鸡之间几乎没有大医院</td><td><span class="pill warn">备选</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2><span class="no">02</span>沿途天气</h2>
+  <p class="lead">以下来自 11 月 3–4 日各地气象台发布的预报。临近出发天气可能调整，6 日早上和 6 日晚上各再查一次。</p>
+  <div class="tbl"><table>
+    <thead><tr><th>地点</th><th>11 月 6 日（周五）</th><th>11 月 7 日（周六）</th><th>对行车的影响</th></tr></thead>
+    <tbody>
+      <tr><td><b>成都 / 德阳</b></td><td>阴天，可能有小雨，约 13–20℃</td><td>小雨，降温 2–4℃</td><td><span class="pill warn">路面湿滑</span> 早晨出城注意轻雾</td></tr>
+      <tr><td><b>绵阳 / 广元</b></td><td>转阴有小雨，偏北风</td><td>小雨，最高气温下降</td><td><span class="pill warn">注意侧风</span> 广元段山谷桥梁多</td></tr>
+      <tr><td><b>汉中（陕南）</b></td><td>多云间阴，局地小雨或阵雨，雨量 0.1–2 mm</td><td>阴有小雨</td><td><span class="pill ok">基本良好</span></td></tr>
+      <tr><td><b>秦岭段（西汉高速）</b></td><td>无专门预报，山区通常比汉中、西安低 5–8℃</td><td>随全省转小雨降温；高海拔处体感更冷</td><td><span class="pill warn">雾、湿滑</span> 目前预报未提雨夹雪</td></tr>
+      <tr><td><b>西安</b></td><td>晴到多云，9–19℃</td><td>阴有小雨，9–13℃，有风</td><td><span class="pill sky">小雨</span> 进城路面湿</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout"><b>怎么理解这个天气：</b>6 日陕西是整段时间里最好的一天，7 日起有一次降雨降温。秦岭段 7 日是小雨，按目前预报不至于封路，但如果 6 日晚上的预报改成“秦岭雨夹雪”“道路结冰预警”，就在汉中多住一天，不要冒险上山。</div>
+</section>
+
+<section>
+  <h2><span class="no">03</span>路线示意图</h2>
+  <div class="legend">
+    <span><i class="dot" style="background:var(--sign)"></i>城市 / 途经地</span>
+    <span><i class="dot" style="background:var(--med)"></i>有新生儿科的医院</span>
+    <span><i class="dot" style="background:var(--sky)"></i>建议停车的服务区</span>
+    <span><i class="dot" style="background:var(--warn)"></i>距大医院较远的路段</span>
+  </div>
+  <div class="map" role="img" aria-label="成都到西安 G5 京昆高速路线示意图，标注了里程、服务区和医院">
+  <svg viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg">
+    <!-- scale: x = 40 + km*1.26 (0..730km -> 40..960) -->
+    <rect x="531" y="118" width="102" height="24" rx="4" fill="var(--warn-soft)"/>
+    <rect x="696" y="118" width="148" height="24" rx="4" fill="var(--warn-soft)"/>
+    <text x="582" y="112" text-anchor="middle" font-size="11" style="fill:var(--warn)">广元—宁强 无大医院</text>
+    <text x="770" y="112" text-anchor="middle" font-size="11" style="fill:var(--warn)">洋县—秦岭 山区段</text>
+    <path d="M40 130 H960" stroke="var(--sign)" stroke-width="8" stroke-linecap="round" fill="none"/>
+    <path d="M40 130 H960" stroke="var(--paper)" stroke-width="1.5" stroke-dasharray="10 10" fill="none"/>
+    <!-- day split -->
+    <line x1="613" y1="40" x2="613" y2="250" stroke="var(--muted)" stroke-dasharray="3 4" stroke-width="1"/>
+    <text x="325" y="40" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--muted)">第 1 天 · 11 月 6 日 · 约 455 km</text>
+    <text x="787" y="40" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--muted)">第 2 天 · 11 月 7 日 · 约 275 km</text>
+    <!-- cities -->
+    <g font-size="14" font-weight="700">
+      <circle cx="40" cy="130" r="9" fill="var(--sign)"/><text x="40" y="172" text-anchor="middle">成都</text>
+      <circle cx="128" cy="130" r="7" fill="var(--sign)"/><text x="128" y="172" text-anchor="middle">德阳</text>
+      <circle cx="191" cy="130" r="7" fill="var(--sign)"/><text x="191" y="172" text-anchor="middle">绵阳</text>
+      <circle cx="418" cy="130" r="7" fill="var(--sign)"/><text x="418" y="172" text-anchor="middle">广元</text>
+      <circle cx="613" cy="130" r="9" fill="var(--sign)"/><text x="613" y="172" text-anchor="middle">汉中（住）</text>
+      <circle cx="960" cy="130" r="9" fill="var(--sign)"/><text x="960" y="172" text-anchor="middle">西安</text>
+    </g>
+    <g font-size="11" style="fill:var(--muted)" class="num">
+      <text x="40" y="190" text-anchor="middle" style="fill:var(--muted)">0</text>
+      <text x="128" y="190" text-anchor="middle" style="fill:var(--muted)">70</text>
+      <text x="191" y="190" text-anchor="middle" style="fill:var(--muted)">120</text>
+      <text x="418" y="190" text-anchor="middle" style="fill:var(--muted)">300</text>
+      <text x="613" y="190" text-anchor="middle" style="fill:var(--muted)">455</text>
+      <text x="960" y="190" text-anchor="middle" style="fill:var(--muted)">730 km</text>
+    </g>
+    <!-- hospitals -->
+    <g>
+      <rect x="31" y="74" width="18" height="18" rx="3" fill="var(--med)"/><path d="M40 77v12M34 83h12" stroke="#fff" stroke-width="3"/>
+      <rect x="119" y="74" width="18" height="18" rx="3" fill="var(--med)"/><path d="M128 77v12M122 83h12" stroke="#fff" stroke-width="3"/>
+      <rect x="182" y="74" width="18" height="18" rx="3" fill="var(--med)"/><path d="M191 77v12M185 83h12" stroke="#fff" stroke-width="3"/>
+      <rect x="409" y="74" width="18" height="18" rx="3" fill="var(--med)"/><path d="M418 77v12M412 83h12" stroke="#fff" stroke-width="3"/>
+      <rect x="604" y="74" width="18" height="18" rx="3" fill="var(--med)"/><path d="M613 77v12M607 83h12" stroke="#fff" stroke-width="3"/>
+      <rect x="951" y="74" width="18" height="18" rx="3" fill="var(--med)"/><path d="M960 77v12M954 83h12" stroke="#fff" stroke-width="3"/>
+      <g font-size="11" style="fill:var(--med)">
+        <text x="40" y="66" text-anchor="middle" style="fill:var(--med)">华西二院等</text>
+        <text x="128" y="66" text-anchor="middle" style="fill:var(--med)">市人民医院</text>
+        <text x="191" y="66" text-anchor="middle" style="fill:var(--med)">市中心医院</text>
+        <text x="418" y="66" text-anchor="middle" style="fill:var(--med)">市中心医院</text>
+        <text x="613" y="66" text-anchor="middle" style="fill:var(--med)">中心医院 / 3201</text>
+        <text x="945" y="66" text-anchor="middle" style="fill:var(--med)">西北妇儿等</text>
+      </g>
+    </g>
+    <!-- service areas -->
+    <g font-size="11">
+      <circle cx="254" cy="130" r="5" fill="var(--sky)"/><text x="254" y="222" text-anchor="middle" style="fill:var(--sky)">梓潼一带</text><line x1="254" y1="136" x2="254" y2="210" stroke="var(--sky)" stroke-width="1"/>
+      <circle cx="355" cy="130" r="5" fill="var(--sky)"/><text x="355" y="222" text-anchor="middle" style="fill:var(--sky)">剑阁一带</text><line x1="355" y1="136" x2="355" y2="210" stroke="var(--sky)" stroke-width="1"/>
+      <circle cx="531" cy="130" r="5" fill="var(--sky)"/><text x="531" y="222" text-anchor="middle" style="fill:var(--sky)">宁强服务区</text><line x1="531" y1="136" x2="531" y2="210" stroke="var(--sky)" stroke-width="1"/>
+      <circle cx="696" cy="130" r="5" fill="var(--sky)"/><text x="696" y="222" text-anchor="middle" style="fill:var(--sky)">洋县服务区</text><line x1="696" y1="136" x2="696" y2="210" stroke="var(--sky)" stroke-width="1"/>
+      <circle cx="850" cy="130" r="5" fill="var(--sky)"/><text x="850" y="222" text-anchor="middle" style="fill:var(--sky)">秦岭服务区</text><text x="850" y="238" text-anchor="middle" style="fill:var(--muted)">海拔 1600 m+</text><line x1="850" y1="136" x2="850" y2="210" stroke="var(--sky)" stroke-width="1"/>
+    </g>
+    <text x="500" y="282" text-anchor="middle" font-size="11" style="fill:var(--muted)">示意图，里程为约数；服务区以导航实际显示为准</text>
+  </svg>
+  </div>
+</section>
+
+<section class="pb">
+  <h2><span class="no">04</span>行程安排</h2>
+  <p class="lead">按“开 1.5–2 小时停 20–30 分钟”排的时间。宝宝的作息比时间表重要，饿了、哭闹了就进最近的服务区，时间往后推即可。两天都在天黑前到达。</p>
+  <div class="days">
+    <article class="day">
+      <header><h3>第 1 天 · 11 月 6 日 周五</h3><small>成都 → 汉中 · 约 455 km</small></header>
+      <ol class="steps">
+        <li><time>07:30</time><div><div class="t">成都出发</div><div class="d">出发前在家喂完奶、换好尿布。上成绵高速（G5）。早高峰避开二环北段。</div></div></li>
+        <li><time>09:00</time><div><div class="t">第一次停车 · 梓潼一带服务区</div><div class="d">约 170 km。抱宝宝出安全座椅活动 15 分钟，查看尿布。</div></div></li>
+        <li><time>10:40</time><div><div class="t">第二次停车 · 剑阁一带服务区</div><div class="d">约 260 km。喂奶。司机换手。</div></div></li>
+        <li><time>11:50</time><div><div class="t">广元 · 午饭 + 长休息</div><div class="d">约 300 km。下高速在市区吃饭，停留 1 小时左右。广元是第 1 天最后一个大医院所在城市。</div></div></li>
+        <li><time>14:00</time><div><div class="t">宁强服务区</div><div class="d">约 390 km，进入陕西。喂奶、换尿布。</div></div></li>
+        <li><time>15:30</time><div><div class="t">到达汉中，入住</div><div class="d">选汉台区、离汉中市中心医院或 3201 医院 10 分钟车程内的酒店，提前要婴儿床。晚上查 7 日秦岭段天气。</div></div></li>
+      </ol>
+    </article>
+    <article class="day">
+      <header><h3>第 2 天 · 11 月 7 日 周六</h3><small>汉中 → 西安 · 约 275 km</small></header>
+      <ol class="steps">
+        <li><time>08:00</time><div><div class="t">查天气和路况再决定</div><div class="d">看陕西省气象台和导航里西汉高速的实时路况。有“团雾”“结冰”“管制”就推迟出发。</div></div></li>
+        <li><time>09:30</time><div><div class="t">汉中出发</div><div class="d">等早雾散了再走。出发前喂奶。</div></div></li>
+        <li><time>10:30</time><div><div class="t">洋县服务区</div><div class="d">约 70 km。上秦岭前最后一次从容休息，喂奶、换尿布，车内调暖。</div></div></li>
+        <li><time>11:00</time><div><div class="t">秦岭隧道群</div><div class="d">隧道连续、弯道多。开近光灯，不变道，不超车，空调切内循环。</div></div></li>
+        <li><time>12:00</time><div><div class="t">秦岭服务区（短停）</div><div class="d">海拔 1600 多米，可能湿冷。宝宝留在车里，开暖风，只做检查不抱出去吹风。</div></div></li>
+        <li><time>13:30</time><div><div class="t">到达西安</div><div class="d">约 87 km 后进入西安。雨天进城路面湿，注意保持车距。</div></div></li>
+      </ol>
+    </article>
+  </div>
+  <div class="callout ok"><b>可以一天开到吗？</b>可以，但不建议。如果 6 日 13:00 前就到了汉中、宝宝状态很好，又想赶在 7 日降雨前过秦岭，可以继续走，大约 17:30 到西安（当天日落约 18:00）。代价是宝宝全天在车里 10 小时以上，到西安时也已接近天黑。只要有一点犹豫，就住汉中。</div>
+</section>
+
+<section class="pb">
+  <h2><span class="no">05</span>沿途有新生儿救治能力的医院</h2>
+  <p class="lead">按行驶顺序排列。都是三甲医院或妇幼专科医院，设有新生儿科或新生儿重症监护室（NICU）。<b>宝宝出现危险情况时直接打 120</b>，在高速上报出所在高速名称、方向和最近的公里桩号。</p>
+  <div class="callout">电话号码来自医院官网和好大夫、百度健康等第三方平台，不同来源有出入。<b>请在出发前一晚逐个拨打确认</b>，打不通的在网页上划掉，换用 120 或导航搜索医院。</div>
+
+  <div class="hosp-group">
+    <h3>成都 <span class="km">0 km · 出发地</span></h3>
+    <div class="hosps">
+      <div class="h"><div class="name">四川大学华西第二医院（华西妇产儿童医院）华西院区</div>
+        <div class="addr">武侯区人民南路三段 20 号（地铁 1 号线华西坝站 B 口）</div>
+        <div class="tag">西南地区新生儿救治水平最高的医院之一</div>
+        <div class="tel"><div><span class="lbl">咨询电话</span><span class="n">028-85503960</span><button class="copy" type="button">复制</button></div>
+        <div><span class="lbl">急诊（旧资料）</span><span class="n">028-85501340</span><button class="copy" type="button">复制</button></div>
+        <div><span class="lbl">锦江院区</span><span class="n">028-88570307</span><button class="copy" type="button">复制</button></div></div></div>
+      <div class="h"><div class="name">成都市妇女儿童中心医院 · 中心院区</div>
+        <div class="addr">青羊区日月大道 1617 号（西三环外，成温路口）</div>
+        <div class="tag">新生儿科为市级重点学科，设新生儿危急重症呼叫转运站</div>
+        <div class="tel"><div><span class="lbl">总机</span><span class="n">028-61866000</span><button class="copy" type="button">复制</button></div>
+        <div><span class="lbl">门诊</span><span class="n">028-87467888</span><button class="copy" type="button">复制</button></div></div></div>
+    </div>
+  </div>
+
+  <div class="hosp-group">
+    <h3>德阳 <span class="km">约 70 km</span></h3>
+    <div class="hosps">
+      <div class="h"><div class="name">德阳市人民医院</div>
+        <div class="addr">旌阳区泰山北路一段 173 号</div>
+        <div class="tag">德阳市儿童急救中心，新生儿室在儿科病房（儿童苑）</div>
+        <div class="tel"><div><span class="lbl">急诊（旧资料）</span><span class="n">0838-2418999</span><button class="copy" type="button">复制</button></div>
+        <div><span class="lbl">门诊咨询</span><span class="n">0838-2418820</span><button class="copy" type="button">复制</button></div>
+        <div><span class="lbl">儿科</span><span class="n">0838-2418283</span><button class="copy" type="button">复制</button></div></div></div>
+    </div>
+  </div>
+
+  <div class="hosp-group">
+    <h3>绵阳 <span class="km">约 120 km</span></h3>
+    <div class="hosps">
+      <div class="h"><div class="name">绵阳市中心医院</div>
+        <div class="addr">涪城区常家巷 12 号</div>
+        <div class="tag">三甲综合医院，设新生儿科</div>
+        <div class="tel"><div><span class="lbl">急诊</span><span class="n">0816-2231777</span><button class="copy" type="button">复制</button></div>
+        <div><span class="lbl">总机</span><span class="n">0816-2222821</span><button class="copy" type="button">复制</button></div></div></div>
+    </div>
+  </div>
+
+  <div class="hosp-group">
+    <h3>广元 <span class="km">约 300 km · 第 1 天午饭点</span></h3>
+    <div class="hosps">
+      <div class="h"><div class="name">广元市中心医院</div>
+        <div class="addr">本部：利州区井巷子 16 号<br>妇产儿童分院：利州区北京路 20 号</div>
+        <div class="tag">新生儿病区属儿科住院部，设新生儿重症监护室；广元三级医院绩效排名第一</div>
+        <div class="tel"><div><span class="lbl">总机</span><span class="n">0839-3222256</span><button class="copy" type="button">复制</button></div>
+        <div><span class="lbl">儿科咨询</span><span class="n">0839-3227993</span><button class="copy" type="button">复制</button></div></div></div>
+      <div class="h"><div class="name">广元市妇幼保健院</div>
+        <div class="addr">地址请以导航搜索为准</div>
+        <div class="tag">妇幼专科，产科、儿科救治</div>
+        <div class="tel"><div><span class="lbl">电话（2020 年资料）</span><span class="n">0839-2851779</span><button class="copy" type="button">复制</button></div></div></div>
+    </div>
+  </div>
+
+  <div class="gap"><b>广元 → 汉中（约 155 km，1 小时 40 分）</b>中间只有宁强、勉县的县级医院，能做初步处理，没有 NICU。宝宝有异常时：打 120，同时往广元或汉中方向中较近的一头开。</div>
+
+  <div class="hosp-group">
+    <h3>汉中 <span class="km">约 455 km · 住宿地</span></h3>
+    <div class="hosps">
+      <div class="h"><div class="name">汉中市中心医院</div>
+        <div class="addr">汉台区劳动西路中段 557 号（部分平台写康复路 22 号，两处请导航核对）<br>南郑院区：南郑区龙岗大道 005 号</div>
+        <div class="tag">汉中最大的三甲医院，儿科下设新生儿科</div>
+        <div class="tel"><div><span class="lbl">急救</span><span class="n">0916-2681120</span><button class="copy" type="button">复制</button></div>
+        <div><span class="lbl">预约挂号</span><span class="n">0916-2681119</span><button class="copy" type="button">复制</button></div>
+        <div><span class="lbl">医务科</span><span class="n">0916-2681101</span><button class="copy" type="button">复制</button></div></div></div>
+      <div class="h"><div class="name">3201 医院（通用医疗三二〇一医院）</div>
+        <div class="addr">汉台区天汉大道 783 号</div>
+        <div class="tag">三甲综合医院，设小儿科、新生儿科</div>
+        <div class="tel"><div><span class="lbl">急救</span><span class="n">0916-2523201</span><button class="copy" type="button">复制</button></div>
+        <div><span class="lbl">总机</span><span class="n">0916-2383201</span><button class="copy" type="button">复制</button></div></div></div>
+    </div>
+  </div>
+
+  <div class="gap"><b>汉中 → 西安（约 275 km，秦岭山区约 150 km）</b>洋县之后进入秦岭，只有佛坪、宁陕等县的小医院，隧道里手机信号可能中断。宝宝有异常时：出隧道后马上打 120，前往最近的服务区等救护车；过了秦岭服务区就往西安方向走（约 87 km）。</div>
+
+  <div class="hosp-group">
+    <h3>西安 <span class="km">约 730 km · 目的地</span></h3>
+    <div class="hosps">
+      <div class="h"><div class="name">西北妇女儿童医院 · 曲江院区</div>
+        <div class="addr">雁塔区（曲江新区）雁翔路 1616 号<br>后宰门院区：北大街后宰门 73 号</div>
+        <div class="tag">陕西省新生儿急救转运中心，西北地区新生儿救治领先</div>
+        <div class="tel"><div><span class="lbl">儿科急诊</span><span class="n">029-89551122</span><button class="copy" type="button">复制</button></div>
+        <div><span class="lbl">24 小时咨询</span><span class="n">029-89550001</span><button class="copy" type="button">复制</button></div></div></div>
+      <div class="h"><div class="name">西安市儿童医院</div>
+        <div class="addr">莲湖区西举院巷 69 号（西门里，另有多个院区）</div>
+        <div class="tag">儿童专科医院，设新生儿科；公众号“西安市儿童医院患者服务平台”可挂号</div>
+        <div class="tel"><div><span class="lbl">电话（2020 年资料）</span><span class="n">029-87692141</span><button class="copy" type="button">复制</button></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="pb">
+  <h2><span class="no">06</span>宝宝在车上</h2>
+  <div class="cols">
+    <div class="box"><h3>坐车方式</h3><ul>
+      <li>必须用<b>反向安装</b>的婴儿提篮或安全座椅，装在后排。不要抱在怀里，不要放副驾驶（安全气囊对婴儿是致命的）。</li>
+      <li>座椅倾角约 45°，头不能往前垂到下巴贴胸。不放枕头、厚垫和玩具。</li>
+      <li>不穿厚羽绒服坐座椅：先系好安全带，再在安全带外面盖小被子。</li>
+      <li>后排一位大人坐在宝宝旁边看护。</li>
+      <li>单次在座椅里不超过 2 小时，全天合计尽量不超过 6 小时乘车时间。</li>
+    </ul></div>
+    <div class="box"><h3>喂奶和温度</h3><ul>
+      <li><b>停车后再喂</b>，行驶中不要从座椅里抱出来喂。</li>
+      <li>配方奶：保温壶装 70℃ 左右开水 + 一壶凉开水，按量分装好奶粉；奶瓶多带 2–3 个。</li>
+      <li>车内保持 22–26℃。摸宝宝后颈判断冷热，后颈出汗就减被子。</li>
+      <li>不要盖住口鼻，不戴遮住脸的帽子；车窗用遮阳帘，不用盖布罩住提篮。</li>
+      <li>车里禁烟、不用香薰。每次停车开窗通风几分钟。</li>
+      <li>过秦岭、进出长隧道时耳压变化，让宝宝吸奶或安抚奶嘴能缓解。</li>
+    </ul></div>
+  </div>
+  <div class="cols">
+    <div class="box"><h3>随车物品清单</h3>
+      <ul class="check" id="pack">
+        <li><label><input type="checkbox" id="c1">出生医学证明、宝宝出院小结、疫苗接种本（乙肝、卡介苗）</label></li>
+        <li><label><input type="checkbox" id="c2">父母身份证、医保卡；宝宝如已办医保也带上</label></li>
+        <li><label><input type="checkbox" id="c3">电子体温计（耳温或额温）</label></li>
+        <li><label><input type="checkbox" id="c4">脐带护理：75% 酒精棉签或碘伏棉签</label></li>
+        <li><label><input type="checkbox" id="c5">尿布 30 片以上、湿巾、护臀膏、隔尿垫</label></li>
+        <li><label><input type="checkbox" id="c6">奶粉/储奶袋、奶瓶 3 个以上、保温壶、凉开水</label></li>
+        <li><label><input type="checkbox" id="c7">换洗衣服 3 套、包被 2 条、薄毯、帽子、袜子</label></li>
+        <li><label><input type="checkbox" id="c8">吐奶巾、塑料袋（装脏尿布和衣物）</label></li>
+        <li><label><input type="checkbox" id="c9">便携婴儿床或可平躺的提篮（汉中住宿用）</label></li>
+        <li><label><input type="checkbox" id="c10">车载充电器、充电宝；离线下载好导航地图</label></li>
+        <li><label><input type="checkbox" id="c11">妈妈的产后用品和药（如在哺乳期，用药前问医生）</label></li>
+      </ul>
+      <p class="d noprint" style="font-size:.8rem;color:var(--muted)">勾选状态只保存在本浏览器里。</p>
+    </div>
+    <div class="box"><h3 style="color:var(--med)">出现这些情况，马上去医院</h3>
+      <ul class="danger">
+        <li>体温 ≥ 37.5℃（腋温）或 &lt; 36℃，复测仍异常</li>
+        <li>呼吸急促（安静时每分钟超过 60 次）、呻吟、鼻翼扇动、胸口凹陷</li>
+        <li>嘴唇、脸色发紫或发灰</li>
+        <li>连续两顿拒奶，或吃得明显比平时少</li>
+        <li>嗜睡叫不醒、反应差，或持续尖声哭闹无法安抚</li>
+        <li>呕吐物带绿色（胆汁）或血，喷射性呕吐</li>
+        <li>黄疸蔓延到手心、脚心，或比出发时明显加重</li>
+        <li>抽搐、两眼凝视、四肢抖动</li>
+        <li>肚脐红肿、渗液、有臭味</li>
+        <li>6 小时以上没有尿</li>
+      </ul>
+      <p style="font-size:.88rem">在车上发现以上情况，不要自己给宝宝吃药。打 120，说清楚“新生儿，出生 X 天”，以及所在高速、方向、公里桩号。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="no">07</span>开车和路况</h2>
+  <div class="cols">
+    <div class="box"><h3>司机</h3><ul>
+      <li>最好两位司机轮换。照顾新生儿的家长前一晚往往没睡好，不要让疲劳的人开车。</li>
+      <li>高速限速以标志为准。秦岭段隧道和弯道多，按 80 km/h 左右开更稳。</li>
+      <li>遇团雾：能见度低于 200 米车速不超过 60 km/h，低于 100 米不超过 40 km/h，低于 50 米不超过 20 km/h，开雾灯、双闪，不急刹，从最近出口下高速。</li>
+      <li>隧道里开近光灯，不变道，不停车。出隧道注意横风和路面湿滑。</li>
+      <li>雨天车距拉大到平时两倍。</li>
+    </ul></div>
+    <div class="box"><h3>车辆</h3><ul>
+      <li>出发前检查轮胎气压和花纹、雨刮、雾灯、刹车。</li>
+      <li>汽油车在广元、汉中加满。秦岭段服务区间距较长，不要等到油量报警。</li>
+      <li>如果是电动车：秦岭低温加爬坡会让续航明显下降，在洋县服务区把电充到 80% 以上再上山。</li>
+      <li>办好 ETC，减少收费站排队。</li>
+      <li>车上放三角警示牌、反光背心、手电。</li>
+    </ul></div>
+    <div class="box"><h3>出发前一晚（11 月 5 日）</h3><ul>
+      <li>逐个拨打本页医院电话，确认能接通并存入通讯录。</li>
+      <li>查四川、陕西两省气象台对 6–7 日的最新预报。</li>
+      <li>在导航里把行程设为途经汉中，查看 G5 有无施工或管制。</li>
+      <li>预订汉中酒店，要求婴儿床、离医院近、停车方便。</li>
+      <li>安全座椅提前装好、调好，不要早上临时装。</li>
+    </ul></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="no">08</span>应急电话</h2>
+  <div class="sos">
+    <div><b>120</b><span>急救</span></div>
+    <div><b>122</b><span>交通事故报警</span></div>
+    <div><b>12122</b><span>高速公路救援与路况</span></div>
+    <div><b>110</b><span>报警</span></div>
+    <div><b>12121</b><span>天气预报</span></div>
+  </div>
+  <div class="callout">在高速上求助时报出：<b>G5 京昆高速 + 去往哪个方向 + 路边公里桩号（K 开头的数字）</b>。隧道内没信号时，用隧道里每隔一段距离设置的紧急电话。</div>
+</section>
+
+<section>
+  <h2><span class="no">09</span>改变计划的条件</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>情况</th><th>怎么办</th></tr></thead>
+    <tbody>
+      <tr><td>宝宝出发前一晚或当天早上发热、吃奶差、黄疸加重</td><td>取消出发，先在成都就医</td></tr>
+      <tr><td>6 日到广元已过 13:30，或宝宝哭闹频繁</td><td>在广元住一晚，7 日走广元 → 西安（约 430 km）。注意 7 日陕西有雨</td></tr>
+      <tr><td>6 日晚预报秦岭雨夹雪、道路结冰，或西汉高速管制</td><td>在汉中多住一天，等路况恢复</td></tr>
+      <tr><td>7 日早上汉中大雾</td><td>等雾散后再出发，通常 10 点前后</td></tr>
+      <tr><td>路上宝宝出现“马上去医院”里的任何一条</td><td>打 120，按上面医院列表就近处理，不要继续赶路</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="src">
+  <h3 style="font-size:.95rem">信息来源</h3>
+  <ol>
+    <li>西安市气象台、陕西省气象台 11 月 4 日预报（澎湃新闻转载）：<a href="https://www.thepaper.cn/newsDetail_forward_34406351">thepaper.cn/newsDetail_forward_34406351</a>、<a href="https://www.thepaper.cn/newsDetail_forward_34405313">34405313</a></li>
+    <li>四川省气象台 6–8 日降温降水预报：<a href="https://www.thepaper.cn/newsDetail_forward_34394152">thepaper.cn/newsDetail_forward_34394152</a>、<a href="https://m.gmw.cn/2026-11/03/content_1304582148.htm">光明网 11 月 3 日</a></li>
+    <li>团雾限速与陕西高速结冰预警参考：<a href="https://society.huanqiu.com/article/40pj4souBFY">环球网</a></li>
+    <li>西汉高速服务区：<a href="https://www.icauto.com.cn/fuwuqu/215196.html">icauto.com.cn 服务区资料</a></li>
+    <li>华西第二医院：<a href="https://m.motherchildren.com/m_guide_notes/">官网门急诊须知</a>、<a href="https://www.dayi.org.cn/hospital/3589">中国医药信息查询平台</a>、<a href="https://zhuanlan.zhihu.com/p/22278290">知乎</a></li>
+    <li>成都市妇女儿童中心医院：<a href="https://www.haodf.com/hospital/1838/jieshao.html">好大夫</a>、<a href="https://yyk.39.net/cd2/20A5B/">39 就医助手</a></li>
+    <li>德阳市人民医院：<a href="https://www.haodf.com/hospital/1207/jieshao.html">好大夫</a>、<a href="https://www.120.net/keshi/jieshao/lahc9ca2nlwg3h08.html">120 健康网</a></li>
+    <li>绵阳市中心医院：<a href="https://www.haodf.com/hospital/589/jieshao.html">好大夫</a></li>
+    <li>广元市中心医院：<a href="https://www.haodf.com/hospital/2834/jieshao.html">好大夫</a>、<a href="https://www.haodf.com/hospital/2834/keshi/83592.html">儿科页面</a>；广元市妇幼保健院：<a href="https://regional.chinadaily.com.cn/sichuan/guangyuan/2020-02/12/c_629369.htm">中国日报 2020 年名录</a></li>
+    <li>汉中市中心医院：<a href="https://m.youlai.cn/yyk/hospindex/3937/hospintro.html">有来医生</a>、<a href="https://www.haodf.com/hospital/1500.html">好大夫</a>；3201 医院：<a href="https://zyy.yilianmeiti.com/8323/">医联媒体</a></li>
+    <li>西北妇女儿童医院：<a href="https://www.dayi.org.cn/hospital/1126835.html">中国医药信息查询平台</a>、<a href="https://m.xa.bendibao.com/wangdian/dian/5402695.shtm">西安本地宝</a>；西安市儿童医院：<a href="https://govt.chinadaily.com.cn/s/202002/13/WS5e45484e498ea01b9aea0f32/designated-hospitals-and-fever-clinics-in-xian-city-shaanxi.html">中国日报 2020 年名录</a></li>
+  </ol>
+</section>
+
+<footer>2026 年 11 月 4 日整理。天气以出发当天气象台发布为准，医院电话以医院官方公布为准。本路书不能代替医生的判断。</footer>
+</div>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var n=btn.previousElementSibling; var t=n.textContent.trim();
+    function done(msg){btn.textContent=msg;setTimeout(function(){btn.textContent='复制'},1500)}
+    function fallback(){var r=document.createRange();r.selectNodeContents(n);var s=getSelection();s.removeAllRanges();s.addRange(r);done('已选中')}
+    try{navigator.clipboard.writeText(t).then(function(){done('已复制')},fallback)}catch(e){fallback()}
+  });
+});
+document.querySelectorAll('#pack input').forEach(function(cb){
+  try{cb.checked=localStorage.getItem('rb-'+cb.id)==='1'}catch(e){}
+  cb.addEventListener('change',function(){try{localStorage.setItem('rb-'+cb.id,cb.checked?'1':'0')}catch(e){}});
+});
+</script>
