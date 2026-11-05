@@ -1,0 +1,478 @@
+<title>蓉长安执行手册</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: 航空 QRH 式检查单。每张卡 = 一个程序；颜色只编码类别：绿=正常 N，琥珀=非正常 A，红=紧急 E，蓝=参考 R。 */
+:root{
+  --bg:#f4f5f2; --paper:#ffffff; --ink:#111814; --muted:#56635c; --line:#cfd6d0; --faint:#e9ece8;
+  --N:#0f6b45; --A:#a8650a; --E:#c0262d; --R:#245f8f;
+  --N-soft:#e6f2ea; --A-soft:#fbf0dc; --E-soft:#fbe7e7; --R-soft:#e5eef6; --on:#ffffff;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei","WenQuanYi Zen Hei",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1311; --paper:#171d1a; --ink:#e7ece9; --muted:#9ba8a1; --line:#2d3732; --faint:#212924;
+  --N:#2a9a68; --A:#d99a3a; --E:#ef6b6b; --R:#6aa6d6;
+  --N-soft:#18291f; --A-soft:#33291a; --E-soft:#3a1f1f; --R-soft:#182633; --on:#0f1311; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1311; --paper:#171d1a; --ink:#e7ece9; --muted:#9ba8a1; --line:#2d3732; --faint:#212924;
+  --N:#2a9a68; --A:#d99a3a; --E:#ef6b6b; --R:#6aa6d6;
+  --N-soft:#18291f; --A-soft:#33291a; --E-soft:#3a1f1f; --R-soft:#182633; --on:#0f1311; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:60px}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16.5px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 40px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1,h2,h3{margin:0;line-height:1.3;text-wrap:balance}
+p{margin:0}
+a{color:var(--R)}
+:focus-visible{outline:2px solid var(--R);outline-offset:2px}
+.mono{font-family:var(--f-mono)}
+.muted{color:var(--muted)}
+.note{font-size:.88rem;color:var(--muted);line-height:1.5}
+
+.navbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--bg);border-bottom:1px solid var(--line);margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:7px max(16px,env(safe-area-inset-left,0px))}
+.navbar nav{max-width:900px;margin:0 auto;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.navbar a{flex:none;text-decoration:none;font-size:.86rem;font-weight:700;border-radius:4px;padding:2px 10px;color:var(--on)}
+.navbar .m{background:var(--E)} .navbar .n{background:var(--N)} .navbar .a{background:var(--A)} .navbar .e{background:var(--E)} .navbar .r{background:var(--R)} .navbar .t{background:var(--ink)}
+
+/* cover */
+.cover{border:3px solid var(--ink);background:var(--paper);padding:20px 22px;display:flex;flex-direction:column;gap:10px}
+.cover .kicker{font-family:var(--f-mono);font-size:.8rem;letter-spacing:.18em;color:var(--muted)}
+.cover h1{font-size:clamp(1.9rem,5vw,2.7rem);font-weight:900;letter-spacing:.04em}
+.cover .sub{font-size:1.05rem;font-weight:500}
+.cover .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0;border-top:2px solid var(--ink);margin-top:4px}
+.cover .meta div{padding:6px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);font-size:.92rem;min-width:0}
+.cover .meta b{display:block;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;color:var(--muted);font-weight:500}
+
+/* memory items */
+.memory{border:3px solid var(--E);background:var(--paper)}
+.memory > header{background:var(--E);color:var(--on);padding:6px 12px;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline}
+.memory > header h2{font-size:1.2rem}
+.memory > header span{font-size:.85rem;font-weight:500}
+.mem{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+@media (max-width:760px){.mem{grid-template-columns:1fr}}
+.mem > div{padding:10px 12px;border-right:1px solid var(--line);min-width:0}
+.mem > div:last-child{border-right:0}
+.mem h3{font-size:1rem;color:var(--E);margin-bottom:4px}
+.mem ol{margin:0;padding-left:1.4em;font-weight:700;display:flex;flex-direction:column;gap:2px}
+.mem ol li::marker{font-family:var(--f-mono);color:var(--E)}
+
+/* usage */
+.legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px}
+.legend > div{border:1px solid var(--line);background:var(--paper);padding:6px 10px;font-size:.92rem;min-width:0}
+.legend b.k{display:inline-block;font-family:var(--f-mono);color:var(--on);border-radius:3px;padding:0 6px;margin-right:4px}
+
+/* TOC */
+.tocgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px}
+.tocgrid .grp{background:var(--paper);border:1px solid var(--line);border-top-width:5px;padding:6px 10px;min-width:0}
+.tocgrid .grp h3{font-size:.95rem;margin-bottom:2px}
+.lead2{display:flex;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);font-size:.95rem}
+.lead2 .code{font-family:var(--f-mono);font-weight:700;min-width:2.4em}
+.lead2 .dots{flex:1;border-bottom:1px dotted var(--muted);transform:translateY(-4px);min-width:10px}
+.lead2 .pg{font-family:var(--f-mono);font-size:.85rem;color:var(--muted);white-space:nowrap}
+
+/* section heads */
+.part{display:flex;align-items:center;gap:10px;color:var(--on);padding:8px 12px;font-weight:900;font-size:1.25rem}
+.part small{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.14em;font-weight:500;opacity:.9}
+.part.N{background:var(--N)} .part.A{background:var(--A)} .part.E{background:var(--E)} .part.R{background:var(--R)}
+
+/* checklist card */
+.cl{background:var(--paper);border:2px solid var(--ink);min-width:0}
+.cl > header{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:6px 10px;border-bottom:2px solid var(--ink)}
+.cl .code{font-family:var(--f-mono);font-weight:700;font-size:1.15rem;color:var(--on);padding:1px 8px;border-radius:3px}
+.cl.N .code{background:var(--N)} .cl.A .code{background:var(--A)} .cl.E .code{background:var(--E)} .cl.R .code{background:var(--R)}
+.cl.E{border-color:var(--E)} .cl.E > header{border-color:var(--E);background:var(--E-soft)}
+.cl.A > header{background:var(--A-soft)} .cl.N > header{background:var(--N-soft)} .cl.R > header{background:var(--R-soft)}
+.cl h3{font-size:1.1rem}
+.cl .mode{font-size:.78rem;font-weight:700;border:1.5px solid currentColor;border-radius:3px;padding:0 6px;white-space:nowrap}
+.cl .when{grid-column:1 / -1;font-size:.88rem;color:var(--muted);margin-top:-2px}
+.items{list-style:none;margin:0;padding:4px 10px 6px}
+.items li{display:grid;grid-template-columns:22px minmax(0,1fr) auto;gap:6px;align-items:baseline;padding:3px 0;border-bottom:1px dotted var(--line)}
+.items li:last-child{border-bottom:0}
+.items li .bx{width:15px;height:15px;border:1.5px solid var(--ink);display:inline-block;transform:translateY(2px)}
+.items li .ch{display:flex;align-items:baseline;gap:6px;min-width:0}
+.items li .ch .dots{flex:1;border-bottom:1.5px dotted var(--muted);transform:translateY(-4px);min-width:16px}
+.items li .rs{font-weight:700;text-align:right;max-width:20em}
+.items li.step{grid-template-columns:28px minmax(0,1fr)}
+.items li.step .n{font-family:var(--f-mono);font-weight:700;color:var(--muted)}
+.cl.E .items li.step .n{color:var(--E)} .cl.A .items li.step .n{color:var(--A)}
+.items li.sub{grid-template-columns:28px minmax(0,1fr);border-bottom:0;padding-top:0;color:var(--muted);font-size:.92rem}
+.items li.cond{display:block;background:var(--faint);padding:4px 8px;margin:4px -4px;border:0;font-weight:700}
+.items li.cond::before{content:"◆ ";color:var(--A)}
+.items li.goto{display:block;border:0;font-weight:700;padding:4px 0}
+.items li.goto::before{content:"→ ";font-family:var(--f-mono)}
+.items li.warn{display:block;border:1.5px solid var(--E);color:var(--E);background:var(--E-soft);padding:4px 8px;margin:4px 0;font-weight:700}
+.items li.caution{display:block;border:1.5px solid var(--A);background:var(--A-soft);padding:4px 8px;margin:4px 0;font-weight:500}
+.items li.info{display:block;color:var(--muted);font-size:.9rem;border-bottom:0}
+.items li.end{display:block;text-align:center;font-family:var(--f-mono);font-size:.8rem;color:var(--muted);border:0;letter-spacing:.2em}
+.blank{display:inline-block;min-width:3em;border-bottom:1px solid var(--ink)}
+
+.cards{display:grid;grid-template-columns:1fr;gap:12px}
+.tbl{overflow-x:auto;border:2px solid var(--ink);background:var(--paper)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.95rem;line-height:1.45}
+th,td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.82rem;color:var(--muted);font-weight:700;background:var(--faint)}
+tr:last-child td{border-bottom:0}
+.tel{font-family:var(--f-mono);font-weight:700;white-space:nowrap;color:var(--ink);text-decoration:none}
+.go{color:var(--N);font-weight:900} .nogo{color:var(--E);font-weight:900}
+.c{display:inline-flex;align-items:center;justify-content:center;width:1.45em;height:1.45em;border-radius:50%;background:var(--E);color:var(--on);font-size:.78em;font-weight:700;font-family:var(--f-mono)}
+.log td{height:2em}
+footer{font-size:.82rem;color:var(--muted);border-top:1px solid var(--line);padding-top:8px}
+
+@media print{
+  body{background:#fff;color:#000;font-size:10.8pt;padding:0}
+  .wrap{gap:9px;max-width:none}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .navbar,.noprint{display:none!important}
+  .tbl{overflow:visible} table{min-width:0}
+  .cl,.memory,.tocgrid .grp,.legend > div,tr{break-inside:avoid}
+  .part{break-after:avoid}
+  .newpage{break-before:page}
+}
+@page{size:A4;margin:15mm 16mm 13mm 9mm}
+</style>
+
+<div class="navbar noprint"><nav aria-label="快速跳转">
+  <a class="m" href="#memory">记忆项目</a><a class="t" href="#toc">目录</a><a class="n" href="#partN">N 正常</a><a class="a" href="#partA">A 非正常</a><a class="e" href="#partE">E 紧急</a><a class="r" href="#partR">R 参考</a>
+</nav></div>
+
+<div class="wrap">
+
+<section id="cover" class="cover">
+  <div class="kicker">OPERATIONS MANUAL · QUICK REFERENCE · REV 2026-11-05</div>
+  <h1>执行手册</h1>
+  <div class="sub">成都 → 汉中 → 西安 自驾 · 携 31 周早产宝宝（矫正约 10 天，偶尔用氧）</div>
+  <div class="meta">
+    <div><b>主线 A</b>G5 京昆高速全程</div>
+    <div><b>备选 B</b>汉中后 G85 → G3024/G30</div>
+    <div><b>出发</b>11 月 6 日约 08:00 天亮后</div>
+    <div><b>推荐分段</b>成都→广元→汉中→西安（三天）</div>
+    <div><b>配套文件</b>《成都→西安自驾路书》（详细资料）</div>
+    <div><b>前提</b>原新生儿科医生确认适合自驾后执行</div>
+  </div>
+  <p class="note">本手册只写“什么时候做什么”。数据和依据（天气、医院、里程、来源）见配套路书。医疗数值（乘车时长、氧流量、血氧目标、报警阈值）一律按医嘱填写，本手册不设通用数值。</p>
+</section>
+
+<section id="memory" class="memory">
+  <header><h2>记忆项目 MEMORY ITEMS</h2><span>不看手册也要会做；做完再翻到对应的 E 程序</span></header>
+  <div class="mem">
+    <div><h3>宝宝呼吸 / 意识异常 → E1</h3><ol><li>安全停车，开双闪</li><li>打 120（开免提）</li><li>按调度员指导施救</li></ol></div>
+    <div><h3>供氧中断 → E3</h3><ol><li>安全停车</li><li>执行备用供氧方案</li><li>维持不了：打 120</li></ol></div>
+    <div><h3>车辆故障 / 事故 → E4</h3><ol><li>双闪，驶离行车道</li><li>人员带宝宝撤到护栏外</li><li>放警示牌，打 122 / 110 / 12122</li></ol></div>
+  </div>
+</section>
+
+<section id="usage">
+  <div class="legend">
+    <div><b class="k" style="background:var(--N)">N</b><b>正常检查单</b>：按阶段逐项执行，照护者念项目、司机或照护者回答。</div>
+    <div><b class="k" style="background:var(--A)">A</b><b>非正常程序</b>：情况不紧急但需要处置，按步骤做，做完决定继续还是终止。</div>
+    <div><b class="k" style="background:var(--E)">E</b><b>紧急程序</b>：危及生命，先做记忆项目，再看卡片补全步骤。</div>
+    <div><b class="k" style="background:var(--R)">R</b><b>参考资料</b>：放行标准、路线简报、备用医院、通话格式、记录表。</div>
+    <div><b>读-做</b>：念一项、做一项。<b>做-核</b>：先凭经验做完，再逐项核对。方框 ☐ 打勾，留空的横线现场填写。</div>
+    <div><b>“◆”</b>是判断条件，按实际情况走对应分支；<b>“→”</b>表示转到其他程序或页面。</div>
+  </div>
+</section>
+
+<section id="toc">
+  <div class="part" style="background:var(--ink)">目录 <small>CONTENTS · 页码对应 PDF</small></div>
+  <div class="tocgrid" id="tocbox"></div>
+</section>
+
+<section id="partN" class="newpage">
+  <div class="part N">N 正常检查单 <small>NORMAL CHECKLISTS</small></div>
+  <div class="cards" id="cardsN"></div>
+</section>
+
+<section id="partA" class="newpage">
+  <div class="part A">A 非正常程序 <small>ABNORMAL PROCEDURES</small></div>
+  <div class="cards" id="cardsA"></div>
+</section>
+
+<section id="partE" class="newpage">
+  <div class="part E">E 紧急程序 <small>EMERGENCY PROCEDURES</small></div>
+  <div class="cards" id="cardsE"></div>
+</section>
+
+<section id="partR" class="newpage">
+  <div class="part R">R 参考资料 <small>REFERENCE</small></div>
+
+  <div class="cl R" id="R1"><header><span class="code">R1</span><h3>放行标准（每天出发前对照）</h3><span class="mode">决策</span><div class="when">任何一项落在“不放行”，当天不出发或不进山。</div></header>
+    <div class="tbl" style="border:0"><table>
+      <thead><tr><th>项目</th><th class="go">放行 GO</th><th class="nogo">不放行 NO-GO</th></tr></thead>
+      <tbody>
+        <tr><td>医嘱</td><td>乘车时长、供氧、监测、异常处置都已写明</td><td>任一项没有明确 → 暂缓，或讨论专业转运</td></tr>
+        <tr><td>宝宝</td><td>吃奶、尿量、精神、呼吸、体温和平时一样</td><td>体温 ≥ 38℃ 或 &lt; 36℃、吃奶明显少、少尿、用氧需求增加</td></tr>
+        <tr><td>供氧与电源</td><td>主设备正常；备用电或氧源够全程 + 堵车余量</td><td>备用不足，或只靠同一个车载电路</td></tr>
+        <tr><td>天气与路况</td><td>当天路段无结冰、封路、浓雾预警</td><td>有以上任一预警 → 留在城里等</td></tr>
+        <tr><td>日照</td><td>能在天黑前（约 18:00）过完山区、到达住地</td><td>到不了 → 提前住下，不夜间过秦岭</td></tr>
+        <tr><td>人员</td><td>司机休息充分；后排有专职照护者</td><td>司机疲劳，或没人专职照护</td></tr>
+        <tr><td>医院</td><td>当天路段的医院院区、急诊入口已确认（见 R3）</td><td>未确认 → 先打电话确认再出发</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="cl R" id="R2"><header><span class="code">R2</span><h3>路线简报（三天方案）</h3><span class="mode">简报</span><div class="when">出发前全员过一遍。时间和里程是约数；停车间隔以医嘱为准。</div></header>
+    <div class="tbl" style="border:0"><table>
+      <thead><tr><th>航段</th><th>里程 / 驾驶</th><th>出发</th><th>天气要点</th><th>沿途医院（见 R3）</th></tr></thead>
+      <tbody>
+        <tr><td><b>11/6 成都 → 广元</b><br>经德阳、绵阳</td><td>290–320 km<br>4–5 小时</td><td>约 08:00</td><td>成都—广元多云转小雨，13–21℃</td><td><span class="c">1</span> 德阳 <span class="c">2</span> 绵阳 <span class="c">3</span><span class="c">4</span> 广元；绵阳—广元之间最远约 90 km</td></tr>
+        <tr><td><b>11/7 广元 → 汉中</b><br>经宁强、勉县</td><td>约 176 km（160–190）<br>2.5–3 小时</td><td>约 09:00</td><td>沿线小雨；宁强 6–12℃</td><td><span class="c">5</span><span class="c">6</span> 汉中；广元—汉中之间无已核实的新生儿救治医院</td></tr>
+        <tr><td><b>11/8 A：汉中 → 西安</b><br>G5 经洋县、宁陕、鄠邑</td><td>294 km<br>约 3 小时 53 分</td><td>约 09:00</td><td>降雨减弱；宁陕最低约 4℃</td><td>洋县、鄠邑（县区级）→ <span class="c">8</span> 西安；中段离新生儿救治医院最远约 147 km</td></tr>
+        <tr><td><b>11/8 B：汉中 → 西安</b><br>G85 → G3024/G30</td><td>345 km<br>约 4 小时 10 分</td><td>约 09:00</td><td>留坝、凤县最低约 1℃，桥面隧道口防滑</td><td>留坝（县级）→ <span class="c">7</span> 宝鸡（需下高速）→ <span class="c">8</span> 西安</td></tr>
+      </tbody>
+    </table></div>
+    <ul class="items">
+      <li class="caution">只住一晚的方案（6 日直达汉中，约 450–510 km）要医生认可每日总乘车时间才用；7 日两条线的山区都有雨。</li>
+      <li class="caution">汉中进出城避开汉中东连接线汉江大桥（2026/11/1—2027/5/31 封闭）、上元观连接线汉江特大桥，按导航和现场指引。</li>
+    </ul>
+  </div>
+
+  <div class="cl R" id="R3"><header><span class="code">R3</span><h3>备用医院（按路段）</h3><span class="mode">急症先打 120</span><div class="when">公开电话未试拨，出发前一晚核实后在“已核实”栏打勾。圆圈数字与路书一致。</div></header>
+    <div class="tbl" style="border:0"><table>
+      <thead><tr><th>路段</th><th>医院</th><th>电话</th><th>已核实</th></tr></thead>
+      <tbody>
+        <tr><td>成都</td><td>华西第二医院 / 成都市妇女儿童中心医院</td><td><a class="tel" href="tel:028-85503960">028-85503960</a><br><a class="tel" href="tel:028-61866000">028-61866000</a></td><td>☐</td></tr>
+        <tr><td>成都 → 德阳</td><td><span class="c">1</span> 德阳市妇幼保健院（急诊）</td><td><a class="tel" href="tel:0838-6611120">0838-6611120</a></td><td>☐</td></tr>
+        <tr><td>德阳 → 绵阳</td><td><span class="c">2</span> 绵阳市中心医院（急诊）</td><td><a class="tel" href="tel:0816-2231777">0816-2231777</a></td><td>☐</td></tr>
+        <tr><td>绵阳 → 广元</td><td><span class="c">3</span> 广元妇幼保健医院<br><span class="c">4</span> 广元市中心医院妇产儿童分院</td><td><a class="tel" href="tel:0839-2880211">0839-2880211</a><br><a class="tel" href="tel:0839-3291126">0839-3291126</a></td><td>☐</td></tr>
+        <tr><td>广元 → 汉中</td><td><span class="c">5</span> 三二〇一医院（急救）<br><span class="c">6</span> 汉中市中心医院</td><td><a class="tel" href="tel:0916-2523201">0916-2523201</a><br><a class="tel" href="tel:0916-2681101">0916-2681101</a></td><td>☐</td></tr>
+        <tr><td>A 汉中 → 西安</td><td>洋县人民医院（县级）<br>鄠邑区人民医院（区级）<br><span class="c">8</span> 西安市儿童医院（新生儿转运）</td><td><a class="tel" href="tel:0916-8222583">0916-8222583</a><br><a class="tel" href="tel:029-84812533">029-84812533</a><br><a class="tel" href="tel:029-87692378">029-87692378</a></td><td>☐</td></tr>
+        <tr><td>B 汉中 → 宝鸡 → 西安</td><td>留坝县医院（县级）<br><span class="c">7</span> 宝鸡市妇幼保健院儿童医院（新生儿科医办）<br>同院 24 小时热线</td><td><a class="tel" href="tel:0916-3921187">0916-3921187</a><br><a class="tel" href="tel:0917-3535161">0917-3535161</a><br><a class="tel" href="tel:18991738120">18991738120</a></td><td>☐</td></tr>
+        <tr><td>西安</td><td><span class="c">8</span> 西安市儿童医院（备用）<br>西北妇女儿童医院（儿科急诊）</td><td><a class="tel" href="tel:029-87692377">029-87692377</a><br><a class="tel" href="tel:029-89551122">029-89551122</a></td><td>☐</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="cl R" id="R4"><header><span class="code">R4</span><h3>通话格式</h3><span class="mode">照着念</span></header>
+    <ul class="items">
+      <li class="cond">打 120</li>
+      <li class="info" style="font-size:1rem;color:var(--ink)">“这里是 <span class="blank"></span> 高速（G5 / G85 / G30），往 <span class="blank"></span> 方向，公里牌 K<span class="blank"></span>，最近收费站 / 隧道 <span class="blank"></span>，定位 <span class="blank"></span>。宝宝 31 周早产，实际日龄 <span class="blank"></span> 天，矫正约 10 天，症状 <span class="blank"></span>，用氧情况 <span class="blank"></span>。我的电话 <span class="blank"></span>。”</li>
+      <li class="cond">打医院确认（出发前一晚）</li>
+      <li class="info" style="font-size:1rem;color:var(--ink)">“宝宝 31 周早产，出生日期 <span class="blank"></span>，矫正约 10 天，体重 <span class="blank"></span>，偶尔用氧。已出院的宝宝能否接诊？去哪个院区、哪个入口？由新生儿科还是儿科接诊？”</li>
+      <li class="cond">其他号码</li>
+      <li class="info" style="color:var(--ink)"><b>120</b> 急救 · <b>110</b> 报警、道路险情 · <b>122</b> 交通事故 · <b>12122</b> 高速救援 · <b>12328</b> 路况咨询 · 医生电话 <span class="blank" style="min-width:8em"></span></li>
+    </ul>
+  </div>
+
+  <div class="cl R" id="R5"><header><span class="code">R5</span><h3>行程记录</h3><span class="mode">每次停车填写</span></header>
+    <div class="tbl log" style="border:0"><table>
+      <thead><tr><th>日期 时间</th><th>地点</th><th>吃奶</th><th>尿量</th><th>体温</th><th>血氧 / 氧疗</th><th>电量 / 氧源</th><th>异常与处置</th></tr></thead>
+      <tbody id="logrows"></tbody>
+    </table></div>
+  </div>
+
+  <footer>执行手册 REV 2026-11-05。数据来源与依据见配套《成都→西安自驾路书》第 10 章“信息来源”。本手册不能代替医生的判断；医嘱优先于本手册。</footer>
+</section>
+</div>
+
+<script>if(window.__PG__===undefined)window.__PG__={"memory": 1, "toc": 2, "partN": 3, "N1": 3, "N2": 3, "N3": 4, "N4": 4, "N5": 5, "N6": 5, "N7": 6, "N8": 6, "partA": 7, "A1": 7, "A2": 7, "A3": 7, "A4": 8, "A5": 8, "A6": 8, "A7": 9, "A8": 9, "partE": 10, "E1": 10, "E2": 10, "E3": 10, "E4": 11, "E5": 11, "partR": 12, "R1": 12, "R2": 13, "R3": 14, "R4": 14, "R5": 15};</script>
+<script>
+(function(){
+/* item syntax:  ['c',challenge,response] checklist row · ['s',text] step · ['sub',text] · ['if',text] condition · ['go',text] goto · ['w',text] warning · ['ca',text] caution · ['i',text] info */
+var B='<span class="blank"></span>';
+var CARDS={
+N:[
+ ['N1','出发前一晚（11/5）','做-核','全员；发现未完成项按 R1 判断是否推迟。',[
+  ['c','医生确认长途自驾','已确认 / 否则暂缓'],
+  ['c','单次乘车 · 每日总量 · 离座休息','写入：'+B+'分 · '+B+'小时 · '+B+'分'],
+  ['c','供氧模式 / 流量 · 血氧目标 · 报警阈值','已写入医嘱'],
+  ['c','异常处置方案、医生电话','已写入 R4'],
+  ['c','备用医院电话（R3）','逐个拨打，已核实栏打勾'],
+  ['c','6–8 日天气、G5 / G85 路况','已查，记下发布时间'],
+  ['c','广元、汉中住宿','已订：无烟、近医院、婴儿睡眠面'],
+  ['c','后向安全座椅','已装好、已调好'],
+  ['c','制氧机、监测设备、备用电 / 氧源','已充满，续航已核算'],
+  ['c','证件与病历（出院小结、氧疗处方、出生证明、疫苗本、医保）','已装包'],
+  ['c','奶具、母乳 / 配方奶、强化剂、尿布、替换衣物、体温计','多备一天'],
+  ['c','车辆：胎压、制动、灯光、雨刮、除雾、ETC、警示牌、反光背心','正常 / 在车'],
+  ['c','司机','两人，今晚睡足'],
+  ['c','离线地图、路书、本手册','已下载 / 已打印放手套箱'],
+ ]],
+ ['N2','每天出发前','做-核','每天早上；对照 R1 放行标准，全部“放行”才出发。',[
+  ['c','宝宝：吃奶、尿量、精神、呼吸、体温','和平时一样'],
+  ['c','今日天气、预警、封路（看发布时间）','无结冰 / 封路 / 浓雾'],
+  ['c','今日路段备用医院（R3）','院区、入口已确认'],
+  ['c','制氧机、监测、备用电 / 氧','满电、在手边'],
+  ['c','燃油或电量','够到下一补能点 + 余量'],
+  ['c','司机状态','清醒、已休息'],
+  ['c','预计到达时间','早于天黑（约 18:00）'],
+  ['if','任何一项不满足'],['go','按 R1 推迟或缩短当天行程'],
+ ]],
+ ['N3','上车起步前','读-做','照护者念，负责人回答。每次上车都做。',[
+  ['c','宝宝','已喂奶、换尿布、状态正常'],
+  ['c','安全座椅','后向 · 后排 · 安全带贴合 · 无厚衣'],
+  ['c','头部与气道','不前垂 · 口鼻不遮挡'],
+  ['c','氧管','无压折 · 已固定'],
+  ['c','制氧机 / 氧源','开启 · 流量 '+B+'（按医嘱）· 已固定'],
+  ['c','监测设备','开启 · 报警开 · 探头到位'],
+  ['c','备用电 / 氧源','随手可取'],
+  ['c','车内温度','舒适 · 不直吹'],
+  ['c','照护者','后排就位 · 手机有电'],
+  ['c','导航','目的地 · 下一停车点已设'],
+  ['c','出发时间','记下：'+B+'；下次停车不晚于 '+B],
+ ]],
+ ['N4','行驶中巡检','读-做','照护者每 '+B+' 分钟一次（按医嘱）；司机只负责开车。',[
+  ['c','呼吸','平稳 · 无暂停'],
+  ['c','肤色','无发青 · 发灰'],
+  ['c','血氧 / 报警','在医嘱范围'],
+  ['c','冷热（摸后颈）','不冷 · 不出汗'],
+  ['c','氧管、鼻导管','在位'],
+  ['c','离下次停车',''+B+' 分钟'],
+  ['if','任何一项异常'],['go','A1 / A2；呼吸或意识异常 → E1'],
+  ['i','司机：雨雾减速、拉大车距；不回头、不兼顾照护和喂养。'],
+ ]],
+ ['N5','每次停车','读-做','到服务区或合法停车点后执行；不在应急车道照护。',[
+  ['c','停车位置','服务区 / 合法停车点'],
+  ['c','离座休息','按医嘱时长'],
+  ['c','喂养 · 换尿布','完成'],
+  ['c','呼吸与肤色','正常'],
+  ['c','体温','测量并记录'],
+  ['c','制氧机电量 · 氧源','检查并记录'],
+  ['c','行程记录（R5）','已填写'],
+  ['c','下一段','距离 · 时间不超医嘱'],
+  ['c','司机','换手或休息'],
+ ]],
+ ['N6','进秦岭前','做-核','11/8（或改期后）从汉中出发后：A 在洋县一带、B 在留坝一带最后确认。',[
+  ['c','走 A 还是 B','已在汉中决定（不在山里临时改）'],
+  ['c','山区天气、结冰、封路、团雾','无预警'],
+  ['c','出山时间','早于天黑'],
+  ['c','燃油或电量','充足（电动车预留低温和爬坡余量）'],
+  ['c','氧源与备用电','够到西安 + 堵车余量'],
+  ['c','宝宝','刚照护完 · 状态正常'],
+  ['c','车灯 · 空调','近光灯 · 进隧道切内循环 · 暖风'],
+  ['c','隧道规则','不变道 · 不超车 · 不停车'],
+  ['c','山区通信','隧道内用紧急电话，出隧道再打 120'],
+  ['ca','A 线秦岭服务区海拔 1600 多米，湿冷；B 线天台山隧道 15.56 km，8 日留坝、凤县最低约 1℃。'],
+ ]],
+ ['N7','到达住宿','做-核','每天到店后。',[
+  ['c','宝宝','离开座椅 · 仰卧平整坚实睡眠面 · 无软枕被褥'],
+  ['c','制氧机、监测、备用电','充电 · 补充氧源'],
+  ['c','行程记录','当天汇总'],
+  ['c','明天','天气 · 路况 · 医院 · 出发时间已确认'],
+  ['c','车辆','加油或充电'],
+  ['c','产后妈妈','休息 · 身体状况正常'],
+ ]],
+ ['N8','抵达西安','做-核','行程结束。',[
+  ['c','衔接西安医院','早产儿随访 · 眼底 · 听力复查'],
+  ['c','资料','行程记录交给医生'],
+  ['c','设备','充电 · 补充氧源'],
+ ]]
+],
+A:[
+ ['A1','体温、吃奶、尿量异常（呼吸和意识正常）','读-做','体温 ≥ 38℃ 或 < 36℃；明显少吃奶；明显少尿。',[
+  ['s','安全停车（服务区或下一个出口）'],
+  ['s','复测体温，检查衣物和车内温度，记录'],
+  ['s','终止当日行程'],
+  ['s','联系并前往最近的备用医院（R3）'],
+  ['if','出现呼吸或意识异常'],['go','E1'],
+ ]],
+ ['A2','用氧需求增加 / 血氧低于医嘱目标','读-做','',[
+  ['s','安全停车'],
+  ['s','检查氧管、鼻导管位置、设备流量'],
+  ['s','按医嘱处置'],
+  ['s','终止行程，就近就医（R3）'],
+  ['if','达到医生给的紧急阈值，或呼吸费力、发青'],['go','E1'],
+ ]],
+ ['A3','制氧机报警 / 断电（仍能供氧）','读-做','',[
+  ['s','安全停车'],
+  ['s','看报警类型，检查连接和氧管'],
+  ['s','切换到备用电源或备用氧源'],
+  ['s','检查车载供电：熄火、启停、充电时是否断电'],
+  ['s','剩余续航够不够到下一个城市；不够就近停下补充'],
+  ['if','无法维持医嘱供氧'],['go','E3'],
+  ['w','不要边加氧边赶路。'],
+ ]],
+ ['A4','G5 管制或明显拥堵：改走 B','做-核','只在汉中做这个决定。',[
+  ['s','确认 G5 西汉段管制或拥堵信息（导航、交警公告、12328）'],
+  ['s','查 G85 的天气、结冰、通行'],
+  ['s','确认氧源、油电够 345 km + 余量'],
+  ['s','导航改为 G85 → G3024/G30'],
+  ['s','更新备用医院：留坝县医院、⑦ 宝鸡（R3）'],
+  ['if','两条线都不能走'],['go','留在汉中，不绕山间小路'],
+ ]],
+ ['A5','团雾、能见度下降','读-做','秋冬早晨 6–8 点、桥面、雨后山区最常见。',[
+  ['s','开雾灯、近光灯、双闪；不急刹'],
+  ['s','限速：能见度 < 200 m ≤ 60 km/h；< 100 m ≤ 40 km/h；< 50 m ≤ 20 km/h'],
+  ['s','拉大车距，从最近的出口下高速'],
+  ['w','不要在行车道上停车。'],
+ ]],
+ ['A6','结冰预警、雨天路滑','读-做','',[
+  ['if','还没出发'],['s','留在城里等，不出发'],
+  ['if','已在路上'],['s','减速、拉大车距，不急刹、不急打方向'],['s','桥面、隧道口格外小心'],['s','进最近的服务区等待路况'],
+ ]],
+ ['A7','延误：天黑前到不了 / 达到每日上限 / 司机疲劳','读-做','',[
+  ['s','在下一个城市住下（绵阳、广元、汉中、宝鸡）'],
+  ['s','改订酒店，通知家人'],
+  ['s','查明天的天气和路况'],
+  ['w','不在夜里过秦岭。'],
+ ]],
+ ['A8','车辆故障（还能开）','读-做','',[
+  ['s','开双闪，减速'],
+  ['s','开到最近的服务区或出口'],
+  ['s','打 12122 求助'],
+  ['if','车辆无法移动'],['go','E4'],
+ ]]
+],
+E:[
+ ['E1','宝宝呼吸暂停 / 呼吸明显费力 / 发青 / 叫不醒','读-做','记忆项目：停车 → 120 → 施救。',[
+  ['s','安全停车（最右侧，开双闪）'],
+  ['s','打 120，开免提，按 R4 报告位置和情况'],
+  ['s','按调度员指导立即施救'],
+  ['s','另一人：放警示牌、发定位、联系最近医院（R3）'],
+  ['s','原地等救护车，或按调度员要求前往'],
+  ['w','不要等到下一家医院才处理；不要自行长距离赶路。'],
+ ]],
+ ['E2','抽搐','读-做','两眼凝视、四肢抖动等。',[
+  ['s','安全停车'],
+  ['s','打 120'],
+  ['s','保护头部，防止碰撞；不往嘴里塞东西'],
+  ['s','记下开始时间和持续时间'],
+  ['s','按调度员指导处理'],
+ ]],
+ ['E3','供氧中断，无法恢复','读-做','记忆项目：停车 → 备用方案 → 120。',[
+  ['s','安全停车'],
+  ['s','执行备用供氧方案'],
+  ['s','维持不了：打 120，说明“早产儿用氧，供氧中断”'],
+  ['s','联系最近医院（R3）'],
+ ]],
+ ['E4','车辆抛锚或交通事故','读-做','记忆项目：双闪 → 撤离 → 警示 → 报警。',[
+  ['s','开双闪，尽量驶离行车道'],
+  ['s','人员带宝宝和便携氧源撤到护栏外安全处，注意保暖'],
+  ['s','在来车方向 150 米以外放警示牌'],
+  ['s','打 122（事故）/ 110 / 12122；有人受伤打 120'],
+  ['s','检查宝宝；出现呼吸或意识异常 → E1'],
+ ]],
+ ['E5','产后妈妈急症','读-做','大量出血、胸痛、呼吸困难、单侧腿肿。',[
+  ['s','安全停车'],
+  ['s','打 120'],
+  ['s','另一位成人接手照护宝宝'],
+ ]]
+]};
+function esc(t){return t;}
+function render(cat,host){var h='';CARDS[cat].forEach(function(c){var it='<ul class="items">';var sn=0;
+  c[4].forEach(function(r){var k=r[0];
+   if(k==='c')it+='<li><span class="bx"></span><span class="ch">'+r[1]+'<span class="dots"></span></span><span class="rs">'+r[2]+'</span></li>';
+   else if(k==='s')it+='<li class="step"><span class="n">'+(++sn)+'</span><span>'+r[1]+'</span></li>';
+   else if(k==='if')it+='<li class="cond">'+r[1]+'</li>';
+   else if(k==='go')it+='<li class="goto">'+r[1]+'</li>';
+   else if(k==='w')it+='<li class="warn">警告：'+r[1]+'</li>';
+   else if(k==='ca')it+='<li class="caution">注意：'+r[1]+'</li>';
+   else if(k==='i')it+='<li class="info">'+r[1]+'</li>';});
+  it+='<li class="end">— '+c[0]+' 完 —</li></ul>';
+  h+='<div class="cl '+cat+'" id="'+c[0]+'"><header><span class="code">'+c[0]+'</span><h3>'+c[1]+'</h3><span class="mode">'+c[2]+'</span>'+(c[3]?'<div class="when">'+c[3]+'</div>':'')+'</header>'+it+'</div>';});
+ document.getElementById(host).innerHTML=h;}
+render('N','cardsN');render('A','cardsA');render('E','cardsE');
+var lr='';for(var i=0;i<12;i++)lr+='<tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>';document.getElementById('logrows').innerHTML=lr;
+/* TOC */
+var PG=window.__PG__;function pgOf(id){return PG?(PG[id]||''):(PG===null?'00':'');}
+function lead(id,code,t){var p=pgOf(id);return '<a class="lead2" href="#'+id+'"><span class="code">'+code+'</span><span>'+t+'</span><span class="dots"></span><span class="pg">'+(p?'P'+p:'')+'</span></a>';}
+var G=[['记忆项目','var(--E)',[['memory','!','记忆项目（E1 · E3 · E4）']]],['N 正常检查单','var(--N)',CARDS.N],['A 非正常程序','var(--A)',CARDS.A],['E 紧急程序','var(--E)',CARDS.E],['R 参考资料','var(--R)',[['R1','R1','放行标准'],['R2','R2','路线简报'],['R3','R3','备用医院（按路段）'],['R4','R4','通话格式'],['R5','R5','行程记录']]]];
+var th='';G.forEach(function(g){th+='<div class="grp" style="border-top-color:'+g[1]+'"><h3>'+g[0]+'</h3>';g[2].forEach(function(c){var id=c[0],code=c.length===5?c[0]:c[1],t=c.length===5?c[1]:c[2];th+=lead(id,code,t);});th+='</div>';});
+document.getElementById('tocbox').innerHTML=th;
+window.__IDS__=['memory','toc','partN','partA','partE','partR'].concat(Array.prototype.map.call(document.querySelectorAll('.cl[id]'),function(e){return e.id;}));
+window.__CAT__={};document.querySelectorAll('.cl[id]').forEach(function(e){window.__CAT__[e.id]={cat:e.classList.contains('N')?'N':e.classList.contains('A')?'A':e.classList.contains('E')?'E':'R',title:e.querySelector('h3').textContent};});
+})();
+</script>
