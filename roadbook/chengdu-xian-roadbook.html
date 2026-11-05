@@ -3,59 +3,95 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Serif+SC:wght@700;900&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* Layout: 单列图文路书。高速指路牌绿做主色；红色只给医疗与危险；琥珀=11月6日，蓝=11月7日（已过配色校验） */
+/* Layout: 先紧急速查，再索引，再按“路线→天气→行程→医院→供氧急救→照护→检查→开车→预案”顺序。
+   绿=A 主线 G5（也是高速指路牌色），橙=B 备选 G85；红只给医疗与危险。A/B 配色已过校验。 */
 :root{
   --bg:#f6f7f4; --paper:#ffffff; --ink:#18221d; --muted:#5b6862; --faint:#e6e9e5; --line:#d9ded9;
-  --sign:#0f6b45; --sign-ink:#ffffff; --med:#c62f2f; --med-soft:#fbecec;
+  --sign:#0f6b45; --sign-ink:#ffffff; --A:#0f7a4f; --B:#c27c0e; --B-soft:#fbf1df;
+  --med:#c62f2f; --med-soft:#fbecec; --med-ink:#ffffff;
   --warn:#9a6414; --warn-soft:#fbf3e3; --ok:#2f7d4f; --ok-soft:#e8f3ec; --sky:#2c6a9a; --sky-soft:#e7f0f7;
-  --d6:#c27c0e; --d7:#1f6fb8; --alt:#9aa59f; --stop:#e9d6b0;
+  --rain:#1f6fb8; --sun:#c27c0e; --cloud:#9aa59f; --stop:#e9d6b0; --cold:#1f6fb8;
   --f-display:"Noto Serif SC","Source Han Serif SC","Songti SC","WenQuanYi Zen Hei",serif;
   --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei","WenQuanYi Zen Hei",system-ui,sans-serif;
   --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#111613; --paper:#18201b; --ink:#e6ece8; --muted:#9aa8a0; --faint:#222b25; --line:#2c3730;
-  --sign:#1f8a5b; --sign-ink:#ffffff; --med:#ef6b6b; --med-soft:#3a1f1f;
+  --sign:#1f8a5b; --sign-ink:#ffffff; --A:#2a9a68; --B:#c4841e; --B-soft:#33291a;
+  --med:#ef6b6b; --med-soft:#3a1f1f; --med-ink:#1a0d0d;
   --warn:#e0a84a; --warn-soft:#3a2f1a; --ok:#6cc08d; --ok-soft:#1d3125; --sky:#7fb4dd; --sky-soft:#1a2a36;
-  --d6:#c4841e; --d7:#4a93d8; --alt:#5d6a63; --stop:#5a4a2c; color-scheme:dark}}
+  --rain:#4a93d8; --sun:#c4841e; --cloud:#5d6a63; --stop:#5a4a2c; --cold:#4a93d8; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#111613; --paper:#18201b; --ink:#e6ece8; --muted:#9aa8a0; --faint:#222b25; --line:#2c3730;
-  --sign:#1f8a5b; --sign-ink:#ffffff; --med:#ef6b6b; --med-soft:#3a1f1f;
+  --sign:#1f8a5b; --sign-ink:#ffffff; --A:#2a9a68; --B:#c4841e; --B-soft:#33291a;
+  --med:#ef6b6b; --med-soft:#3a1f1f; --med-ink:#1a0d0d;
   --warn:#e0a84a; --warn-soft:#3a2f1a; --ok:#6cc08d; --ok-soft:#1d3125; --sky:#7fb4dd; --sky-soft:#1a2a36;
-  --d6:#c4841e; --d7:#4a93d8; --alt:#5d6a63; --stop:#5a4a2c; color-scheme:dark}
+  --rain:#4a93d8; --sun:#c4841e; --cloud:#5d6a63; --stop:#5a4a2c; --cold:#4a93d8; color-scheme:dark}
 *{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 40px}
-.wrap{max-width:960px;margin:0 auto;display:flex;flex-direction:column;gap:36px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:980px;margin:0 auto;display:flex;flex-direction:column;gap:34px}
 h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.3;margin:0}
-h2{font-size:1.45rem;display:flex;align-items:baseline;gap:12px}
-h2 .no{font-family:var(--f-mono);font-size:.8rem;color:var(--sign);border:1.5px solid var(--sign);border-radius:4px;padding:0 6px}
+h2{font-size:1.45rem;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+h2 .no{font-family:var(--f-mono);font-size:.82rem;color:var(--sign-ink);background:var(--sign);border-radius:4px;padding:0 7px}
+h2 .en{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.14em;color:var(--muted);font-weight:500}
+section.sos-sec h2 .no{background:var(--med)}
 h3{font-size:1.05rem}
 p{margin:0}
 section{display:flex;flex-direction:column;gap:14px}
 .muted{color:var(--muted)}
-.lead{color:var(--muted);max-width:68ch}
+.lead{color:var(--muted);max-width:70ch}
 .num{font-variant-numeric:tabular-nums}
 a{color:var(--sky)}
 :focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+.c{display:inline-flex;align-items:center;justify-content:center;width:1.45em;height:1.45em;border-radius:50%;background:var(--med);color:var(--med-ink);font-size:.8em;font-weight:700;font-family:var(--f-mono);flex:none}
+.tagA,.tagB,.tagC{display:inline-block;font-size:.72rem;font-weight:700;border-radius:4px;padding:0 6px;white-space:nowrap}
+.tagA{background:var(--A);color:#fff}.tagB{background:var(--B);color:#fff}.tagC{background:var(--faint);color:var(--muted)}
 
-.sign{background:var(--sign);color:var(--sign-ink);border-radius:0 0 10px 10px;padding:24px 26px 22px;display:flex;flex-direction:column;gap:12px;
+.navbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--bg);border-bottom:1px solid var(--line);margin:0 calc(-1 * max(16px,env(safe-area-inset-left,0px)));padding:8px max(16px,env(safe-area-inset-left,0px))}
+.navbar nav{max-width:980px;margin:0 auto;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.navbar a{flex:none;text-decoration:none;font-size:.82rem;color:var(--ink);border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:2px 10px;white-space:nowrap}
+.navbar a.sos{background:var(--med);color:var(--med-ink);border-color:var(--med);font-weight:700}
+
+.sign{background:var(--sign);color:var(--sign-ink);border-radius:0 0 10px 10px;padding:22px 26px 20px;display:flex;flex-direction:column;gap:10px;
   box-shadow:inset 0 0 0 4px var(--sign),inset 0 0 0 6px rgba(255,255,255,.85)}
 .sign .eyebrow{font-size:.8rem;letter-spacing:.2em;opacity:.85}
-.sign h1{font-size:clamp(1.7rem,4.6vw,2.7rem);font-weight:900;display:flex;flex-wrap:wrap;align-items:center;gap:.2em 14px}
+.sign h1{font-size:clamp(1.7rem,4.6vw,2.6rem);font-weight:900;display:flex;flex-wrap:wrap;align-items:center;gap:.2em 14px}
 .sign h1 .arrow{font-family:var(--f-body);font-weight:400;opacity:.8}
-.sign .meta{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:.93rem}
+.sign .meta{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.92rem}
 .sign .meta b{font-family:var(--f-mono);font-weight:500}
 .shield{display:inline-flex;align-items:center;background:#c8102e;color:#fff;font-family:var(--f-mono);font-size:.85rem;border-radius:4px;padding:0 7px;border:2px solid #fff}
-
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
-.kpis > div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 16px;min-width:0}
-.kpis .k{font-size:.78rem;letter-spacing:.1em;color:var(--muted)}
-.kpis .v{font-weight:700;font-size:1.02rem}
+.baby{display:flex;flex-wrap:wrap;gap:6px}
+.baby span{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:0 10px;font-size:.86rem}
 
 .callout{border-left:4px solid var(--warn);background:var(--warn-soft);padding:10px 14px;border-radius:0 6px 6px 0}
 .callout.med{border-color:var(--med);background:var(--med-soft)}
 .callout.ok{border-color:var(--ok);background:var(--ok-soft)}
+
+.sos-grid{display:grid;grid-template-columns:minmax(0,260px) 1fr;gap:14px}
+@media (max-width:700px){.sos-grid{grid-template-columns:1fr}}
+.big120{background:var(--med);color:var(--med-ink);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.big120 b{font-family:var(--f-mono);font-size:3.2rem;line-height:1}
+.big120 p{font-size:.9rem}
+.steps4,.flow4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;counter-reset:s}
+@media (max-width:620px){.steps4,.flow4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.steps4 div{background:var(--paper);border:1.5px solid var(--med);border-radius:8px;padding:8px 10px;font-weight:700;font-size:.9rem;display:flex;gap:8px;align-items:center;min-width:0}
+.steps4 div::before{counter-increment:s;content:counter(s);font-family:var(--f-mono);width:22px;height:22px;flex:none;border-radius:50%;background:var(--med);color:var(--med-ink);display:inline-flex;align-items:center;justify-content:center;font-size:.8rem}
+.flow4 div{background:var(--ok-soft);border:1px solid var(--ok);border-radius:8px;padding:8px 10px;font-size:.88rem;font-weight:500;display:flex;gap:8px;align-items:center;min-width:0}
+.flow4 div::before{counter-increment:s;content:counter(s);font-family:var(--f-mono);width:22px;height:22px;flex:none;border-radius:50%;background:var(--ok);color:var(--paper);display:inline-flex;align-items:center;justify-content:center;font-size:.8rem}
+.script{background:var(--paper);border:1.5px dashed var(--med);border-radius:8px;padding:12px 14px;font-size:.95rem}
+.script u{text-decoration:none;border-bottom:1px solid var(--ink);display:inline-block;min-width:3.5em}
+
+.toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
+.toc a{display:flex;justify-content:space-between;align-items:baseline;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 12px;text-decoration:none;color:var(--ink);min-width:0}
+.toc a .t{display:flex;gap:8px;align-items:baseline;min-width:0}
+.toc a .t b{font-family:var(--f-mono);color:var(--sign);font-size:.82rem}
+.toc a .t span{font-weight:500}
+.toc a small{color:var(--muted);font-size:.78rem;display:block;font-weight:400}
+.toc a .pg{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);white-space:nowrap}
+.toc a.sos{border-color:var(--med)} .toc a.sos .t b{color:var(--med)}
 
 .panel{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
 .panel h3 small{font-family:var(--f-body);font-weight:400;color:var(--muted);font-size:.8rem;margin-left:6px}
@@ -66,349 +102,418 @@ a{color:var(--sky)}
 .legend span{display:inline-flex;align-items:center;gap:6px}
 .sw{width:12px;height:12px;border-radius:3px;display:inline-block}
 .note{font-size:.8rem;color:var(--muted)}
+.multi{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
 
-.multi{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpis > div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px 14px;min-width:0}
+.kpis .k{font-size:.76rem;letter-spacing:.06em;color:var(--muted)}
+.kpis .v{font-family:var(--f-mono);font-size:1.7rem;font-weight:500;line-height:1.2}
+.kpis .v small{font-family:var(--f-body);font-size:.8rem;color:var(--muted);margin-left:4px}
+.kpis .A{border-top:4px solid var(--A)} .kpis .B{border-top:4px solid var(--B)}
+
+.track{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:14px;align-items:center}
+@media (max-width:700px){.track{grid-template-columns:1fr}}
+.track img{width:100%;height:auto;border-radius:8px;border:1px solid var(--line);display:block}
 
 .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--paper)}
-table{border-collapse:collapse;width:100%;min-width:600px;font-size:.92rem}
-th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-size:.78rem;letter-spacing:.06em;color:var(--muted);font-weight:500;background:var(--bg)}
+table{border-collapse:collapse;width:100%;min-width:600px;font-size:.9rem}
+th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.76rem;letter-spacing:.06em;color:var(--muted);font-weight:500;background:var(--bg)}
 tr:last-child td{border-bottom:0}
-.pill{display:inline-block;font-size:.76rem;padding:0 8px;border-radius:999px;white-space:nowrap;font-weight:500}
-.pill.ok{background:var(--ok-soft);color:var(--ok)} .pill.warn{background:var(--warn-soft);color:var(--warn)} .pill.bad{background:var(--med-soft);color:var(--med)} .pill.sky{background:var(--sky-soft);color:var(--sky)}
+.tel-a{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink);text-decoration:none;font-weight:500;white-space:nowrap;border-bottom:1px dotted var(--muted)}
 
-/* weather matrix */
-.wx{display:grid;grid-template-columns:minmax(110px,1.3fr) repeat(2,minmax(120px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:.88rem}
-.wx > div{background:var(--paper);padding:10px 12px;display:flex;gap:10px;align-items:center;min-width:0}
-.wx .hd{background:var(--bg);font-size:.78rem;color:var(--muted);letter-spacing:.06em}
-.wx .seg{font-weight:700;flex-direction:column;align-items:flex-start;gap:0}
-.wx .seg small{font-weight:400;color:var(--muted);font-size:.76rem}
-.wx svg{flex:none;width:34px;height:34px}
-.wx .txt{display:flex;flex-direction:column;line-height:1.4}
-.wx .txt b{font-family:var(--f-mono);font-weight:500;font-variant-numeric:tabular-nums}
+.wx{display:grid;grid-template-columns:minmax(84px,.8fr) repeat(3,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:.84rem;min-width:600px}
+.wx > div{background:var(--paper);padding:7px 10px;display:flex;gap:8px;align-items:center;min-width:0}
+.wx .hd{background:var(--bg);font-size:.76rem;color:var(--muted);letter-spacing:.06em}
+.wx .seg{font-weight:700;flex-direction:column;align-items:flex-start;gap:2px;line-height:1.3}
+.wx .rowA{box-shadow:inset 3px 0 0 var(--A)} .wx .rowB{box-shadow:inset 3px 0 0 var(--B)}
+.wx svg.ic{flex:none;width:28px;height:28px}
+.wx .txt{display:flex;flex-direction:column;line-height:1.3;min-width:0;flex:1}
+.wx .txt b{font-family:var(--f-mono);font-weight:500;font-variant-numeric:tabular-nums;font-size:.8rem}
+.wx svg.rb{width:100%;height:10px;display:block;margin-top:3px}
 
-.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
-.day{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
-.day header{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
-.day header small{color:var(--muted)}
+.days{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.day{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.day .dn{font-family:var(--f-mono);font-size:1.8rem;color:var(--sign);line-height:1}
+.day dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;font-size:.88rem}
+.day dt{color:var(--muted)} .day dd{margin:0}
 .steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
-.steps li{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:7px 0;border-top:1px dashed var(--line)}
+.steps li{display:grid;grid-template-columns:50px 1fr;gap:10px;padding:6px 0;border-top:1px dashed var(--line)}
 .steps li:first-child{border-top:0}
-.steps time{font-family:var(--f-mono);font-size:.86rem;color:var(--sign);padding-top:2px}
+.steps time{font-family:var(--f-mono);font-size:.84rem;color:var(--sign);padding-top:2px}
 .steps .t{font-weight:700}
-.steps .d{color:var(--muted);font-size:.86rem}
+.steps .d{color:var(--muted);font-size:.85rem}
 
-.hosp-group{display:flex;flex-direction:column;gap:10px}
-.hosp-group > h3{display:flex;align-items:center;gap:10px}
-.hosp-group > h3 .km{font-family:var(--f-mono);font-size:.78rem;color:var(--muted);font-weight:500}
-.hosps{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
-.h{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.hosp-group{display:flex;flex-direction:column;gap:8px}
+.hosp-group > h3{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hosp-group > h3 .km{font-family:var(--f-mono);font-size:.76rem;color:var(--muted);font-weight:500}
+.hosps{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}
+.h{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:5px;min-width:0}
+.h.core{border:2px solid var(--med)}
+.h.sup{border-style:dashed}
 .h .name{font-weight:700;display:flex;gap:8px;align-items:flex-start}
-.h .name::before{content:"+";flex:none;width:20px;height:20px;border-radius:4px;background:var(--med);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:900;line-height:1;margin-top:3px}
-.h .addr{font-size:.86rem;color:var(--muted)}
+.h .name .plus{flex:none;width:20px;height:20px;border-radius:4px;background:var(--med);color:var(--med-ink);display:inline-flex;align-items:center;justify-content:center;font-weight:900;line-height:1;margin-top:3px}
+.h .big{font-family:var(--f-mono);font-size:1.35rem;font-weight:500;line-height:1.2}
+.h .big a{color:var(--ink);text-decoration:none}
+.h .addr{font-size:.84rem;color:var(--muted)}
 .h .tag{font-size:.82rem}
-.tel{display:flex;flex-direction:column;gap:3px}
-.tel div{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:.9rem}
-.tel .lbl{color:var(--muted);font-size:.8rem;min-width:5.5em}
-.tel .n{font-family:var(--f-mono);font-variant-numeric:tabular-nums;user-select:all;font-weight:500}
-.copy{font:inherit;font-size:.75rem;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:4px;padding:0 8px;cursor:pointer}
+.tel{display:flex;flex-direction:column;gap:2px}
+.tel div{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:.88rem}
+.tel .lbl{color:var(--muted);font-size:.78rem;min-width:5.5em}
+.copy{font:inherit;font-size:.72rem;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:4px;padding:0 8px;cursor:pointer}
 .copy:hover{border-color:var(--sign)}
-.gap{border:1.5px dashed var(--warn);border-radius:8px;padding:10px 14px;background:var(--warn-soft);font-size:.9rem}
+.h .links{font-size:.78rem;display:flex;gap:10px;flex-wrap:wrap}
+.gap{border:1.5px dashed var(--warn);border-radius:8px;padding:9px 13px;background:var(--warn-soft);font-size:.88rem}
 
-.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
-.box{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:13px 15px;display:flex;flex-direction:column;gap:7px;min-width:0}
 .box ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:3px}
 .check{list-style:none;padding:0 !important}
 .check label{display:flex;gap:8px;align-items:flex-start;cursor:pointer}
 .check input{margin-top:6px;accent-color:var(--sign);flex:none}
+.blank{display:inline-block;min-width:3.2em;border-bottom:1px solid var(--ink)}
 
-.danger{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
-.danger > div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start;font-size:.88rem;min-width:0}
-.danger .ic{flex:none;width:30px;height:30px;border-radius:50%;background:var(--med-soft);color:var(--med);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.78rem;font-family:var(--f-mono)}
+.danger{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:8px}
+.danger > div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:9px 11px;display:flex;gap:10px;align-items:flex-start;font-size:.86rem;min-width:0}
+.danger .ic{flex:none;width:30px;height:30px;border-radius:50%;background:var(--med-soft);color:var(--med);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.76rem;font-family:var(--f-mono)}
 
 .seat{display:grid;grid-template-columns:minmax(0,260px) 1fr;gap:16px;align-items:center}
 @media (max-width:620px){.seat{grid-template-columns:1fr}}
 
-.flow{display:flex;flex-direction:column;gap:8px}
+.flow{display:flex;flex-direction:column;gap:7px}
 .flow > div{display:grid;grid-template-columns:1fr 28px 1fr;gap:8px;align-items:stretch}
-.flow .if,.flow .then{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:9px 12px;font-size:.9rem;min-width:0}
+.flow .if,.flow .then{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:.88rem;min-width:0}
 .flow .then{border-color:var(--sign);font-weight:500}
 .flow .ar{display:flex;align-items:center;justify-content:center;color:var(--sign);font-weight:700}
 @media (max-width:560px){.flow > div{grid-template-columns:1fr}.flow .ar{transform:rotate(90deg);height:18px}}
 
-.sos{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
-.sos div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:10px;text-align:center}
-.sos b{display:block;font-family:var(--f-mono);font-size:1.5rem;color:var(--med)}
-.sos span{font-size:.84rem;color:var(--muted)}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.nums div{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px;text-align:center}
+.nums b{display:block;font-family:var(--f-mono);font-size:1.35rem;color:var(--med)}
+.nums span{font-size:.8rem;color:var(--muted)}
 
-.src{font-size:.8rem;color:var(--muted)}
-.src ol{padding-left:1.4em;margin:0}
-footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:12px}
+.src{font-size:.78rem;color:var(--muted)}
+.src ul{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:2px}
+footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
 
 @media (max-width:520px){.sign{padding:20px 18px}}
 @media print{
-  body{background:#fff;color:#000;font-size:10pt;padding:0}
-  .wrap{gap:16px;max-width:none}
+  body{background:#fff;color:#000;font-size:9.6pt;padding:0}
+  .wrap{gap:14px;max-width:none}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .copy,.noprint{display:none!important}
-  .tbl{overflow:visible} table{min-width:0}
-  .chart svg{min-width:0!important}
-  .panel,.day,.box,.h,.callout,.flow > div,.wx,.danger > div,tr{break-inside:avoid}
-  h2{break-after:avoid}
+  .navbar,.copy,.noprint{display:none!important}
+  .tbl,.chart{overflow:visible} table{min-width:0} .chart svg{min-width:0!important} .wx{min-width:0}
+  .panel,.day,.box,.h,.callout,.flow > div,.danger > div,tr,.big120,.script,.gap,.toc a{break-inside:avoid}
+  h2,h3{break-after:avoid}
   .pb{break-before:page}
+  .toc{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+  .toc a{padding:4px 8px;font-size:9pt}
+  .toc a small{font-size:7.5pt}
+  .sos-sec{gap:9px}
+  .big120 b{font-size:2.6rem}
 }
-@page{size:A4;margin:11mm}
+@page{size:A4;margin:10mm 10mm 14mm}
 </style>
+
+<div class="navbar noprint"><nav aria-label="索引">
+  <a class="sos" href="#sos">紧急速查</a><a href="#index">索引</a><a href="#route">路线</a><a href="#weather">天气</a><a href="#plan">行程</a><a href="#hospitals">医院</a><a href="#oxygen">供氧急救</a><a href="#baby">照护</a><a href="#checklist">检查</a><a href="#drive">开车</a><a href="#change">预案</a><a href="#sources">来源</a>
+</nav></div>
 
 <div class="wrap">
 
 <header class="sign">
-  <div class="eyebrow">自驾路书 · 携新生儿 · 2026 年 11 月 6–7 日</div>
-  <h1><span>成都</span><span class="arrow">→</span><span>汉中</span><span class="arrow">→</span><span>宝鸡</span><span class="arrow">→</span><span>西安</span></h1>
+  <div class="eyebrow">自驾路书 · 2026-11-05 合并版 · 北京时间 · 医生确认适合自驾后执行</div>
+  <h1><span>成都</span><span class="arrow">→</span><span>汉中</span><span class="arrow">→</span><span>西安</span></h1>
   <div class="meta">
-    <span><span class="shield">G5</span> 京昆 → <span class="shield">G85</span> 宝汉 → <span class="shield">G30</span> 连霍</span>
-    <span>全程约 <b>785</b> km</span>
-    <span>纯驾驶约 <b>9</b> 小时</span>
-    <span>分两天，汉中住一晚</span>
-    <span>备选：汉中后改走 G5 西汉高速，约 730 km</span>
+    <span>A 主线 <span class="shield">G5</span> 京昆高速全程</span>
+    <span>B 备选 汉中后 <span class="shield">G85</span> → <span class="shield">G30</span> 经宝鸡方向</span>
+    <span>11 月 6 日约 <b>08:00</b> 天亮后出发</span>
   </div>
+  <div class="baby"><span>31 周早产</span><span>矫正年龄约 10 天</span><span>偶尔用氧</span><span>后向安全座椅 · 后排专人照护</span></div>
 </header>
 
-<section>
-  <div class="kpis">
-    <div><div class="k">主线路</div><div class="v">G5 到汉中，G85 宝汉高速过秦岭，G30 进西安</div></div>
-    <div><div class="k">备选线路</div><div class="v">汉中后继续走 G5 西汉高速直达西安，少约 55 km</div></div>
-    <div><div class="k">节奏</div><div class="v">6 日到汉中，7 日 8:30 出发，约 14:30 到西安</div></div>
-    <div><div class="k">天气</div><div class="v">6 日多云为主；7 日陕西小雨、降温、有风</div></div>
-    <div><div class="k">宝宝</div><div class="v">每 1.5–2 小时停车，停车再喂奶</div></div>
+<section id="sos" class="sos-sec">
+  <h2><span class="no">!</span>紧急速查<span class="en">EMERGENCY</span></h2>
+  <div class="sos-grid">
+    <div class="big120"><b>120</b><p>呼吸暂停或明显费力、发青、叫不醒、抽搐，或达到医生给的紧急血氧阈值：<b style="font-size:1rem;font-family:var(--f-body)">直接打 120</b>，不要先挨个打医院咨询电话。</p></div>
+    <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+      <div class="steps4"><div>安全停车</div><div>120 + 方向定位</div><div>执行既定医嘱</div><div>就近救治 / 转运</div></div>
+      <div class="script"><b>给 120 这样说：</b>“<u>G5 / G85</u> 往 <u>&nbsp;</u> 方向，公里牌 K<u>&nbsp;</u>，最近收费站 / 隧道 <u>&nbsp;</u>，定位 <u>&nbsp;</u>。宝宝 31 周早产，实际日龄 <u>&nbsp;</u>，矫正约 10 天，症状 <u>&nbsp;</u>，用氧情况 <u>&nbsp;</u>。”</div>
+    </div>
   </div>
-  <div class="callout med"><b>出发前：</b>请儿科医生确认宝宝适合长途乘车（早产、出生不足 2 周、有黄疸或正在治疗的尤其要问）。医院电话来自公开资料，请在 11 月 5 日晚上逐个拨打核实并存进手机。</div>
-</section>
-
-<!-- 01 route map -->
-<section>
-  <h2><span class="no">01</span>路线全图（主线 + 备选）</h2>
-  <div class="legend">
-    <span><i class="sw" style="background:var(--sign)"></i>主线路 / 城市</span>
-    <span><i class="sw" style="background:var(--alt)"></i>备选线路</span>
-    <span><i class="sw" style="background:var(--med)"></i>有新生儿科的医院</span>
-    <span><i class="sw" style="background:var(--sky)"></i>建议停车的服务区</span>
-    <span><i class="sw" style="background:var(--warn-soft);border:1px solid var(--warn)"></i>距大医院较远的路段</span>
-  </div>
-  <div class="panel chart" role="img" aria-label="成都经汉中到西安的路线示意图，汉中后分为宝汉主线和西汉备选两条">
-  <svg viewBox="0 0 1000 340" xmlns="http://www.w3.org/2000/svg" style="min-width:860px">
-    <!-- 主线 x = 40 + km*1.172；备选支线 x = 573 + km/275*387 -->
-    <rect x="391" y="96" width="182" height="22" rx="4" style="fill:var(--warn-soft)"/>
-    <rect x="573" y="96" width="187" height="22" rx="4" style="fill:var(--warn-soft)"/>
-    <rect x="600" y="248" width="340" height="22" rx="4" style="fill:var(--warn-soft)"/>
-    <text x="482" y="90" text-anchor="middle" font-size="11" style="fill:var(--warn)">广元—汉中 · 约 155 km 无大医院</text>
-    <text x="667" y="90" text-anchor="middle" font-size="11" style="fill:var(--warn)">秦岭山区 · 约 160 km 无大医院</text>
-    <text x="760" y="243" text-anchor="middle" font-size="11" style="fill:var(--warn)">汉中—西安之间 · 约 275 km 无地级市医院</text>
-    <path d="M573 107 C 600 107, 590 259, 625 259 H 925 C 955 259, 960 210, 960 115" stroke="var(--alt)" stroke-width="7" fill="none" stroke-linecap="round"/>
-    <path d="M573 107 C 600 107, 590 259, 625 259 H 925 C 955 259, 960 210, 960 115" stroke="var(--paper)" stroke-width="1.5" stroke-dasharray="4 8" fill="none"/>
-    <path d="M40 107 H960" stroke="var(--sign)" stroke-width="8" stroke-linecap="round" fill="none"/>
-    <path d="M40 107 H960" stroke="var(--paper)" stroke-width="1.5" stroke-dasharray="10 10" fill="none"/>
-    <line x1="573" y1="30" x2="573" y2="78" stroke="var(--muted)" stroke-dasharray="3 4"/>
-    <text x="306" y="30" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--muted)">第 1 天 · 11/6 · 约 455 km · G5（两条线相同）</text>
-    <text x="766" y="30" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--sign)">第 2 天 主线 · G85 宝汉 + G30 · 约 330 km</text>
-    <text x="766" y="226" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--muted)">第 2 天 备选 · G5 西汉 · 约 275 km（全程约 730 km）</text>
-    <g font-size="13" font-weight="700">
-      <circle cx="40" cy="107" r="8" style="fill:var(--sign)"/><text x="40" y="146" text-anchor="middle" style="fill:var(--ink)">成都</text>
-      <circle cx="122" cy="107" r="6" style="fill:var(--sign)"/><text x="122" y="146" text-anchor="middle" style="fill:var(--ink)">德阳</text>
-      <circle cx="181" cy="107" r="6" style="fill:var(--sign)"/><text x="181" y="146" text-anchor="middle" style="fill:var(--ink)">绵阳</text>
-      <circle cx="392" cy="107" r="6" style="fill:var(--sign)"/><text x="392" y="146" text-anchor="middle" style="fill:var(--ink)">广元</text>
-      <circle cx="573" cy="107" r="9" style="fill:var(--sign)"/><text x="548" y="146" text-anchor="middle" style="fill:var(--ink)">汉中（住）</text>
-      <circle cx="760" cy="107" r="7" style="fill:var(--sign)"/><text x="760" y="146" text-anchor="middle" style="fill:var(--ink)">宝鸡</text>
-      <circle cx="901" cy="107" r="5" style="fill:var(--sign)"/><text x="901" y="146" text-anchor="middle" style="fill:var(--ink)">咸阳</text>
-      <circle cx="960" cy="107" r="9" style="fill:var(--sign)"/><text x="975" y="146" text-anchor="end" style="fill:var(--ink)">西安</text>
-      <circle cx="897" cy="259" r="5" style="fill:var(--alt)"/><text x="897" y="284" text-anchor="middle" font-size="12" style="fill:var(--ink)">鄠邑</text>
-    </g>
-    <g font-size="11" class="num">
-      <text x="40" y="162" text-anchor="middle" style="fill:var(--muted)">0</text>
-      <text x="122" y="162" text-anchor="middle" style="fill:var(--muted)">70</text>
-      <text x="181" y="162" text-anchor="middle" style="fill:var(--muted)">120</text>
-      <text x="392" y="162" text-anchor="middle" style="fill:var(--muted)">300</text>
-      <text x="548" y="162" text-anchor="middle" style="fill:var(--muted)">455</text>
-      <text x="760" y="162" text-anchor="middle" style="fill:var(--muted)">615</text>
-      <text x="901" y="162" text-anchor="middle" style="fill:var(--muted)">735</text>
-      <text x="975" y="162" text-anchor="end" style="fill:var(--muted)">785</text>
-    </g>
-    <g id="hmarks"></g>
-    <g font-size="11">
-      <circle cx="239" cy="107" r="5" style="fill:var(--sky)"/><line x1="239" y1="113" x2="239" y2="176" stroke="var(--sky)"/><text x="239" y="190" text-anchor="middle" style="fill:var(--sky)">梓潼一带</text>
-      <circle cx="345" cy="107" r="5" style="fill:var(--sky)"/><line x1="345" y1="113" x2="345" y2="176" stroke="var(--sky)"/><text x="345" y="190" text-anchor="middle" style="fill:var(--sky)">剑阁一带</text>
-      <circle cx="497" cy="107" r="5" style="fill:var(--sky)"/><line x1="497" y1="113" x2="497" y2="176" stroke="var(--sky)"/><text x="497" y="190" text-anchor="middle" style="fill:var(--sky)">宁强服务区</text>
-      <circle cx="655" cy="107" r="5" style="fill:var(--sky)"/><line x1="655" y1="113" x2="655" y2="170" stroke="var(--sky)"/><text x="655" y="184" text-anchor="middle" style="fill:var(--sky)">留坝一带</text>
-      <circle cx="735" cy="107" r="5" style="fill:var(--sky)"/><line x1="735" y1="113" x2="735" y2="188" stroke="var(--sky)"/><text x="735" y="201" text-anchor="middle" style="fill:var(--sky)">天台山服务区</text>
-      <circle cx="860" cy="107" r="5" style="fill:var(--sky)"/><line x1="860" y1="113" x2="860" y2="170" stroke="var(--sky)"/><text x="860" y="184" text-anchor="middle" style="fill:var(--sky)">G30 服务区</text>
-      <text x="700" y="128" text-anchor="middle" style="fill:var(--med)" font-size="10.5">隧道群 32 km</text>
-      <circle cx="671" cy="259" r="5" style="fill:var(--sky)"/><text x="671" y="318" text-anchor="middle" style="fill:var(--sky)">洋县服务区 · 70 km</text><line x1="671" y1="265" x2="671" y2="304" stroke="var(--sky)"/>
-      <circle cx="838" cy="259" r="5" style="fill:var(--sky)"/><text x="810" y="318" text-anchor="middle" style="fill:var(--sky)">秦岭服务区 · 海拔 1600 m+</text><line x1="838" y1="265" x2="838" y2="304" stroke="var(--sky)"/>
-    </g>
-    <text x="300" y="300" text-anchor="middle" font-size="10.5" style="fill:var(--muted)">绿色＝主线（宝汉）  灰色＝备选（西汉）</text>
-    <text x="300" y="318" text-anchor="middle" font-size="10.5" style="fill:var(--muted)">示意图，两条支线比例不同；服务区以导航为准</text>
-  </svg>
-  </div>
-</section>
-
-<!-- 02 compare -->
-<section>
-  <h2><span class="no">02</span>主线与备选对比</h2>
-  <p class="lead">成都到汉中两条线相同。从汉中到西安，宝汉线多走约 55 km、多用约 1 小时，换来的是出山就到宝鸡这样有三甲医院的城市，翻秦岭主脊靠长隧道，受天气影响较小。</p>
-  <div class="legend"><span><i class="sw" style="background:var(--sign)"></i>主线：宝汉线</span><span><i class="sw" style="background:var(--alt)"></i>备选：西汉线</span></div>
-  <div class="multi" id="cmp"></div>
   <div class="tbl"><table>
-    <thead><tr><th>对比项</th><th>宝汉线（已选）</th><th>西汉线</th></tr></thead>
+    <thead><tr><th>出现什么</th><th>立即做什么</th></tr></thead>
     <tbody>
-      <tr><td><b>山区路况</b></td><td>汉中到宝鸡约 160 km 山区，桥隧比约 72%；秦岭隧道群 10 座共约 32 km，天台山隧道 15.56 km。出宝鸡后是关中平原</td><td>秦岭山区约 150 km，隧道连续，到离西安约 50 km 才出山；秦岭服务区海拔 1600 多米</td></tr>
-      <tr><td><b>7 日天气影响</b></td><td>秦岭主脊在长隧道里穿过；留坝、凤县高架桥多，湿冷时桥面易滑；G30 平原段早晨可能有雾</td><td>秦岭服务区一带是全程最冷、最湿的点</td></tr>
-      <tr><td><b>什么时候走</b></td><td>正常情况都走这条</td><td>宝汉高速管制、天台山隧道群事故或施工、宝鸡一带大雾时改走；或者想早点到西安（约 12:50 到）</td></tr>
-      <tr><td><b>出山后的医院</b></td><td><span class="pill ok">更好</span> 宝鸡有市中心医院、市妇幼保健院（宝鸡市儿童医院）；再往东经过咸阳</td><td>出山后到西安只有区县医院</td></tr>
+      <tr><td><b>无反应且没有正常呼吸</b></td><td>打 120，按调度员指导立即施救，不要等到下一家医院</td></tr>
+      <tr><td>体温 ≥ 38℃ 或 &lt; 36℃；明显少吃奶、少尿；用氧需求增加</td><td>终止行程，及时就医评估；同时有呼吸或意识异常就直接打 120</td></tr>
+      <tr><td>制氧机断电、持续报警、无法维持医嘱供氧</td><td>安全停车，按学过的备用供氧方案处理；仍无法维持就立即求救，不要边加氧边赶路</td></tr>
+      <tr><td>高速上车辆故障或危险停车</td><td>开双闪；放警示牌、撤离、救援听 110 或现场指挥。不在行车道上喂奶、换尿布</td></tr>
     </tbody>
   </table></div>
+  <h3>按路段找最近的新生儿救治医院</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>你在哪一段</th><th>先联系</th><th>电话</th></tr></thead>
+    <tbody>
+      <tr><td>成都市内</td><td>华西第二医院 / 成都市妇女儿童中心医院</td><td><a class="tel-a" href="tel:028-85503960">028-85503960</a> / <a class="tel-a" href="tel:028-61866000">028-61866000</a></td></tr>
+      <tr><td>成都 → 德阳</td><td><span class="c">1</span> 德阳市妇幼保健院（急诊）</td><td><a class="tel-a" href="tel:0838-6611120">0838-6611120</a></td></tr>
+      <tr><td>德阳 → 绵阳</td><td><span class="c">2</span> 绵阳市中心医院（急诊）</td><td><a class="tel-a" href="tel:0816-2231777">0816-2231777</a></td></tr>
+      <tr><td>绵阳 → 广元</td><td><span class="c">3</span> 广元妇幼保健医院 · <span class="c">4</span> 广元市中心医院妇产儿童分院</td><td><a class="tel-a" href="tel:0839-2880211">0839-2880211</a> / <a class="tel-a" href="tel:0839-3291126">0839-3291126</a></td></tr>
+      <tr><td>广元 → 汉中<br><span class="note">约 155 km 无大医院</span></td><td><span class="c">5</span> 三二〇一医院 · <span class="c">6</span> 汉中市中心医院（离广元近就回广元）</td><td><a class="tel-a" href="tel:0916-2523201">0916-2523201</a> / <a class="tel-a" href="tel:0916-2681101">0916-2681101</a></td></tr>
+      <tr><td><span class="tagA">A</span> 汉中 → 西安<br><span class="note">山区无地级市医院</span></td><td>洋县人民医院、鄠邑区人民医院（县区级，初步处理）→ <span class="c">8</span> 西安市儿童医院</td><td><a class="tel-a" href="tel:0916-8222583">0916-8222583</a> / <a class="tel-a" href="tel:029-84812533">029-84812533</a> / <a class="tel-a" href="tel:029-87692378">029-87692378</a></td></tr>
+      <tr><td><span class="tagB">B</span> 汉中 → 宝鸡 → 西安</td><td>留坝县医院（县级）→ <span class="c">7</span> 宝鸡市妇幼保健院儿童医院 → <span class="c">8</span></td><td><a class="tel-a" href="tel:0916-3921187">0916-3921187</a> / <a class="tel-a" href="tel:0917-3535161">0917-3535161</a> / <a class="tel-a" href="tel:18991738120">18991738120</a></td></tr>
+    </tbody>
+  </table></div>
+  <div class="nums">
+    <div><b>120</b><span>急救</span></div>
+    <div><b>110</b><span>道路险情、报警</span></div>
+    <div><b>122</b><span>交通事故</span></div>
+    <div><b>12122</b><span>高速救援</span></div>
+    <div><b>12328</b><span>路况咨询</span></div>
+    <div><b style="font-size:1rem">029-87692378</b><span>西安新生儿转运（专业衔接，不替代 120）</span></div>
+  </div>
+  <p class="note">隧道里没信号时用隧道内的紧急电话，或出隧道再打。圆圈数字 <span class="c">1</span>–<span class="c">8</span> 对应“医院”一节的卡片。</p>
 </section>
 
-<!-- 03 weather -->
-<section>
-  <h2><span class="no">03</span>沿途天气</h2>
-  <p class="lead">来自 11 月 3–5 日各地气象台和中国天气网的预报。6 日早上和晚上各再查一次。</p>
-  <div class="wx" id="wx" role="table" aria-label="沿途分段天气"></div>
-  <div class="panel">
-    <h3>气温区间<small>最低 — 最高，℃</small></h3>
-    <div class="legend"><span><i class="sw" style="background:var(--d6)"></i>11 月 6 日（周五）</span><span><i class="sw" style="background:var(--d7)"></i>11 月 7 日（周六）</span></div>
-    <div class="chart" id="temp"></div>
-    <p class="note">只画有具体温度预报的城市。成都 6 日数据来自转载文章，可信度较低；7 日成都、宝鸡、留坝和凤县没有具体温度，只有“降温”的描述。秦岭山区通常比汉中低 5–8℃。</p>
+<section id="index">
+  <h2><span class="no">≡</span>索引<span class="en">INDEX</span></h2>
+  <div class="toc">
+    <a class="sos" href="#sos"><span class="t"><b>!</b><span>紧急速查<small>120 话术、按路段找医院</small></span></span><span class="pg" data-sec="sos"></span></a>
+    <a href="#route"><span class="t"><b>01</b><span>路线与 A/B 对比<small>轨迹图、里程、收费、差异</small></span></span><span class="pg" data-sec="route"></span></a>
+    <a href="#weather"><span class="t"><b>02</b><span>天气 6–8 日<small>13 个节点、A/B 山区低温</small></span></span><span class="pg" data-sec="weather"></span></a>
+    <a href="#plan"><span class="t"><b>03</b><span>行程<small>三天方案、只住一晚、停靠、施工</small></span></span><span class="pg" data-sec="plan"></span></a>
+    <a href="#hospitals"><span class="t"><b>04</b><span>医院<small>①–⑧ 新生儿专线 + 补充医院</small></span></span><span class="pg" data-sec="hospitals"></span></a>
+    <a href="#oxygen"><span class="t"><b>05</b><span>供氧与急救<small>制氧机核对、处置流程</small></span></span><span class="pg" data-sec="oxygen"></span></a>
+    <a href="#baby"><span class="t"><b>06</b><span>宝宝乘车与照护<small>座椅、喂养、危险信号</small></span></span><span class="pg" data-sec="baby"></span></a>
+    <a href="#checklist"><span class="t"><b>07</b><span>出发检查<small>问医生、物品、停车四步、记录</small></span></span><span class="pg" data-sec="checklist"></span></a>
+    <a href="#drive"><span class="t"><b>08</b><span>开车与路况<small>团雾限速、A/B 开车要点</small></span></span><span class="pg" data-sec="drive"></span></a>
+    <a href="#change"><span class="t"><b>09</b><span>改变计划的条件<small>什么时候改走 B、什么时候不走</small></span></span><span class="pg" data-sec="change"></span></a>
+    <a href="#sources"><span class="t"><b>10</b><span>信息来源<small>天气、路线、医院、医学依据</small></span></span><span class="pg" data-sec="sources"></span></a>
   </div>
-  <div class="callout"><b>怎么理解：</b>6 日是这几天陕西天气最好的一天；7 日起有一次降雨降温，按目前预报是小雨，不至于封路。如果 6 日晚上预报改成“秦岭雨夹雪”“道路结冰预警”，或者宝汉高速发布交通管制，就在汉中多住一天。</div>
 </section>
 
-<!-- 04 schedule -->
-<section>
-  <h2><span class="no">04</span>行程时间表</h2>
-  <div class="panel">
-    <h3>两天的开车与休息</h3>
-    <div class="legend"><span><i class="sw" style="background:var(--sign)"></i>开车（主线）</span><span><i class="sw" style="background:var(--alt)"></i>开车（备选）</span><span><i class="sw" style="background:var(--stop)"></i>停车休息、喂奶、吃饭</span><span><i class="sw" style="background:var(--med)"></i>秦岭隧道段</span></div>
-    <div class="chart" id="gantt"></div>
-    <p class="note">备选西汉线全程少约 55 km，不在宝鸡吃午饭，约 12:50 到西安，午饭在西安吃。每段开车不超过 1.5 小时左右；宝宝饿了或哭闹就进最近的服务区，时间往后推。两天都在天黑前（约 18:00）到达。</p>
+<section id="route" class="pb">
+  <h2><span class="no">01</span>路线总览与 A/B 对比<span class="en">ROUTE</span></h2>
+  <p class="lead">成都 → 德阳 → 绵阳 → 广元 → 宁强 → 汉中两条线相同，在汉中决定走哪条。主线 A 走 G5 京昆高速直达西安；备选 B 走 G85 经留坝、坪坎、天台山隧道到宝鸡方向，再走 G3024/G30 到西安。</p>
+  <div class="panel chart" role="img" aria-label="全程路线示意图">
+  <svg viewBox="0 0 1000 270" xmlns="http://www.w3.org/2000/svg" style="min-width:860px" id="strip"></svg>
   </div>
+  <div class="track">
+    <img alt="汉中到西安 A、B 两条线的实际轨迹图（高德路径）" src="data:image/jpeg;base64,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">
+    <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+      <div class="legend"><span><i class="sw" style="background:var(--A)"></i>A 主线：G5 京昆高速</span><span><i class="sw" style="background:var(--B)"></i>B 备选：G85 → G30</span></div>
+      <p class="note">左图是汉中 → 西安的实际轨迹，来自高德官方路径接口；没有底图，不能当导航用。</p>
+      <div class="kpis">
+        <div class="A"><div class="k">A · G5 直达</div><div class="v">294<small>km</small></div><div class="note">约 3 小时 53 分 · 收费约 162 元</div></div>
+        <div class="B"><div class="k">B · G85 经宝鸡方向</div><div class="v">345<small>km</small></div><div class="note">约 4 小时 10 分 · 收费约 232 元</div></div>
+        <div><div class="k">B 相对 A</div><div class="v">+52<small>km</small></div><div class="note">约多 18 分钟、多约 70 元</div></div>
+      </div>
+      <p class="note">比较口径：汉中民主街附近 → 西安凤城八路附近，B 不进宝鸡城区。高德 11/5 查询，不含休息和就医时间，不是成都全程时间。</p>
+    </div>
+  </div>
+  <div class="legend"><span><i class="sw" style="background:var(--A)"></i>A 主线</span><span><i class="sw" style="background:var(--B)"></i>B 备选</span><span class="note">汉中 → 西安段</span></div>
+  <div class="multi" id="cmp"></div>
+  <div class="tbl"><table>
+    <thead><tr><th>比较项</th><th><span class="tagA">A</span> 主线｜G5</th><th><span class="tagB">B</span> 备选｜G85 → G30</th></tr></thead>
+    <tbody>
+      <tr><td><b>具体走向</b></td><td>汉中 → 洋县 → 宁陕 → 鄠邑 → 西安</td><td>汉中 → 留坝 / 坪坎 → 天台山隧道 → 宝鸡方向 → G3024 / G30 → 西安</td></tr>
+      <tr><td><b>道路特点</b></td><td>隧道群密集，路程更短；秦岭服务区海拔 1600 多米</td><td>仍要穿秦岭，有长隧道（秦岭隧道群 10 座约 32 km，天台山隧道 15.56 km），不是绕开山区；出山后是关中平原</td></tr>
+      <tr><td><b>天气</b></td><td>7 日宁陕有雨；8 日最低约 4℃</td><td>7 日留坝、凤县有雨；8 日最低约 1℃，更冷；高架桥多，湿冷时桥面易滑</td></tr>
+      <tr><td><b>医疗</b></td><td>汉中之后，主要已核实的高等级节点是西安</td><td>多一个宝鸡儿童医院（新生儿呼吸支持、高危儿转运）；但要离开高速进城，耗时另算</td></tr>
+      <tr><td><b>什么时候走</b></td><td>开放且天气合适时，保持走主线</td><td>G5 管制或明显拥堵，或需要途经宝鸡；改走前先确认 G85 天气和通行</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout ok"><b>路线结论：</b>G5 为主线，G85 宝鸡线为备选。两条线在秦岭山区都有医疗空档；宝鸡线的好处是多一个城市医疗节点，不是全程更安全。</div>
+</section>
+
+<section id="weather" class="pb">
+  <h2><span class="no">02</span>天气：13 个节点 × 3 天<span class="en">WEATHER 06–08 NOV</span></h2>
+  <p class="lead">每格写白天 → 夜间天气、最低—最高气温；下面的小条是气温区间（统一刻度 0–23℃，蓝色竖线表示最低气温 ≤ 4℃）。</p>
+  <div class="chart"><div class="wx" id="wx"></div></div>
+  <p class="note">来源：高德 11/5 查询，接口没有返回发布时间。*凤县是坪坎所属县的代表预报，不是坪坎实况。各点风力预报 1–3 级，不代表山口阵风。县城气温不能判断桥面是否结冰。</p>
+  <div class="two">
+    <div class="panel"><h3>7 日 · A/B 沿线最低气温<small>℃</small></h3><div class="chart" id="low7"></div></div>
+    <div class="panel"><h3>8 日 · A/B 沿线最低气温<small>℃</small></h3><div class="chart" id="low8"></div></div>
+  </div>
+  <div class="two">
+    <div class="callout"><b>7 日：两条线山区都有雨。</b>宁陕、留坝、凤县都预报小雨，不能把宝鸡线当成避雨路线。陕西省气象台 11/4 预报 7 日全省有降水、降温，西安阵风 5–6 级，最高气温降约 6℃。</div>
+    <div class="callout"><b>8 日：降雨减弱，宝鸡线更冷。</b>留坝、凤县最低约 1℃，宁陕约 4℃。注意早晚、桥面和隧道口。</div>
+  </div>
+  <p class="note">山口能见度、结冰、逐小时降水和临时封路，临行前再查一次。网页是快照，不会自动刷新。</p>
+</section>
+
+<section id="plan" class="pb">
+  <h2><span class="no">03</span>行程<span class="en">ITINERARY · DAYLIGHT DRIVING</span></h2>
+  <h3>推荐：三天分段</h3>
   <div class="days">
-    <article class="day">
-      <header><h3>11 月 6 日 周五</h3><small>成都 → 汉中 · 约 455 km · G5</small></header>
-      <ol class="steps">
-        <li><time>07:30</time><div><div class="t">成都出发</div><div class="d">在家喂完奶再走。上成绵高速，盆地有小雨，路面湿。</div></div></li>
-        <li><time>09:00</time><div><div class="t">梓潼一带服务区</div><div class="d">约 170 km。抱宝宝出座椅活动 15 分钟，换尿布。</div></div></li>
-        <li><time>10:40</time><div><div class="t">剑阁一带服务区</div><div class="d">约 260 km。喂奶，司机换手。</div></div></li>
-        <li><time>11:50</time><div><div class="t">广元午饭</div><div class="d">约 300 km，休息 1 小时左右。第 1 天最后一个有大医院的城市。</div></div></li>
-        <li><time>14:00</time><div><div class="t">宁强服务区</div><div class="d">约 390 km，进入陕西。喂奶、换尿布。</div></div></li>
-        <li><time>15:30</time><div><div class="t">到汉中入住</div><div class="d">住汉台区，离汉中市中心医院或 3201 医院 10 分钟车程内，提前要婴儿床。晚上查 7 日天气和宝汉高速路况。</div></div></li>
-      </ol>
-    </article>
-    <article class="day">
-      <header><h3>11 月 7 日 周六</h3><small>汉中 → 宝鸡 → 西安 · 约 330 km</small></header>
-      <ol class="steps">
-        <li><time>08:00</time><div><div class="t">查天气和路况</div><div class="d">有团雾、结冰、管制就推迟出发。</div></div></li>
-        <li><time>08:30</time><div><div class="t">汉中出发，上宝汉高速</div><div class="d">出发前喂奶。</div></div></li>
-        <li><time>09:30</time><div><div class="t">留坝一带服务区</div><div class="d">约 70 km。进山前喂奶、换尿布、加满油或充满电，车内调暖。</div></div></li>
-        <li><time>10:00</time><div><div class="t">秦岭隧道群</div><div class="d">10 座隧道约 32 km，天台山隧道 15.56 km（约 12 分钟）。开近光灯，不变道，空调切内循环。</div></div></li>
-        <li><time>11:00</time><div><div class="t">天台山服务区 → 宝鸡</div><div class="d">约 160 km，出山。宝鸡市区吃午饭，休息到 12:30。</div></div></li>
-        <li><time>12:30</time><div><div class="t">上 G30 连霍高速</div><div class="d">关中平原，小雨有风，车距拉大。咸阳附近服务区停一次。</div></div></li>
-        <li><time>14:30</time><div><div class="t">到达西安</div><div class="d">雨天进城路面湿，保持车距。</div></div></li>
-      </ol>
-    </article>
-    <article class="day" style="border-style:dashed">
-      <header><h3>11 月 7 日 · 备选西汉线</h3><small>汉中 → 洋县 → 秦岭 → 西安 · 约 275 km · G5</small></header>
-      <ol class="steps">
-        <li><time>08:00</time><div><div class="t">确认改走西汉线</div><div class="d">宝汉高速管制、事故或宝鸡大雾时改走。导航设为“汉中 → 西安，走京昆高速”。</div></div></li>
-        <li><time>08:30</time><div><div class="t">汉中出发</div><div class="d">出发前喂奶。</div></div></li>
-        <li><time>09:30</time><div><div class="t">洋县服务区</div><div class="d">约 70 km。上秦岭前最后一次从容休息：喂奶、换尿布、加满油或充满电，车内调暖。</div></div></li>
-        <li><time>10:00</time><div><div class="t">秦岭隧道段</div><div class="d">隧道连续、弯道多，按 80 km/h 左右开。开近光灯，不变道，空调切内循环。</div></div></li>
-        <li><time>11:20</time><div><div class="t">秦岭服务区（短停）</div><div class="d">海拔 1600 多米，可能湿冷有雾。宝宝留在车里，开暖风，只检查不抱出去。</div></div></li>
-        <li><time>12:50</time><div><div class="t">到达西安</div><div class="d">约 87 km 后进入西安，在西安吃午饭。</div></div></li>
-      </ol>
-    </article>
+    <div class="day"><div class="dn">01</div><b>11/6 周五 · 成都 → 广元</b><dl><dt>途经</dt><dd>德阳、绵阳</dd><dt>里程</dt><dd class="num">290–320 km</dd><dt>驾驶</dt><dd>4–5 小时</dd><dt>总预算</dt><dd>6–9 小时或更多</dd><dt>停留</dt><dd>广元；必要时提前在绵阳停宿</dd></dl></div>
+    <div class="day"><div class="dn">02</div><b>11/7 周六 · 广元 → 汉中</b><dl><dt>途经</dt><dd>宁强、勉县方向</dd><dt>里程</dt><dd class="num">160–190 km</dd><dt>驾驶</dt><dd>2.5–3 小时</dd><dt>总预算</dt><dd>4–6 小时或更多</dd><dt>停留</dt><dd>汉中；复核次日秦岭天气</dd></dl></div>
+    <div class="day"><div class="dn">03</div><b>11/8 周日 · 汉中 → 西安</b><dl><dt>路线</dt><dd><span class="tagA">A</span> 宁陕 / <span class="tagB">B</span> 宝鸡方向</dd><dt>里程</dt><dd class="num">A 294 / B 345 km</dd><dt>驾驶</dt><dd>A 3h53 / B 4h10</dd><dt>总预算</dt><dd>另加照护、补能、堵车</dd><dt>停留</dt><dd>白天过山；延误不强赶</dd></dl></div>
   </div>
+  <div class="panel">
+    <h3>三天方案时间示意<small>开车与停车，按医嘱时长调整</small></h3>
+    <div class="legend"><span><i class="sw" style="background:var(--A)"></i>开车（共同路段 / A）</span><span><i class="sw" style="background:var(--B)"></i>开车（B）</span><span><i class="sw" style="background:var(--stop)"></i>停车照护、补能、吃饭</span><span><i class="sw" style="background:var(--med)"></i>秦岭隧道段</span></div>
+    <div class="chart" id="gantt3"></div>
+    <p class="note">6 日约 08:00 天亮后出发，7、8 日约 09:00 重新评估后出发。前两天里程是城区间粗估，第三天是高德指定起终点查询。图中停车间隔只是示意，<b>不是宝宝允许的连续乘车时长</b>，以医生规定为准。</p>
+  </div>
+
+  <h3>备选：只住一晚（汉中）</h3>
+  <div class="callout">6 日成都 → 汉中约 450–510 km，纯驾驶约 6.5–8 小时，加上照护可能 10–13 小时以上；7 日两条线的山区都有雨。需要医生认可每日总乘车时间才考虑。</div>
+  <div class="panel">
+    <h3>只住一晚方案时间示意</h3>
+    <div class="chart" id="gantt2"></div>
+  </div>
+  <div class="two">
+    <div class="day"><b>11/6 · 成都 → 汉中</b><ol class="steps">
+      <li><time>08:00</time><div><div class="t">成都出发</div><div class="d">出发前喂奶、检查氧源和电源。</div></div></li>
+      <li><time>09:30</time><div><div class="t">绵阳 / 梓潼一带服务区</div><div class="d">约 170 km，离座休息、照护。</div></div></li>
+      <li><time>11:10</time><div><div class="t">剑阁一带服务区</div><div class="d">约 260 km，喂奶，司机换手。</div></div></li>
+      <li><time>12:20</time><div><div class="t">广元午饭、长休息</div><div class="d">约 300 km。状态不好就住广元，改三天方案。</div></div></li>
+      <li><time>14:30</time><div><div class="t">宁强服务区</div><div class="d">约 390 km，进入陕西。</div></div></li>
+      <li><time>16:00</time><div><div class="t">到汉中入住</div><div class="d">避开汉中东连接线施工，按导航和现场指引进城。晚上查 7 日秦岭天气。</div></div></li>
+    </ol></div>
+    <div class="day"><b>11/7 · 汉中 → 西安</b><ol class="steps">
+      <li><time>08:00</time><div><div class="t">查天气、路况，决定 A 或 B</div><div class="d">有团雾、结冰、管制就推迟。</div></div></li>
+      <li><time>08:30</time><div><div class="t">出发</div><div class="d">A 走 G5；B 走 G85。</div></div></li>
+      <li><time>09:30</time><div><div class="t"><span class="tagA">A</span> 洋县服务区 / <span class="tagB">B</span> 留坝一带</div><div class="d">进秦岭前最后一次从容休息：检查宝宝、氧源、电源、燃油或电量。</div></div></li>
+      <li><time>10:00</time><div><div class="t">秦岭隧道段</div><div class="d">开近光灯，不变道，空调切内循环。</div></div></li>
+      <li><time>11:20</time><div><div class="t"><span class="tagA">A</span> 秦岭服务区（短停）/ <span class="tagB">B</span> 天台山服务区</div><div class="d">A 海拔 1600 多米，湿冷。宝宝留车内开暖风，只检查不抱出去。</div></div></li>
+      <li><time>12:50</time><div><div class="t"><span class="tagA">A</span> 约 12:50 到西安 · <span class="tagB">B</span> 约 13:00</div><div class="d">B 如进宝鸡城区吃饭或就医，再加 1 小时以上。</div></div></li>
+    </ol></div>
+  </div>
+
+  <h3>停车与补能</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>路段</th><th>停靠安排</th><th>执行要点</th></tr></thead>
+    <tbody>
+      <tr><td>成都—广元</td><td>德阳、绵阳方向，梓潼、剑阁一带服务区；按医嘱时限选择开放的服务区</td><td>到了医生规定的每日上限，可以在绵阳结束当天行程</td></tr>
+      <tr><td>广元—汉中</td><td>宁强、勉县方向，提前看下一处合法停车点（宁强服务区距汉中约 87 km）</td><td>不要为了等大服务区超过医嘱时限；广元、汉中都能住</td></tr>
+      <tr><td><span class="tagA">A</span> 汉中—西安</td><td>洋县、宁陕、秦岭服务区为候选（秦岭服务区距西安约 87 km），核实西安方向是否开放</td><td>进秦岭前检查宝宝、氧源、电源和燃油或电量</td></tr>
+      <tr><td><span class="tagB">B</span> 汉中—宝鸡—西安</td><td>汉中先补能；留坝一带、天台山服务区；宝鸡可停留或住宿</td><td>G85 全部服务区的设施、母婴室和开放状态没有核实，不做固定停车承诺</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>三处施工，避免走错入口</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>位置</th><th>公告计划期</th><th>对本次的影响</th></tr></thead>
+    <tbody>
+      <tr><td>汉中东连接线汉江大桥</td><td class="num">2026/11/1—2027/5/31</td><td>连接线封闭；不要固定从汉中东直接进城</td></tr>
+      <tr><td>上元观连接线汉江特大桥</td><td class="num">2026/11/1—2027/4/30</td><td>进出城改用官方导引入口</td></tr>
+      <tr><td>G7011 汉江特大桥十堰方向</td><td class="num">2026/10/26—2027/2/28</td><td>有施工导改，汉中进出城按现场指引</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">这些是连接线或局部施工，不代表 G5 全线封闭。可按实时导航走汉中收费站，或官方通告列出的铺镇、汉中北入口。G85 临时施工和开放情况没有实时确认，出发前查导航、交警公告或 12328。</p>
+  <div class="callout"><b>酒店：</b>优先选离已核实医院近、无烟、停车方便、电源可靠、有独立平整婴儿睡眠空间的酒店（未代订）。医院位置不等于急诊入口。到店后让宝宝离开安全座椅，仰卧睡在平整坚实的睡眠面上。</div>
 </section>
 
-<!-- 05 hospitals -->
-<section>
-  <h2><span class="no">05</span>沿途新生儿救治医院</h2>
+<section id="hospitals" class="pb">
+  <h2><span class="no">04</span>医院：按路线顺序<span class="en">HOSPITALS</span></h2>
+  <div class="callout med">红框 <span class="c">1</span>–<span class="c">8</span> 是新生儿专线（共同节点 11/4 核验，宝鸡 11/5 核验）；虚线框是补充医院（第三方平台资料）。<b>公开电话都没有试拨</b>，床位和接诊年龄要先确认。实际日龄 ≠ 矫正年龄，打电话时说明：31 周早产、出生日期、当前体重、用氧情况。急症不要挨个打咨询电话，直接 120。</div>
   <div class="panel">
-    <h3>离最近大医院的距离<small>沿路线每个位置，km</small></h3>
+    <h3>离最近大医院有多远<small>汉中 → 西安段，km</small></h3>
+    <div class="legend"><span><i class="sw" style="background:var(--A)"></i>A 主线</span><span><i class="sw" style="background:var(--B)"></i>B 备选</span></div>
     <div class="chart" id="cover"></div>
-    <p class="note">曲线越高，说明这里离最近的“有新生儿科的地级市医院”越远。主线最远的点在广元—汉中之间和秦岭山区中段，约 80 km。</p>
+    <p class="note">按地级市医院计算（县区医院不计）。A 线中段离汉中、西安都约 140 多 km；B 线在约 165 km 处靠近宝鸡，但要下高速进城。汉中—宝鸡山区仍不能保证很快到达 NICU。成都—汉中段最远处在广元—汉中之间，约 78 km。</p>
   </div>
-  <div class="panel">
-    <h3>第 2 天：主线与备选的医疗覆盖<small>从汉中出发的里程，km</small></h3>
-    <div class="legend"><span><i class="sw" style="background:var(--sign)"></i>主线：宝汉线</span><span><i class="sw" style="background:var(--alt)"></i>备选：西汉线</span></div>
-    <div class="chart" id="cover2"></div>
-    <p class="note">西汉线从汉中到西安约 275 km 中间没有地级市，最远处离大医院约 140 km；中途只有洋县人民医院、鄠邑区人民医院这类县区医院。宝汉线在 160 km 处就到宝鸡。</p>
-  </div>
-  <div class="callout med">电话来自医院官网和好大夫、百度健康等平台，不同来源有出入。<b>出发前一晚逐个拨打确认。</b>宝宝情况紧急时直接打 <b>120</b>，报出高速名称、方向和路边的公里桩号（K 开头的数字）。</div>
 
-  <div class="hosp-group"><h3>成都 <span class="km">0 km · 出发地</span></h3><div class="hosps">
-    <div class="h"><div class="name">四川大学华西第二医院（华西妇产儿童医院）</div><div class="addr">武侯区人民南路三段 20 号（地铁 1 号线华西坝站 B 口）</div><div class="tag">西南地区新生儿救治水平最高的医院之一</div>
-      <div class="tel"><div><span class="lbl">咨询</span><span class="n">028-85503960</span><button class="copy" type="button">复制</button></div><div><span class="lbl">急诊（旧资料）</span><span class="n">028-85501340</span><button class="copy" type="button">复制</button></div><div><span class="lbl">锦江院区</span><span class="n">028-88570307</span><button class="copy" type="button">复制</button></div></div></div>
-    <div class="h"><div class="name">成都市妇女儿童中心医院 · 中心院区</div><div class="addr">青羊区日月大道 1617 号（西三环外，成温路口）</div><div class="tag">新生儿科为市级重点学科，设新生儿危急重症呼叫转运站</div>
-      <div class="tel"><div><span class="lbl">总机</span><span class="n">028-61866000</span><button class="copy" type="button">复制</button></div><div><span class="lbl">门诊</span><span class="n">028-87467888</span><button class="copy" type="button">复制</button></div></div></div>
+  <div class="hosp-group"><h3>成都 <span class="km">出发地 · 补充</span></h3><div class="hosps">
+    <div class="h sup"><div class="name"><span class="plus">+</span>四川大学华西第二医院（华西妇产儿童医院）</div><div class="addr">武侯区人民南路三段 20 号（地铁 1 号线华西坝站 B 口）</div><div class="tag">西南地区新生儿救治水平最高的医院之一</div>
+      <div class="tel"><div><span class="lbl">咨询</span><a class="tel-a n" href="tel:028-85503960">028-85503960</a><button class="copy" type="button">复制</button></div><div><span class="lbl">急诊（旧资料）</span><a class="tel-a n" href="tel:028-85501340">028-85501340</a><button class="copy" type="button">复制</button></div><div><span class="lbl">锦江院区</span><a class="tel-a n" href="tel:028-88570307">028-88570307</a><button class="copy" type="button">复制</button></div></div></div>
+    <div class="h sup"><div class="name"><span class="plus">+</span>成都市妇女儿童中心医院 · 中心院区</div><div class="addr">青羊区日月大道 1617 号（西三环外，成温路口）</div><div class="tag">新生儿科为市级重点学科，设新生儿危急重症呼叫转运站</div>
+      <div class="tel"><div><span class="lbl">总机</span><a class="tel-a n" href="tel:028-61866000">028-61866000</a><button class="copy" type="button">复制</button></div><div><span class="lbl">门诊</span><a class="tel-a n" href="tel:028-87467888">028-87467888</a><button class="copy" type="button">复制</button></div></div></div>
   </div></div>
 
-  <div class="hosp-group"><h3>德阳 <span class="km">约 70 km</span></h3><div class="hosps">
-    <div class="h"><div class="name">德阳市人民医院</div><div class="addr">旌阳区泰山北路一段 173 号</div><div class="tag">德阳市儿童急救中心，新生儿室在儿科病房</div>
-      <div class="tel"><div><span class="lbl">急诊（旧资料）</span><span class="n">0838-2418999</span><button class="copy" type="button">复制</button></div><div><span class="lbl">门诊咨询</span><span class="n">0838-2418820</span><button class="copy" type="button">复制</button></div><div><span class="lbl">儿科</span><span class="n">0838-2418283</span><button class="copy" type="button">复制</button></div></div></div>
+  <div class="hosp-group"><h3><span class="c">1</span> 德阳 <span class="km">约 70 km</span></h3><div class="hosps">
+    <div class="h core"><div class="name"><span class="c">1</span>德阳市妇幼保健院</div><div class="big"><a class="n" href="tel:0838-6611120">0838-6611120</a></div><div class="note">急诊</div><div class="addr">庐山南路二段 63 号</div><div class="tag">有创 / 无创呼吸支持；官网写的 0–28 天接诊范围需核实</div>
+      <div class="tel"><div><span class="lbl">科室</span><a class="tel-a n" href="tel:0838-2502817">0838-2502817</a><button class="copy" type="button">复制</button></div></div>
+      <div class="links"><a href="https://uri.amap.com/search?keyword=%E5%BE%B7%E9%98%B3%E5%B8%82%E5%A6%87%E5%B9%BC%E4%BF%9D%E5%81%A5%E9%99%A2&city=%E5%BE%B7%E9%98%B3&view=map&src=roadbook">高德地点 ↗</a><a href="https://deyangbjy.cn/lists/128.html">来源 ↗</a></div></div>
+    <div class="h sup"><div class="name"><span class="plus">+</span>德阳市人民医院</div><div class="addr">旌阳区泰山北路一段 173 号</div><div class="tag">德阳市儿童急救中心，新生儿室在儿科病房</div>
+      <div class="tel"><div><span class="lbl">急诊（旧资料）</span><a class="tel-a n" href="tel:0838-2418999">0838-2418999</a><button class="copy" type="button">复制</button></div><div><span class="lbl">门诊咨询</span><a class="tel-a n" href="tel:0838-2418820">0838-2418820</a><button class="copy" type="button">复制</button></div><div><span class="lbl">儿科</span><a class="tel-a n" href="tel:0838-2418283">0838-2418283</a><button class="copy" type="button">复制</button></div></div></div>
   </div></div>
 
-  <div class="hosp-group"><h3>绵阳 <span class="km">约 120 km</span></h3><div class="hosps">
-    <div class="h"><div class="name">绵阳市中心医院</div><div class="addr">涪城区常家巷 12 号</div><div class="tag">三甲综合医院，设新生儿科</div>
-      <div class="tel"><div><span class="lbl">急诊</span><span class="n">0816-2231777</span><button class="copy" type="button">复制</button></div><div><span class="lbl">总机</span><span class="n">0816-2222821</span><button class="copy" type="button">复制</button></div></div></div>
+  <div class="hosp-group"><h3><span class="c">2</span> 绵阳 <span class="km">约 120 km</span></h3><div class="hosps">
+    <div class="h core"><div class="name"><span class="c">2</span>绵阳市中心医院</div><div class="big"><a class="n" href="tel:0816-2231777">0816-2231777</a></div><div class="note">医院急诊</div><div class="addr">涪城区警钟街常家巷 12 号</div><div class="tag">设新生儿重症监护病房</div>
+      <div class="tel"><div><span class="lbl">总机</span><a class="tel-a n" href="tel:0816-2222821">0816-2222821</a><button class="copy" type="button">复制</button></div></div>
+      <div class="links"><a href="https://uri.amap.com/search?keyword=%E7%BB%B5%E9%98%B3%E5%B8%82%E4%B8%AD%E5%BF%83%E5%8C%BB%E9%99%A2&city=%E7%BB%B5%E9%98%B3&view=map&src=roadbook">高德地点 ↗</a><a href="https://www.myszxyy.cn/departments_erkea0/">来源 ↗</a></div></div>
   </div></div>
 
-  <div class="hosp-group"><h3>广元 <span class="km">约 300 km · 第 1 天午饭点</span></h3><div class="hosps">
-    <div class="h"><div class="name">广元市中心医院</div><div class="addr">本部：利州区井巷子 16 号<br>妇产儿童分院：利州区北京路 20 号</div><div class="tag">设新生儿重症监护室（NICU）</div>
-      <div class="tel"><div><span class="lbl">总机</span><span class="n">0839-3222256</span><button class="copy" type="button">复制</button></div><div><span class="lbl">儿科</span><span class="n">0839-3227993</span><button class="copy" type="button">复制</button></div></div></div>
-    <div class="h"><div class="name">广元市妇幼保健院</div><div class="addr">地址以导航搜索为准</div><div class="tag">妇幼专科</div>
-      <div class="tel"><div><span class="lbl">电话（2020 年资料）</span><span class="n">0839-2851779</span><button class="copy" type="button">复制</button></div></div></div>
+  <div class="hosp-group"><h3><span class="c">3</span><span class="c">4</span> 广元 <span class="km">约 300 km · 三天方案第 1 晚</span></h3><div class="hosps">
+    <div class="h core"><div class="name"><span class="c">3</span>广元妇幼保健医院</div><div class="big"><a class="n" href="tel:0839-2880211">0839-2880211</a></div><div class="note">科室咨询</div><div class="addr">滨河北路二段 51 号</div><div class="tag">危重新生儿救治中心、呼吸支持</div>
+      <div class="tel"><div><span class="lbl">备用</span><a class="tel-a n" href="tel:0839-2880226">0839-2880226</a><button class="copy" type="button">复制</button></div><div><span class="lbl">旧号（2020）</span><a class="tel-a n" href="tel:0839-2851779">0839-2851779</a><button class="copy" type="button">复制</button></div></div>
+      <div class="links"><a href="https://uri.amap.com/search?keyword=%E5%B9%BF%E5%85%83%E5%A6%87%E5%B9%BC%E4%BF%9D%E5%81%A5%E5%8C%BB%E9%99%A2&city=%E5%B9%BF%E5%85%83&view=map&src=roadbook">高德地点 ↗</a><a href="https://gyfybj.cn/ksdh.html?ksids=6">来源 ↗</a></div></div>
+    <div class="h core"><div class="name"><span class="c">4</span>广元市中心医院妇产儿童分院</div><div class="big"><a class="n" href="tel:0839-3291126">0839-3291126</a></div><div class="note">新生儿科咨询</div><div class="addr">利州区北京路 20 号（院区先确认）；本部：井巷子 16 号</div><div class="tag">官网设新生儿科，具体救治能力先询问</div>
+      <div class="tel"><div><span class="lbl">本部总机</span><a class="tel-a n" href="tel:0839-3222256">0839-3222256</a><button class="copy" type="button">复制</button></div><div><span class="lbl">儿科</span><a class="tel-a n" href="tel:0839-3227993">0839-3227993</a><button class="copy" type="button">复制</button></div></div>
+      <div class="links"><a href="https://uri.amap.com/search?keyword=%E5%B9%BF%E5%85%83%E5%B8%82%E4%B8%AD%E5%BF%83%E5%8C%BB%E9%99%A2%E5%A6%87%E4%BA%A7%E5%84%BF%E7%AB%A5%E5%88%86%E9%99%A2&city=%E5%B9%BF%E5%85%83&view=map&src=roadbook">高德地点 ↗</a><a href="https://www.gyszxyy.cn/lcks.html?cls1=3&cls2=21">来源 ↗</a></div></div>
   </div></div>
 
-  <div class="gap"><b>广元 → 汉中（约 155 km）</b>只有宁强、勉县县医院，没有 NICU。宝宝有异常：打 120，同时往广元或汉中中较近的一头开。</div>
+  <div class="gap"><b>广元 → 汉中（约 155 km）</b>只有宁强、勉县县医院，没有 NICU。宝宝有异常：打 120，同时往广元或汉中较近的一头开。</div>
 
-  <div class="hosp-group"><h3>汉中 <span class="km">约 455 km · 住宿地</span></h3><div class="hosps">
-    <div class="h"><div class="name">汉中市中心医院</div><div class="addr">汉台区劳动西路中段 557 号（部分平台写康复路 22 号）<br>南郑院区：南郑区龙岗大道 005 号</div><div class="tag">汉中最大的三甲医院，儿科下设新生儿科</div>
-      <div class="tel"><div><span class="lbl">急救</span><span class="n">0916-2681120</span><button class="copy" type="button">复制</button></div><div><span class="lbl">预约挂号</span><span class="n">0916-2681119</span><button class="copy" type="button">复制</button></div></div></div>
-    <div class="h"><div class="name">3201 医院</div><div class="addr">汉台区天汉大道 783 号</div><div class="tag">三甲综合医院，设新生儿科</div>
-      <div class="tel"><div><span class="lbl">急救</span><span class="n">0916-2523201</span><button class="copy" type="button">复制</button></div><div><span class="lbl">总机</span><span class="n">0916-2383201</span><button class="copy" type="button">复制</button></div></div></div>
+  <div class="hosp-group"><h3><span class="c">5</span><span class="c">6</span> 汉中 <span class="km">约 455–510 km · A/B 分叉点</span></h3><div class="hosps">
+    <div class="h core"><div class="name"><span class="c">5</span>三二〇一医院</div><div class="big"><a class="n" href="tel:0916-2523201">0916-2523201</a></div><div class="note">医院急救</div><div class="addr">汉台区天汉大道 783 号（院区先确认）</div><div class="tag">集团报道有 NICU、危重新生儿转运</div>
+      <div class="tel"><div><span class="lbl">总值班</span><a class="tel-a n" href="tel:0916-2383507">0916-2383507</a><button class="copy" type="button">复制</button></div><div><span class="lbl">总机</span><a class="tel-a n" href="tel:0916-2383201">0916-2383201</a><button class="copy" type="button">复制</button></div></div>
+      <div class="links"><a href="https://uri.amap.com/search?keyword=%E4%B8%89%E4%BA%8C%E3%80%87%E4%B8%80%E5%8C%BB%E9%99%A2&city=%E6%B1%89%E4%B8%AD&view=map&src=roadbook">高德地点 ↗</a><a href="https://www.hz3201.com/">来源 ↗</a></div></div>
+    <div class="h core"><div class="name"><span class="c">6</span>汉中市中心医院</div><div class="big"><a class="n" href="tel:0916-2681101">0916-2681101</a></div><div class="note">医院联系，转新生儿科或儿科急诊</div><div class="addr">汉台区劳动西路中段 557 号（部分平台写康复路 22 号）；南郑院区：龙岗大道 005 号</div><div class="tag">资料记载有新生儿救治中心</div>
+      <div class="tel"><div><span class="lbl">急救</span><a class="tel-a n" href="tel:0916-2681120">0916-2681120</a><button class="copy" type="button">复制</button></div><div><span class="lbl">预约挂号</span><a class="tel-a n" href="tel:0916-2681119">0916-2681119</a><button class="copy" type="button">复制</button></div></div>
+      <div class="links"><a href="https://uri.amap.com/search?keyword=%E6%B1%89%E4%B8%AD%E5%B8%82%E4%B8%AD%E5%BF%83%E5%8C%BB%E9%99%A2&city=%E6%B1%89%E4%B8%AD&view=map&src=roadbook">高德地点 ↗</a><a href="https://s.dayi.org.cn/mip/s/hospital/1135701.html">来源 ↗</a></div></div>
   </div></div>
 
-  <div class="gap"><b>主线 · 汉中 → 宝鸡（约 160 km 秦岭山区）</b>只有县医院：<b>留坝县医院</b>（城关镇南环路 101 号，<span class="num">0916-3921187</span>，急诊 24 小时），可做初步处理，没有 NICU。长隧道里手机可能没信号：出隧道再打 120，或用隧道内每隔一段设置的紧急电话；到最近的服务区等救护车。过了天台山隧道离宝鸡就不远了。</div>
-
-  <div class="hosp-group"><h3>宝鸡 <span class="km">主线 · 约 615 km · 第 2 天午饭点</span></h3><div class="hosps">
-    <div class="h"><div class="name">宝鸡市妇幼保健院 · 宝鸡市儿童医院</div><div class="addr">儿童医院：渭滨区经二路 15 号<br>妇产医院：新建路东段 2 号</div><div class="tag">陕西省首家三甲妇幼保健院</div>
-      <div class="tel"><div><span class="lbl">24 小时热线</span><span class="n">18991738120</span><button class="copy" type="button">复制</button></div><div><span class="lbl">总值班</span><span class="n">0917-3250092</span><button class="copy" type="button">复制</button></div></div></div>
-    <div class="h"><div class="name">宝鸡市中心医院</div><div class="addr">渭滨区姜谭路 8 号</div><div class="tag">三甲综合医院，设产科、儿科</div>
-      <div class="tel"><div><span class="lbl">急救</span><span class="n">0917-3397120</span><button class="copy" type="button">复制</button></div><div><span class="lbl">总值班</span><span class="n">0917-3395999</span><button class="copy" type="button">复制</button></div></div></div>
-  </div></div>
-
-  <div class="hosp-group"><h3>备选西汉线沿途 <span class="km">汉中 → 西安 · 只有县区医院</span></h3>
-    <div class="gap" style="margin-bottom:2px">走备选线时，汉中之后到西安之间没有地级市医院。下面两家可以做初步处理和转运，没有 NICU；宝宝情况严重时打 120，往西安方向走。</div>
+  <div class="hosp-group"><h3><span class="tagA">A</span> 主线 汉中 → 西安沿途 <span class="km">只有县区医院</span></h3>
+    <div class="gap">A 线汉中之后到西安没有地级市医院。下面两家可以做初步处理和转运，没有 NICU；情况严重打 120，往西安方向走。长隧道里可能没信号，出隧道再打。</div>
     <div class="hosps">
-    <div class="h"><div class="name">洋县人民医院</div><div class="addr">洋县北环东路 581 号（洋县服务区附近下高速）</div><div class="tag">县级综合医院，设急诊科、儿科，承担全县 120 急救</div>
-      <div class="tel"><div><span class="lbl">总机</span><span class="n">0916-8222583</span><button class="copy" type="button">复制</button></div></div></div>
-    <div class="h"><div class="name">西安市鄠邑区人民医院</div><div class="addr">鄠邑区甘亭街道渼陂西路 5 号（出秦岭后第一个城区）</div><div class="tag">二级甲等综合医院，设急诊医学科、儿科</div>
-      <div class="tel"><div><span class="lbl">总机</span><span class="n">029-84812533</span><button class="copy" type="button">复制</button></div></div></div>
+    <div class="h sup"><div class="name"><span class="plus">+</span>洋县人民医院</div><div class="addr">洋县北环东路 581 号（洋县服务区附近下高速）</div><div class="tag">县级综合医院，设急诊科、儿科，承担全县 120 急救</div>
+      <div class="tel"><div><span class="lbl">总机</span><a class="tel-a n" href="tel:0916-8222583">0916-8222583</a><button class="copy" type="button">复制</button></div></div></div>
+    <div class="h sup"><div class="name"><span class="plus">+</span>西安市鄠邑区人民医院</div><div class="addr">鄠邑区甘亭街道渼陂西路 5 号（出秦岭后第一个城区）</div><div class="tag">二级甲等综合医院，设急诊医学科、儿科</div>
+      <div class="tel"><div><span class="lbl">总机</span><a class="tel-a n" href="tel:029-84812533">029-84812533</a><button class="copy" type="button">复制</button></div></div></div>
   </div></div>
 
-  <div class="hosp-group"><h3>西安 <span class="km">主线约 785 km / 备选约 730 km · 目的地</span></h3><div class="hosps">
-    <div class="h"><div class="name">西北妇女儿童医院 · 曲江院区</div><div class="addr">雁翔路 1616 号；后宰门院区：北大街后宰门 73 号</div><div class="tag">陕西省新生儿急救转运中心</div>
-      <div class="tel"><div><span class="lbl">儿科急诊</span><span class="n">029-89551122</span><button class="copy" type="button">复制</button></div><div><span class="lbl">24 小时咨询</span><span class="n">029-89550001</span><button class="copy" type="button">复制</button></div></div></div>
-    <div class="h"><div class="name">西安市儿童医院</div><div class="addr">莲湖区西举院巷 69 号（另有多个院区）</div><div class="tag">儿童专科医院，设新生儿科</div>
-      <div class="tel"><div><span class="lbl">电话（2020 年资料）</span><span class="n">029-87692141</span><button class="copy" type="button">复制</button></div></div></div>
+  <div class="hosp-group"><h3><span class="tagB">B</span> 备选 汉中 → 宝鸡 → 西安沿途 <span class="km"><span class="c">7</span> 在宝鸡</span></h3><div class="hosps">
+    <div class="h sup"><div class="name"><span class="plus">+</span>留坝县医院</div><div class="addr">留坝县城关镇南环路 101 号</div><div class="tag">县级，急诊 24 小时，可做初步处理，没有 NICU</div>
+      <div class="tel"><div><span class="lbl">电话</span><a class="tel-a n" href="tel:0916-3921187">0916-3921187</a><button class="copy" type="button">复制</button></div></div></div>
+    <div class="h core"><div class="name"><span class="c">7</span>宝鸡市妇幼保健院儿童医院</div><div class="big"><a class="n" href="tel:0917-3535161">0917-3535161</a></div><div class="note">新生儿科医办</div><div class="addr">渭滨区经二路 15 号（儿童医院 / 北院）；妇产医院：新建路东段 2 号</div><div class="tag">国家临床重点专科；高频呼吸支持及高危儿转运；陕西首家三甲妇幼保健院</div>
+      <div class="tel"><div><span class="lbl">护士站</span><a class="tel-a n" href="tel:0917-3535175">0917-3535175</a><button class="copy" type="button">复制</button></div><div><span class="lbl">24 小时热线</span><a class="tel-a n" href="tel:18991738120">18991738120</a><button class="copy" type="button">复制</button></div><div><span class="lbl">总值班</span><a class="tel-a n" href="tel:0917-3250092">0917-3250092</a><button class="copy" type="button">复制</button></div></div>
+      <div class="links"><a href="https://www.amap.com/place/B03950PJMM">高德地点 ↗</a><a href="https://www.bjsfby.com/kssz/html/?138.html=">来源 ↗</a></div></div>
+    <div class="h sup"><div class="name"><span class="plus">+</span>宝鸡市中心医院</div><div class="addr">渭滨区姜谭路 8 号</div><div class="tag">三甲综合医院，设产科、儿科</div>
+      <div class="tel"><div><span class="lbl">急救</span><a class="tel-a n" href="tel:0917-3397120">0917-3397120</a><button class="copy" type="button">复制</button></div><div><span class="lbl">总值班</span><a class="tel-a n" href="tel:0917-3395999">0917-3395999</a><button class="copy" type="button">复制</button></div></div></div>
   </div></div>
+
+  <div class="hosp-group"><h3><span class="c">8</span> 西安 <span class="km">终点</span></h3><div class="hosps">
+    <div class="h core"><div class="name"><span class="c">8</span>西安市儿童医院</div><div class="big"><a class="n" href="tel:029-87692378">029-87692378</a></div><div class="note">新生儿转运</div><div class="addr">西门院区：西举院巷 69 号；经开院区：尚稷路 7669 号（由接诊方指定院区）</div><div class="tag">有 NICU 及转运团队</div>
+      <div class="tel"><div><span class="lbl">备用</span><a class="tel-a n" href="tel:029-87692377">029-87692377</a><button class="copy" type="button">复制</button></div><div><span class="lbl">总机（2020）</span><a class="tel-a n" href="tel:029-87692141">029-87692141</a><button class="copy" type="button">复制</button></div></div>
+      <div class="links"><a href="https://uri.amap.com/search?keyword=%E8%A5%BF%E5%AE%89%E5%B8%82%E5%84%BF%E7%AB%A5%E5%8C%BB%E9%99%A2&city=%E8%A5%BF%E5%AE%89&view=map&src=roadbook">高德地点 ↗</a><a href="https://www.xachyy.com/ksdh/lcks/xsezzyxk_NICU_.htm">来源 ↗</a></div></div>
+    <div class="h sup"><div class="name"><span class="plus">+</span>西北妇女儿童医院 · 曲江院区</div><div class="addr">雁翔路 1616 号；后宰门院区：北大街后宰门 73 号</div><div class="tag">陕西省新生儿急救转运中心</div>
+      <div class="tel"><div><span class="lbl">儿科急诊</span><a class="tel-a n" href="tel:029-89551122">029-89551122</a><button class="copy" type="button">复制</button></div><div><span class="lbl">24 小时咨询</span><a class="tel-a n" href="tel:029-89550001">029-89550001</a><button class="copy" type="button">复制</button></div></div></div>
+  </div></div>
+
+  <div class="script"><b>打电话确认医院的话术：</b>“宝宝 31 周早产，实际出生日期 <u>&nbsp;</u>，矫正约 10 天，偶尔用氧。已出院的宝宝能否接诊？去哪个院区、哪个入口？由新生儿科还是儿科接诊？”</div>
+  <p class="note">地图链接指向院址或搜索结果，不是已确认的急诊入口。宝鸡节点的价值：宝鸡儿童医院有新生儿呼吸支持和高危儿转运能力，G85 穿山后多一个可以下高速就医的城市。</p>
 </section>
 
-<!-- 06 baby -->
-<section>
-  <h2><span class="no">06</span>宝宝在车上</h2>
+<section id="oxygen" class="pb">
+  <h2><span class="no">05</span>供氧与急救<span class="en">OXYGEN / EMERGENCY</span></h2>
+  <div class="callout med"><b>本宝宝的出行前提：</b>31 周早产、矫正年龄约 10 天、偶尔用氧。先由原新生儿科明确长途乘车、座椅耐受、供氧和监测方案；没有明确就暂缓出行，或讨论专业转运。路书不设通用的氧流量或血氧阈值。</div>
+  <div class="steps4"><div>安全停车</div><div>120 + 方向定位</div><div>执行既定医嘱</div><div>就近救治 / 转运</div></div>
+  <h3>制氧机不是“能插上电”就够了</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>核对项</th><th>要确认的内容</th><th>已确认</th></tr></thead>
+    <tbody>
+      <tr><td><b>供氧方式</b></td><td>设备适合婴儿规定的连续低流量，不能用成人脉冲式设备替代。流量、目标血氧和报警阈值由医生确定</td><td><span class="blank"></span></td></tr>
+      <tr><td><b>车辆供电</b></td><td>额定 / 启动功率匹配；确认启停、熄火和充电时会不会断电；固定设备，保持通风，不压折鼻导管</td><td><span class="blank"></span></td></tr>
+      <tr><td><b>独立备用</b></td><td>由医生或供应商核算备用电或氧源，覆盖路程、堵车、停车和等救援；不只依赖同一个车载电路</td><td><span class="blank"></span></td></tr>
+      <tr><td><b>监测与操作</b></td><td>使用适配婴儿的设备和探头，照护者会识别报警和误差；不自行停氧、调流量或试探性断氧</td><td><span class="blank"></span></td></tr>
+      <tr><td><b>防火与固定</b></td><td>禁烟、禁明火；如带氧瓶，按供应商要求固定、避热；医疗设备不能在急刹车时飞出</td><td><span class="blank"></span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="two">
+    <div class="box"><h3>日常照护</h3><p>专职成人坐后排观察；司机不兼顾监测和喂养。使用经过评估、符合体重要求的后向安全座椅；行车时不抱娃、不喂奶。</p></div>
+    <div class="box"><h3>医院联络</h3><p>西安新生儿转运：<a class="tel-a" href="tel:029-87692378">029-87692378</a> / <a class="tel-a" href="tel:029-87692377">029-87692377</a>。用于专业衔接，不替代当地 120；道路险情打 110，路况咨询 12328。</p></div>
+  </div>
+  <p class="note">专业依据：早产儿乘车与设备固定（AAP）、儿童氧疗（PMC6802853）、婴儿严重症状（NICE QS37），链接见“信息来源”。</p>
+</section>
+
+<section id="baby">
+  <h2><span class="no">06</span>宝宝乘车与照护<span class="en">CAR SEAT · FEEDING · WARNING SIGNS</span></h2>
   <div class="panel seat">
-    <svg viewBox="0 0 260 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="反向安全座椅示意图">
+    <svg viewBox="0 0 260 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="后向安全座椅示意图">
       <rect x="10" y="20" width="240" height="120" rx="14" style="fill:var(--faint);stroke:var(--line)"/>
       <text x="22" y="40" font-size="11" style="fill:var(--muted)">车头 ←</text>
       <rect x="40" y="56" width="70" height="60" rx="8" style="fill:var(--paper);stroke:var(--line)"/>
@@ -417,301 +522,253 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
       <rect x="150" y="56" width="80" height="60" rx="8" style="fill:var(--paper);stroke:var(--line)"/>
       <path d="M160 108 L200 70 L222 70 L222 108 Z" style="fill:var(--ok-soft);stroke:var(--ok)" stroke-width="2"/>
       <circle cx="207" cy="80" r="7" style="fill:var(--ok)"/>
-      <text x="190" y="132" text-anchor="middle" font-size="11" style="fill:var(--ok)">后排 · 背向车头 · 约 45°</text>
+      <text x="190" y="132" text-anchor="middle" font-size="11" style="fill:var(--ok)">后排 · 背向车头</text>
       <path d="M150 48 H120" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#ah)"/>
       <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" style="fill:var(--muted)"/></marker></defs>
       <text x="135" y="160" text-anchor="middle" font-size="10" style="fill:var(--muted)">示意图</text>
     </svg>
     <ul style="margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px">
-      <li>用<b>反向安装</b>的婴儿提篮或安全座椅，装在<b>后排</b>。不要抱在怀里，不要放副驾驶（安全气囊对婴儿致命）。</li>
-      <li>座椅倾角约 45°，头不能往前垂到下巴贴胸；不加枕头、厚垫和玩具。</li>
-      <li>不穿厚羽绒服坐座椅：先系好安全带，再在外面盖小被子。</li>
-      <li>后排一位大人坐在宝宝旁边看护。单次坐座椅不超过 2 小时。</li>
+      <li>使用经过评估、符合体重要求的<b>后向</b>安全座椅，装在<b>后排</b>。不要抱在怀里，不要放副驾驶（安全气囊对婴儿致命）。</li>
+      <li>早产儿的座椅耐受要请医生评估或复评；倾角、头部位置按座椅说明和医生要求，不加枕头、厚垫、玩具。</li>
+      <li>不穿厚衣服坐座椅：先系好安全带，再在外面盖小被子。</li>
+      <li>单次乘车时长、每日总时长、每次离座休息时长<b>按医生规定</b>（见“出发检查”）。</li>
+      <li>不把座椅当夜间睡床；到酒店后仰卧睡在平整坚实的睡眠面上，不放软枕被褥。</li>
     </ul>
   </div>
   <div class="cols">
-    <div class="box"><h3>喂奶和温度</h3><ul>
-      <li><b>停车后再喂</b>，行驶中不要把宝宝从座椅里抱出来。</li>
-      <li>配方奶：保温壶装 70℃ 左右开水，另备一壶凉开水，奶粉按顿分装；奶瓶带 3 个以上。</li>
-      <li>车内保持 22–26℃，摸后颈判断冷热，后颈出汗就减被子。秦岭段和 7 日降温后注意保暖。</li>
-      <li>不要盖住口鼻；用车窗遮阳帘，不用布罩住整个提篮。</li>
-      <li>车里禁烟、不用香薰，每次停车开窗通风几分钟。</li>
-      <li>进出长隧道时耳压变化，让宝宝吸奶或含安抚奶嘴。</li>
+    <div class="box"><h3>喂养</h3><ul>
+      <li><b>停车后再喂</b>，行驶中不把宝宝从座椅里抱出来。</li>
+      <li>按原方案准备母乳或配方奶、强化剂；不临时换奶或改浓度，按医疗要求配制和冷藏。</li>
+      <li>配方奶：保温壶装约 70℃ 开水，另备凉开水，奶粉按顿分装。</li>
+      <li>进出长隧道耳压变化时，停车后喂奶或用安抚奶嘴缓解。</li>
     </ul></div>
-    <div class="box"><h3>随车物品清单</h3>
-      <ul class="check" id="pack">
-        <li><label><input type="checkbox" id="c1">出生医学证明、出院小结、疫苗接种本</label></li>
-        <li><label><input type="checkbox" id="c2">父母身份证、医保卡</label></li>
-        <li><label><input type="checkbox" id="c3">电子体温计</label></li>
-        <li><label><input type="checkbox" id="c4">脐带护理：75% 酒精或碘伏棉签</label></li>
-        <li><label><input type="checkbox" id="c5">尿布 30 片以上、湿巾、护臀膏、隔尿垫</label></li>
-        <li><label><input type="checkbox" id="c6">奶粉/储奶袋、奶瓶 3 个以上、保温壶、凉开水</label></li>
-        <li><label><input type="checkbox" id="c7">换洗衣服 3 套、包被 2 条、帽子、袜子</label></li>
-        <li><label><input type="checkbox" id="c8">吐奶巾、装脏尿布的袋子</label></li>
-        <li><label><input type="checkbox" id="c9">便携婴儿床（汉中住宿用）</label></li>
-        <li><label><input type="checkbox" id="c10">车载充电器、充电宝；导航地图离线下载</label></li>
-        <li><label><input type="checkbox" id="c11">妈妈的产后用品和药</label></li>
-      </ul>
-      <p class="note noprint">勾选只保存在这台设备的浏览器里。</p>
-    </div>
+    <div class="box"><h3>温度与感染</h3><ul>
+      <li>车内温度舒适，摸后颈判断冷热；不捂热、不直吹。8 日山区最低约 1–4℃，停车开门时注意保暖。</li>
+      <li>不遮脸、不遮氧管；不给婴儿戴口罩；不把宝宝单独留在车里。</li>
+      <li>成人勤洗手，少在拥挤餐厅停留；车内禁烟、不用香薰。</li>
+    </ul></div>
   </div>
-  <h3 style="color:var(--med)">出现这些情况，马上去医院</h3>
+  <h3 style="color:var(--med)">出现这些情况，马上就医（伴呼吸或意识异常直接 120）</h3>
   <div class="danger">
-    <div><span class="ic">℃</span><span>腋温 ≥ 37.5℃ 或 &lt; 36℃，复测仍异常</span></div>
-    <div><span class="ic">60</span><span>呼吸急促（安静时每分钟超过 60 次）、呻吟、胸口凹陷</span></div>
-    <div><span class="ic">紫</span><span>嘴唇、脸色发紫或发灰</span></div>
-    <div><span class="ic">奶</span><span>连续两顿拒奶，或吃得明显少</span></div>
+    <div><span class="ic">停</span><span>呼吸暂停或呼吸明显费力、呻吟、胸口凹陷</span></div>
+    <div><span class="ic">紫</span><span>嘴唇、脸色发青、发灰</span></div>
+    <div><span class="ic">O₂</span><span>用氧需求增加，或血氧达到医生给的紧急阈值</span></div>
+    <div><span class="ic">℃</span><span>体温 ≥ 38℃ 或 &lt; 36℃</span></div>
+    <div><span class="ic">奶</span><span>明显少吃奶、拒奶</span></div>
+    <div><span class="ic">尿</span><span>明显少尿（6 小时以上没有尿）</span></div>
     <div><span class="ic">睡</span><span>叫不醒、反应差，或持续尖声哭闹</span></div>
+    <div><span class="ic">抽</span><span>抽搐、两眼凝视、四肢抖动</span></div>
     <div><span class="ic">吐</span><span>呕吐物带绿色或血，喷射性呕吐</span></div>
     <div><span class="ic">黄</span><span>黄疸蔓延到手心脚心，或明显加重</span></div>
-    <div><span class="ic">抽</span><span>抽搐、两眼凝视、四肢抖动</span></div>
     <div><span class="ic">脐</span><span>肚脐红肿、渗液、有臭味</span></div>
-    <div><span class="ic">6h</span><span>6 小时以上没有尿</span></div>
   </div>
-  <p style="font-size:.9rem">在车上发现以上情况，不要自己给宝宝吃药。打 120，说清楚“新生儿，出生 X 天”，以及所在高速、方向、公里桩号。</p>
+  <div class="callout"><b>产后妈妈：</b>如果出现大量出血、胸痛、呼吸困难或单侧腿肿，也要及时就医。照顾好妈妈的恢复，按需要活动和休息。</div>
 </section>
 
-<!-- 07 driving -->
-<section>
-  <h2><span class="no">07</span>开车和路况</h2>
-  <div class="cols">
+<section id="checklist" class="pb">
+  <h2><span class="no">07</span>出发检查<span class="en">CHECKLIST</span></h2>
+  <div class="two">
+    <div class="box"><h3>请医生明确的四件事</h3>
+      <ul class="check">
+        <li><label><input type="checkbox" id="d1">长途自驾是否适合？需要专业转运吗？</label></li>
+        <li><label><input type="checkbox" id="d2">自家安全座椅的耐受是否需要复评？</label></li>
+        <li><label><input type="checkbox" id="d3"><span>单次乘车 <span class="blank"></span> 分钟；每日总量 <span class="blank"></span> 小时；每次离座休息 <span class="blank"></span> 分钟</span></label></li>
+        <li><label><input type="checkbox" id="d4"><span>供氧模式 / 流量 <span class="blank"></span>；血氧目标 <span class="blank"></span>；报警阈值 <span class="blank"></span>；异常处置 <span class="blank"></span></span></label></li>
+      </ul>
+      <p style="font-size:.88rem">医生电话 <span class="blank" style="min-width:7em"></span>；设备型号 <span class="blank" style="min-width:5em"></span>；备用续航 <span class="blank"></span></p>
+    </div>
+    <div class="box"><h3>11/5 晚 + 每天出发前</h3>
+      <ul class="check">
+        <li><label><input type="checkbox" id="e1">宝宝吃奶、尿量、精神、呼吸和平时一样</label></li>
+        <li><label><input type="checkbox" id="e2">已核实当天要用的医院院区、急诊入口和接诊年龄</label></li>
+        <li><label><input type="checkbox" id="e3">查看 G5 / G85 预警、封路、能见度、结冰信息，并看发布时间</label></li>
+        <li><label><input type="checkbox" id="e4">电 / 氧备用、燃油或电量足够；下一停靠点合法且能到</label></li>
+        <li><label><input type="checkbox" id="e5">封路、结冰、浓雾时留在城里等，不自行绕山间小路</label></li>
+      </ul>
+    </div>
+  </div>
+  <h3>随车物品与安排</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>类别</th><th>准备内容</th><th>容易漏掉的点</th></tr></thead>
+    <tbody>
+      <tr><td><b>病历 / 证件</b></td><td>出院小结、氧疗处方、用药清单、出生医学证明、疫苗接种本、监护人证件、医保资料</td><td>同时写实际日龄、矫正年龄、体重；衔接西安的早产儿随访、眼底和听力复查</td></tr>
+      <tr><td><b>喂养 / 清洁</b></td><td>母乳或配方奶、强化剂、奶具（3 个以上奶瓶）、保温壶、冷藏包、尿布、湿巾、护臀膏、隔尿垫、替换衣物、包被、体温计、脐带护理棉签</td><td>多备至少一天的消耗品；不临时换奶或改浓度</td></tr>
+      <tr><td><b>车辆 / 补能</b></td><td>轮胎、制动、雨刮、灯光、除雾；充电器、燃油、设备电源；三角警示牌、反光背心、手电</td><td>给堵车和氧疗用电留余量；提前确认补能设施，不依赖单个充电桩</td></tr>
+      <tr><td><b>人员 / 休息</b></td><td>后排专职照护的成人；最好另有替换司机，前一晚睡足</td><td>驾驶和照护分开；照顾产后妈妈的恢复</td></tr>
+      <tr><td><b>酒店 / 夜间</b></td><td>无烟、停车方便、电源可靠、有适合婴儿的平整坚实睡眠面；便携婴儿床</td><td>到店后离开安全座椅，仰卧睡，不放软枕被褥</td></tr>
+      <tr><td><b>感染 / 保暖</b></td><td>成人洗手，少在拥挤餐厅停留，车内温度舒适</td><td>不给婴儿戴口罩，不遮脸或氧管，不单独留车内，不捂热或直吹</td></tr>
+      <tr><td><b>时间 / 费用</b></td><td>预留额外住宿、绕行、补能和急诊费用；离线地图和资料备份；车载充电器、充电宝</td><td>三天方案也要医生认可；如果延误，住下来优先，不在夜里强行过山</td></tr>
+    </tbody>
+  </table></div>
+  <h3>每次停车：四步</h3>
+  <div class="flow4"><div>按医嘱离座休息</div><div>喂养 / 换尿布</div><div>看呼吸与肤色</div><div>查氧源再出发</div></div>
+  <div class="panel">
+    <h3>行程记录（可手写）</h3>
+    <div class="tbl" style="border:0"><table class="num">
+      <thead><tr><th>时间</th><th>地点</th><th>吃奶</th><th>尿量</th><th>血氧 / 氧疗（按医嘱）</th><th>异常</th></tr></thead>
+      <tbody><tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr></tbody>
+    </table></div>
+  </div>
+  <p class="note">资料含宝宝健康背景，请只分享给需要的家人和医护。网页上的勾选只保存在这台设备的浏览器里，也不代表获得了医疗许可。</p>
+</section>
+
+<section id="drive">
+  <h2><span class="no">08</span>开车与路况<span class="en">DRIVING</span></h2>
+  <div class="two">
     <div class="panel">
       <h3>团雾时的限速<small>能见度 → 最高车速</small></h3>
       <div class="chart" id="fog"></div>
-      <p class="note">同时开雾灯、双闪，不急刹，从最近的出口下高速。秋冬早晨 6–8 点、桥面和雨后山区最容易出现团雾。</p>
+      <p class="note">同时开雾灯、双闪，不急刹，从最近的出口下高速。秋冬早晨 6–8 点、桥面和雨后山区最容易起团雾。</p>
     </div>
-    <div class="box"><h3>主线 · 宝汉线开车</h3><ul>
-      <li>留坝服务区之后到天台山服务区之间不要等油电报警，进山前加满油或充满电。电动车低温爬坡耗电明显增加。</li>
-      <li>长隧道里开近光灯，不变道，不停车，保持车距；出隧道注意明暗变化和横风。</li>
-      <li>高架桥多，雨天湿冷时减速，避免急刹。</li>
-      <li>G30 关中段 7 日有 5–6 级阵风，双手握方向盘，远离大货车。</li>
-      <li>雨天车距拉大到平时两倍。</li>
+    <div class="box"><h3>司机与车辆</h3><ul>
+      <li>驾驶和照护分开，最好两位司机轮换；照顾新生儿的家长前一晚常睡不好，不让疲劳的人开车。</li>
+      <li>限速以标志为准，山区隧道段按 80 km/h 左右开更稳；雨天车距拉大到平时两倍。</li>
+      <li>办好 ETC；在广元、汉中加满油或充满电。</li>
     </ul></div>
-    <div class="box" style="border-style:dashed"><h3>备选 · 西汉线开车</h3><ul>
-      <li>洋县服务区之后进入秦岭，到秦岭服务区约 120 km，进山前加满油或充满电。</li>
-      <li>秦岭服务区海拔 1600 多米，是全程最冷的地方，7 日可能有雨雾，车内开暖风。</li>
-      <li>隧道连续、弯道多，按 80 km/h 左右开，不变道，不超车。</li>
+  </div>
+  <div class="two">
+    <div class="box" style="border-top:4px solid var(--A)"><h3><span class="tagA">A</span> 主线 · G5 西汉段</h3><ul>
+      <li>洋县服务区之后进入秦岭，到秦岭服务区约 120 km，进山前加满油或充满电，检查氧源。</li>
+      <li>秦岭服务区海拔 1600 多米，是 A 线最冷的地方；7 日可能有雨雾，车内开暖风。</li>
+      <li>隧道连续、弯道多，开近光灯，不变道，不超车，空调切内循环；出隧道注意明暗变化和横风。</li>
       <li>下山进关中前长下坡，用低挡控速，不要一直踩刹车。</li>
     </ul></div>
-  </div>
-  <div class="cols">
-    <div class="box"><h3>司机</h3><ul>
-      <li>最好两位司机轮换。照顾新生儿的家长前一晚往往没睡好，不要让疲劳的人开车。</li>
-      <li>限速以路边标志为准，山区隧道段按 80 km/h 左右开更稳。</li>
-    </ul></div>
-    <div class="box"><h3>车辆</h3><ul>
-      <li>检查轮胎气压和花纹、雨刮、雾灯、刹车。</li>
-      <li>在广元、汉中加满油；办好 ETC。</li>
-      <li>车上放三角警示牌、反光背心、手电。</li>
-    </ul></div>
-    <div class="box"><h3>出发前一晚（11 月 5 日）</h3><ul>
-      <li>拨打本页医院电话确认，存入通讯录。</li>
-      <li>查四川、陕西 6–7 日最新预报和 G5、宝汉高速路况。</li>
-      <li>订好汉中酒店，要婴儿床。</li>
-      <li>安全座椅提前装好、调好。</li>
+    <div class="box" style="border-top:4px solid var(--B)"><h3><span class="tagB">B</span> 备选 · G85 宝汉段 + G30</h3><ul>
+      <li>留坝一带之后到天台山服务区之间不要等油电报警。电动车低温爬坡耗电明显增加。</li>
+      <li>秦岭隧道群 10 座约 32 km，天台山隧道 15.56 km（约 12 分钟）。</li>
+      <li>高架桥多，8 日留坝、凤县最低约 1℃，早晚桥面可能结冰，减速，不急刹。</li>
+      <li>G30 关中平原段 7 日有 5–6 级阵风，双手握方向盘，远离大货车。</li>
     </ul></div>
   </div>
 </section>
 
-<!-- 08 contingency -->
-<section>
-  <h2><span class="no">08</span>改变计划的条件</h2>
+<section id="change">
+  <h2><span class="no">09</span>改变计划的条件<span class="en">CONTINGENCY</span></h2>
   <div class="flow">
-    <div><div class="if">宝宝出发前一晚或当天早上发热、吃奶差、黄疸加重</div><div class="ar">→</div><div class="then">取消出发，先在成都就医</div></div>
-    <div><div class="if">6 日到广元已过 13:30，或宝宝哭闹频繁</div><div class="ar">→</div><div class="then">广元住一晚，7 日广元 → 汉中 → 宝鸡 → 西安（约 485 km，注意 7 日陕西有雨）</div></div>
-    <div><div class="if">6 日晚预报秦岭雨夹雪、道路结冰，或宝汉高速管制</div><div class="ar">→</div><div class="then">先看西汉线是否正常：正常就改走备选，否则汉中多住一天</div></div>
-    <div><div class="if">宝汉高速管制、天台山隧道群事故或施工，或宝鸡一带大雾</div><div class="ar">→</div><div class="then">改走备选西汉线（汉中东上 G5 京昆高速），约 12:50 到西安</div></div>
-    <div><div class="if">西汉高速秦岭段也管制，或两条线都有结冰预警</div><div class="ar">→</div><div class="then">汉中多住一天，不翻秦岭</div></div>
-    <div><div class="if">7 日早上汉中或宝鸡有大雾</div><div class="ar">→</div><div class="then">等雾散后再出发，通常 10 点前后</div></div>
-    <div><div class="if">路上宝宝出现“马上去医院”里的任何一条</div><div class="ar">→</div><div class="then">打 120，按医院列表就近处理，不再赶路</div></div>
+    <div><div class="if">医生没有明确乘车、供氧和监测方案</div><div class="ar">→</div><div class="then">暂缓出行，或讨论专业转运</div></div>
+    <div><div class="if">出发前一晚或当天早上，宝宝发热、吃奶差、用氧需求增加</div><div class="ar">→</div><div class="then">取消出发，先在成都就医</div></div>
+    <div><div class="if">某天到了医生规定的乘车上限，或宝宝状态不好</div><div class="ar">→</div><div class="then">就近在绵阳、广元或汉中住下，不赶路</div></div>
+    <div><div class="if">G5 西汉段管制或明显拥堵，或需要途经宝鸡</div><div class="ar">→</div><div class="then">先确认 G85 天气和通行，再改走 B</div></div>
+    <div><div class="if">两条线都有结冰预警、封路或浓雾</div><div class="ar">→</div><div class="then">留在汉中等，不自行绕山间小路</div></div>
+    <div><div class="if">路上延误，眼看要天黑才能过山</div><div class="ar">→</div><div class="then">住下来，不在夜里强行过秦岭</div></div>
+    <div><div class="if">路上宝宝出现任何危险信号</div><div class="ar">→</div><div class="then">安全停车，打 120，按“紧急速查”就近处理</div></div>
   </div>
 </section>
 
-<!-- 09 sos -->
-<section>
-  <h2><span class="no">09</span>应急电话</h2>
-  <div class="sos">
-    <div><b>120</b><span>急救</span></div>
-    <div><b>122</b><span>交通事故</span></div>
-    <div><b>12122</b><span>高速救援、路况</span></div>
-    <div><b>110</b><span>报警</span></div>
-    <div><b>12121</b><span>天气预报</span></div>
-  </div>
-  <div class="callout">求助时报出：<b>高速名称（G5 京昆 / G85 银昆宝汉段 / G30 连霍）+ 去往哪个方向 + 路边公里桩号</b>。隧道里没信号时用隧道紧急电话。</div>
-</section>
-
-<section class="src">
-  <h3 style="font-size:.9rem">信息来源</h3>
-  <ol>
-    <li>天气：<a href="https://www.thepaper.cn/newsDetail_forward_34406351">陕西省气象台</a>、<a href="https://www.thepaper.cn/newsDetail_forward_34405313">西安市气象台</a>、<a href="https://www.sohu.com/a/1096877682_119659">西安 7 日降温吹风</a>、<a href="https://www.thepaper.cn/newsDetail_forward_34394152">四川省气象台</a>、<a href="https://m.gmw.cn/2026-11/03/content_1304582148.htm">光明网</a>、<a href="https://www.weather.com.cn/weather/101110801.shtml">中国天气网·汉中</a>、<a href="https://www.nmc.cn/publish/forecast/ASN/hanzhong.html">中央气象台·汉中</a></li>
-    <li>宝汉高速：<a href="https://sx.sina.cn/news/gedi/2021-10-05/detail-iktzscyx7962820.d.html">宝坪高速通车</a>、<a href="https://shx.chinadaily.com.cn/a/202109/08/WS61386721a3101e7ce9762902.html">中国日报</a>、<a href="https://www.cnr.cn/sxpd/sx/20171228/t20171228_524079975.shtml">坪坎至汉中段</a>、<a href="https://news.qq.com/rain/a/20211012A04JTB00">天台山服务区</a>；团雾限速：<a href="https://society.huanqiu.com/article/40pj4souBFY">环球网</a></li>
-    <li>医院（四川）：<a href="https://m.motherchildren.com/m_guide_notes/">华西二院</a>、<a href="https://zhuanlan.zhihu.com/p/22278290">知乎</a>、<a href="https://www.haodf.com/hospital/1838/jieshao.html">成都市妇女儿童中心医院</a>、<a href="https://www.haodf.com/hospital/1207/jieshao.html">德阳市人民医院</a>、<a href="https://www.haodf.com/hospital/589/jieshao.html">绵阳市中心医院</a>、<a href="https://www.haodf.com/hospital/2834/jieshao.html">广元市中心医院</a>、<a href="https://regional.chinadaily.com.cn/sichuan/guangyuan/2020-02/12/c_629369.htm">广元市妇幼保健院</a></li>
-    <li>医院（陕西）：<a href="https://m.youlai.cn/yyk/hospindex/3937/hospintro.html">汉中市中心医院</a>、<a href="https://zyy.yilianmeiti.com/8323/">3201 医院</a>、<a href="https://www.haodf.com/hospital/1699/jieshao.html">宝鸡市妇幼保健院</a>、<a href="https://bjsfby.com/">其官网</a>、<a href="https://www.haodf.com/hospital/786/jieshao.html">宝鸡市中心医院</a>、<a href="https://wjw.baoji.gov.cn/col2223/col2270/202408/t20240827_652370.html">宝鸡市卫健委</a>、<a href="https://www.dayi.org.cn/hospital/1126835.html">西北妇女儿童医院</a>、<a href="https://govt.chinadaily.com.cn/s/202002/13/WS5e45484e498ea01b9aea0f32/designated-hospitals-and-fever-clinics-in-xian-city-shaanxi.html">西安市儿童医院</a>、<a href="https://www.dayi.org.cn/hospital/1157154">留坝县医院</a>、<a href="https://www.haodf.com/hospital/1494/jieshao.html">洋县人民医院</a>、<a href="http://www.xahy.gov.cn/zwgk/ggqsydw/wsjk/1768168024516980738.html">鄠邑区医疗机构信息表</a>；西汉高速服务区：<a href="https://www.icauto.com.cn/fuwuqu/215196.html">icauto</a></li>
-  </ol>
-  <footer>2026 年 11 月 5 日整理。天气以出发当天气象台发布为准，医院电话以医院官方公布为准。本路书不能代替医生的判断。</footer>
+<section id="sources" class="src">
+  <h2 style="font-size:1.1rem"><span class="no">10</span>信息来源</h2>
+  <ul>
+    <li><b>路线与天气：</b><a href="https://developer.amap.com/api/webservice/guide/api/newroute">高德路径规划接口</a>、<a href="https://developer.amap.com/api/mcp-server/gettingstarted">高德 MCP</a>（11/5 查询；金额为接口估计，以实际结算为准）</li>
+    <li><b>官方天气补充：</b><a href="https://www.thepaper.cn/newsDetail_forward_34406351">陕西省气象台</a>、<a href="https://www.thepaper.cn/newsDetail_forward_34405313">西安市气象台</a>、<a href="https://www.sohu.com/a/1096877682_119659">西安 7 日降温吹风</a>、<a href="https://www.thepaper.cn/newsDetail_forward_34394152">四川省气象台</a></li>
+    <li><b>施工：</b><a href="https://www.thepaper.cn/newsDetail_forward_34311187">汉中连接线施工公告</a>；团雾限速：<a href="https://society.huanqiu.com/article/40pj4souBFY">环球网</a></li>
+    <li><b>宝汉高速：</b><a href="https://sx.sina.cn/news/gedi/2021-10-05/detail-iktzscyx7962820.d.html">宝坪高速通车</a>、<a href="https://shx.chinadaily.com.cn/a/202109/08/WS61386721a3101e7ce9762902.html">中国日报</a>、<a href="https://news.qq.com/rain/a/20211012A04JTB00">天台山服务区</a>；西汉高速服务区：<a href="https://www.icauto.com.cn/fuwuqu/215196.html">icauto</a></li>
+    <li><b>医院 ①–⑧：</b><a href="https://deyangbjy.cn/lists/128.html">德阳市妇幼保健院</a>、<a href="https://www.myszxyy.cn/departments_erkea0/">绵阳市中心医院</a>、<a href="https://gyfybj.cn/ksdh.html?ksids=6">广元妇幼保健医院</a>、<a href="https://www.gyszxyy.cn/lcks.html?cls1=3&cls2=21">广元市中心医院</a>、<a href="https://www.gyszxyy.cn/list.html?cls1=91&cls2=92">其院区</a>、<a href="https://www.hz3201.com/">三二〇一医院</a>、<a href="https://gtmed.com.cn/xwzx/gsxw/index_25.html">通用医疗集团</a>、<a href="https://s.dayi.org.cn/mip/s/hospital/1140155.html">大医网</a>、<a href="https://s.dayi.org.cn/mip/s/hospital/1135701.html">汉中市中心医院</a>、<a href="https://health.people.com.cn/n1/2018/0929/c421586-30321342.html">人民网健康</a>、<a href="https://csp.ncmi.cn/UsersInfo/UserUnit/UserUnitDetailWeb?uid=00298">国家医学信息平台</a>、<a href="https://www.xachyy.com/ksdh/lcks/xsezzyxk_NICU_.htm">西安市儿童医院 NICU</a>、<a href="https://www.xachyy.com/fwzn/yygh1.htm">其就诊指南</a>、<a href="https://xawjw.xa.gov.cn/xxgk/zzjg/zsjg/6124694af8fd1c0bdc4a1b53.html">西安市卫健委</a>、<a href="https://www.bjsfby.com/kssz/html/?138.html=">宝鸡妇幼新生儿科</a>、<a href="https://www.bjsfby.com/page/ksdh/index.php">宝鸡妇幼科室导航</a></li>
+    <li><b>补充医院：</b><a href="https://m.motherchildren.com/m_guide_notes/">华西二院</a>、<a href="https://www.haodf.com/hospital/1838/jieshao.html">成都市妇女儿童中心医院</a>、<a href="https://www.haodf.com/hospital/1207/jieshao.html">德阳市人民医院</a>、<a href="https://www.haodf.com/hospital/589/jieshao.html">绵阳市中心医院（好大夫）</a>、<a href="https://www.haodf.com/hospital/2834/jieshao.html">广元市中心医院（好大夫）</a>、<a href="https://m.youlai.cn/yyk/hospindex/3937/hospintro.html">汉中市中心医院（有来）</a>、<a href="https://zyy.yilianmeiti.com/8323/">3201 医院（医联）</a>、<a href="https://www.haodf.com/hospital/1699/jieshao.html">宝鸡市妇幼保健院（好大夫）</a>、<a href="https://www.haodf.com/hospital/786/jieshao.html">宝鸡市中心医院</a>、<a href="https://www.dayi.org.cn/hospital/1126835.html">西北妇女儿童医院</a>、<a href="https://www.dayi.org.cn/hospital/1157154">留坝县医院</a>、<a href="https://www.haodf.com/hospital/1494/jieshao.html">洋县人民医院</a>、<a href="http://www.xahy.gov.cn/zwgk/ggqsydw/wsjk/1768168024516980738.html">鄠邑区医疗机构信息表</a></li>
+    <li><b>医学依据：</b><a href="https://publications.aap.org/pediatrics/article/123/5/1424/71504/Safe-Transportation-of-Preterm-and-Low-Birth">AAP 早产儿与低体重儿安全乘车</a>、<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6802853/">儿童氧疗</a>、<a href="https://www.nice.org.uk/guidance/qs37/chapter/Quality-statement-3-Symptoms-and-signs-of-illness-in-babies">NICE 婴儿疾病症状</a></li>
+  </ul>
+  <footer>2026-11-05 合并版：合并了用户提供的《成都至西安｜完整图表路书》（高德 11/5 查询）与此前整理的资料。天气以出发当天气象台发布为准，医院电话以医院官方为准。本路书不能代替医生的判断。</footer>
 </section>
 </div>
 
 <script>
 (function(){
 var NS='http://www.w3.org/2000/svg';
-function el(tag,attrs,parent,text){var e=document.createElementNS(NS,tag);for(var k in attrs){if(k==='style')e.setAttribute('style',attrs[k]);else e.setAttribute(k,attrs[k]);}if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+function el(tag,attrs,parent,text){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
 function svg(w,h,host,minw){var s=el('svg',{viewBox:'0 0 '+w+' '+h,xmlns:NS});if(minw)s.style.minWidth=minw+'px';host.appendChild(s);return s;}
-function tip(node,t){el('title',{},node,t);}
+function tip(n,t){el('title',{},n,t);}
+function circ(parent,x,y,n,r){var g=el('g',{},parent);el('circle',{cx:x,cy:y,r:r||9,style:'fill:var(--med)'},g);el('text',{x:x,y:y+4,'text-anchor':'middle','font-size':11,'font-weight':700,style:'fill:var(--med-ink)'},g,n);return g;}
 
-/* hospital markers on route map */
-var hm=document.getElementById('hmarks');
-[40,122,181,392,573,760,901,960].forEach(function(x){
-  var g=el('g',{transform:'translate('+(x-9)+',52)'},hm);
-  el('rect',{width:18,height:18,rx:3,style:'fill:var(--med)'},g);
-  el('path',{d:'M9 3v12M3 9h12',stroke:'#fff','stroke-width':3},g);
-});
-
-/* 02 comparison small multiples */
-var cmp=[
-  {t:'汉中→西安里程',u:'km',a:330,b:275,max:350},
-  {t:'汉中→西安纯驾驶',u:'小时',a:4,b:3.2,max:4.5},
-  {t:'秦岭山区路段',u:'km',a:160,b:150,max:250},
-  {t:'出山到下一座地级市',u:'km',a:0,b:50,max:250,na:'出山即宝鸡'},
-  {t:'汉中后无大医院路段',u:'km',a:160,b:230,max:250}
-];
-var host=document.getElementById('cmp');
-cmp.forEach(function(c){
-  var p=document.createElement('div');p.className='panel';
-  p.innerHTML='<h3 style="font-size:.92rem">'+c.t+'<small>'+c.u+'</small></h3><div class="chart"></div>';
-  host.appendChild(p);
-  var s=svg(220,78,p.querySelector('.chart'));
-  var x0=44,W=150;
-  [['宝汉',c.a,'var(--sign)'],['西汉',c.b,'var(--alt)']].forEach(function(r,i){
-    var y=10+i*32;
-    el('text',{x:0,y:y+15,'font-size':12,style:'fill:var(--muted)'},s,r[0]);
-    var w=Math.max(r[1]/c.max*W,0);
-    if(w>0){var b=el('rect',{x:x0,y:y,width:w,height:20,rx:4,style:'fill:'+r[2]},s);tip(b,r[0]+'线 '+r[1]+' '+c.u);}
-    else el('line',{x1:x0,y1:y,x2:x0,y2:y+20,style:'stroke:'+r[2],'stroke-width':2},s);
-    var label=(r[1]===0&&c.na&&i===0)?c.na:(r[1]+'');
-    el('text',{x:x0+w+6,y:y+15,'font-size':12,'font-weight':i===0?700:400,style:'fill:var(--ink)',class:'num'},s,label);
-  });
-});
-
-/* 03 weather matrix */
-function icon(kind){
-  var s='<svg viewBox="0 0 34 34" aria-hidden="true">';
-  if(kind==='sun'){s+='<circle cx="17" cy="17" r="7" style="fill:var(--d6)"/>';for(var i=0;i<8;i++){var a=i*Math.PI/4;s+='<line x1="'+(17+11*Math.cos(a))+'" y1="'+(17+11*Math.sin(a))+'" x2="'+(17+14*Math.cos(a))+'" y2="'+(17+14*Math.sin(a))+'" style="stroke:var(--d6)" stroke-width="2" stroke-linecap="round"/>';}}
-  if(kind==='cloudsun'){s+='<circle cx="22" cy="12" r="6" style="fill:var(--d6)"/>';}
-  if(kind!=='sun'){s+='<path d="M9 24a6 6 0 0 1 1-12 8 8 0 0 1 15 2 5 5 0 0 1 0 10z" style="fill:var(--alt)"/>';}
-  if(kind==='rain'){s+='<path d="M12 27l-2 5M18 27l-2 5M24 27l-2 5" style="stroke:var(--d7)" stroke-width="2" stroke-linecap="round"/>';}
-  return s+'</svg>';
-}
-var wx=[
-  ['成都—德阳—绵阳','G5 · 第 1 天',['rain','阴有小雨','约 13–20℃'],['rain','小雨','降温 2–4℃']],
-  ['广元—宁强','G5 · 第 1 天',['rain','转阴有小雨，偏北风',''],['rain','小雨','最高气温下降']],
-  ['汉中','住宿地',['cloud','阴（局地小雨 0.1–2 mm）','11–17℃'],['rain','小雨','9–14℃']],
-  ['留坝—凤县—秦岭','主线 · G85 · 第 2 天',['cloud','无单独预报','比汉中低 5–8℃'],['rain','小雨，桥面湿滑','无雨夹雪预报']],
-  ['宝鸡—咸阳','主线 · G30 · 第 2 天',['cloudsun','晴到多云',''],['rain','小雨，阵风 5–6 级','降温 4–6℃']],
-  ['洋县—佛坪—秦岭服务区','备选 · G5 西汉 · 第 2 天',['cloud','无单独预报','海拔 1600 m+，比汉中低 5–8℃'],['rain','小雨，可能有雾','全程最冷、最湿']],
-  ['鄠邑','备选 · G5 西汉 · 第 2 天',['cloudsun','晴到多云',''],['rain','阴有小雨，有风','降温 4–6℃']],
-  ['西安','目的地',['cloudsun','晴到多云','9–19℃'],['rain','阴有小雨，有风','9–13℃']]
-];
-var W=document.getElementById('wx');
-W.innerHTML='<div class="hd">路段</div><div class="hd">11 月 6 日 周五</div><div class="hd">11 月 7 日 周六</div>';
-wx.forEach(function(r){
-  W.insertAdjacentHTML('beforeend','<div class="seg">'+r[0]+'<small>'+(r[1].indexOf('备选')===0?'<span class="pill" style="background:var(--faint);color:var(--muted)">备选</span> ':(r[1].indexOf('主线')===0?'<span class="pill ok">主线</span> ':''))+r[1].replace(/^(主线|备选) · /,'')+'</small></div>');
-  [r[2],r[3]].forEach(function(c){W.insertAdjacentHTML('beforeend','<div>'+icon(c[0])+'<span class="txt"><span>'+c[1]+'</span>'+(c[2]?'<b>'+c[2]+'</b>':'')+'</span></div>');});
-});
-
-/* temperature range dumbbell */
-var T=[['成都',[13,20],null],['汉中',[11,17],[9,14]],['西安',[9,19],[9,13]]];
-var th=document.getElementById('temp');var ts=svg(620,T.length*58+40,th,520);
-var tx0=70,tx1=600,tmin=5,tmax=22;function X(v){return tx0+(v-tmin)/(tmax-tmin)*(tx1-tx0);}
-for(var v=5;v<=22;v+=5){el('line',{x1:X(v),y1:10,x2:X(v),y2:T.length*58+10,style:'stroke:var(--faint)'},ts);el('text',{x:X(v),y:T.length*58+28,'text-anchor':'middle','font-size':11,style:'fill:var(--muted)'},ts,v+'℃');}
-T.forEach(function(r,i){
-  var y=24+i*58;
-  el('text',{x:0,y:y+12,'font-size':13,'font-weight':700,style:'fill:var(--ink)'},ts,r[0]);
-  [[r[1],'var(--d6)','6日',0],[r[2],'var(--d7)','7日',22]].forEach(function(d){
-    var yy=y+d[3];
-    if(!d[0]){el('text',{x:tx0,y:yy+4,'font-size':11,style:'fill:var(--muted)'},ts,d[2]+'：无具体温度预报');return;}
-    var g=el('g',{},ts);tip(g,r[0]+' '+d[2]+' '+d[0][0]+'–'+d[0][1]+'℃');
-    el('rect',{x:X(d[0][0]),y:yy-4,width:X(d[0][1])-X(d[0][0]),height:8,rx:4,style:'fill:'+d[1]},g);
-    el('circle',{cx:X(d[0][0]),cy:yy,r:5,style:'fill:'+d[1]+';stroke:var(--paper)','stroke-width':2},g);
-    el('circle',{cx:X(d[0][1]),cy:yy,r:5,style:'fill:'+d[1]+';stroke:var(--paper)','stroke-width':2},g);
-    el('text',{x:X(d[0][0])-9,y:yy+4,'text-anchor':'end','font-size':11,style:'fill:var(--ink)',class:'num'},g,d[0][0]);
-    el('text',{x:X(d[0][1])+9,y:yy+4,'font-size':11,style:'fill:var(--ink)',class:'num'},g,d[0][1]);
-  });
-});
-
-/* 04 gantt */
-function toH(s){var p=s.split(':');return +p[0]+p[1]/60;}
-var days=[
-  ['11/6 周五',[['d','07:30','09:00','成都→梓潼'],['s','09:00','09:20','停'],['d','09:20','10:40','→剑阁'],['s','10:40','11:00','喂奶'],['d','11:00','11:50','→广元'],['s','11:50','13:00','广元午饭'],['d','13:00','14:00','→宁强'],['s','14:00','14:20','停'],['d','14:20','15:30','→汉中']]],
-  ['11/7 主线',[['d','08:30','09:30','汉中→留坝'],['s','09:30','09:50','喂奶'],['d','09:50','11:00','秦岭→宝鸡'],['s','11:00','12:30','宝鸡午饭'],['d','12:30','13:40','G30'],['s','13:40','13:55','停'],['d','13:55','14:30','→西安']],[10,11]],
-  ['11/7 备选',[['a','08:30','09:30','汉中→洋县'],['s','09:30','09:50','喂奶'],['a','09:50','11:20','秦岭段'],['s','11:20','11:35','停'],['a','11:35','12:50','→西安']],[10,11.3]]
-];
-var gh=document.getElementById('gantt');var gs=svg(900,240,gh,720);
-var g0=90,g1=880,h0=7,h1=16;function GX(t){return g0+(t-h0)/(h1-h0)*(g1-g0);}
-for(var h=h0;h<=h1;h++){el('line',{x1:GX(h),y1:14,x2:GX(h),y2:212,style:'stroke:var(--faint)'},gs);el('text',{x:GX(h),y:230,'text-anchor':'middle','font-size':11,style:'fill:var(--muted)',class:'num'},gs,(h<10?'0':'')+h+':00');}
-days.forEach(function(d,i){
-  var y=18+i*70;
-  if(d[2]){el('rect',{x:GX(d[2][0]),y:y+34,width:GX(d[2][1])-GX(d[2][0]),height:5,rx:2.5,style:'fill:var(--med)'},gs);el('text',{x:GX(d[2][1])+6,y:y+40,'font-size':10,style:'fill:var(--med)'},gs,'秦岭隧道段');}
-  el('text',{x:0,y:y+20,'font-size':13,'font-weight':700,style:'fill:var(--ink)'},gs,d[0]);
-  d[1].forEach(function(seg){
-    var a=toH(seg[1]),b=toH(seg[2]),x=GX(a)+1,w=GX(b)-GX(a)-2;
-    var r=el('rect',{x:x,y:y,width:w,height:30,rx:4,style:'fill:'+(seg[0]==='d'?'var(--sign)':seg[0]==='a'?'var(--alt)':'var(--stop)')},gs);
-    tip(r,seg[1]+'–'+seg[2]+' '+seg[3]);
-    if(w>44)el('text',{x:x+w/2,y:y+19,'text-anchor':'middle','font-size':11,style:'fill:'+(seg[0]==='s'?'var(--ink)':'#fff')},gs,seg[3]);
-  });
-});
-
-/* 05 coverage: distance to nearest big-hospital city along route */
-var cities=[0,70,120,300,455,615,735,785];
-var ch=document.getElementById('cover');var cs=svg(900,170,ch,720);
-var c0=50,c1=880;function CX(k){return c0+k/785*(c1-c0);}function CY(d){return 130-d/90*100;}
-[0,40,80].forEach(function(d){el('line',{x1:c0,y1:CY(d),x2:c1,y2:CY(d),style:'stroke:var(--faint)'},cs);el('text',{x:c0-8,y:CY(d)+4,'text-anchor':'end','font-size':11,style:'fill:var(--muted)'},cs,d+' km');});
-var pts=[];for(var k=0;k<=785;k+=5){var m=999;cities.forEach(function(c){m=Math.min(m,Math.abs(c-k));});pts.push([k,m]);}
-var dpath='M'+CX(0)+' '+CY(0)+pts.map(function(p){return ' L'+CX(p[0]).toFixed(1)+' '+CY(p[1]).toFixed(1);}).join('')+' L'+CX(785)+' '+CY(0)+' Z';
-el('path',{d:dpath,style:'fill:var(--warn-soft);stroke:var(--warn)','stroke-width':2,'stroke-linejoin':'round'},cs);
-var names=['成都','德阳','绵阳','广元','汉中','宝鸡','咸阳','西安'];
-cities.forEach(function(c,i){var g=el('g',{transform:'translate('+(CX(c)-6)+','+(CY(0)-6)+')'},cs);el('rect',{width:12,height:12,rx:2,style:'fill:var(--med)'},g);el('path',{d:'M6 2v8M2 6h8',stroke:'#fff','stroke-width':2},g);
-  el('text',{x:CX(c),y:154,'text-anchor':'middle','font-size':11,style:'fill:var(--ink)'},cs,names[i]);});
-el('text',{x:CX(377),y:CY(78)-6,'text-anchor':'middle','font-size':11,style:'fill:var(--warn)'},cs,'广元—汉中 最远约 78 km');
-el('text',{x:CX(535),y:CY(80)-6,'text-anchor':'middle','font-size':11,style:'fill:var(--warn)'},cs,'秦岭山区 最远约 80 km');
-
-/* coverage day 2 compare */
 (function(){
-var h=document.getElementById('cover2');var s=svg(900,190,h,720);
-var x0=60,x1=880,maxK=330,maxD=150;function X(k){return x0+k/maxK*(x1-x0);}function Y(d){return 150-d/maxD*120;}
-[0,50,100,150].forEach(function(d){el('line',{x1:x0,y1:Y(d),x2:x1,y2:Y(d),style:'stroke:var(--faint)'},s);el('text',{x:x0-8,y:Y(d)+4,'text-anchor':'end','font-size':11,style:'fill:var(--muted)'},s,d+' km');});
-[0,50,100,150,200,250,300].forEach(function(k){el('text',{x:X(k),y:172,'text-anchor':'middle','font-size':11,style:'fill:var(--muted)'},s,k);});
-el('text',{x:x1,y:188,'text-anchor':'end','font-size':11,style:'fill:var(--muted)'},s,'距汉中 km');
-function line(cities,len,color,dash,label,lx,ly){var d='';for(var k=0;k<=len;k+=5){var m=999;cities.forEach(function(c){m=Math.min(m,Math.abs(c-k));});d+=(k?' L':'M')+X(k).toFixed(1)+' '+Y(m).toFixed(1);}
-  var p=el('path',{d:d,fill:'none',style:'stroke:'+color,'stroke-width':2,'stroke-linejoin':'round'},s);if(dash)p.setAttribute('stroke-dasharray',dash);tip(p,label);
-  cities.forEach(function(c){el('circle',{cx:X(c),cy:Y(0),r:4,style:'fill:'+color+';stroke:var(--paper)','stroke-width':2},s);});
-  el('text',{x:lx,y:ly,'font-size':11,'font-weight':700,style:'fill:var(--ink)'},s,label);}
-line([0,275],275,'var(--alt)','6 4','虚线：备选西汉线 · 最远约 137 km',X(137)-90,Y(137)-8);
-line([0,160,280,330],330,'var(--sign)',null,'实线：主线宝汉线 · 最远约 80 km',X(0)+12,Y(140));
-[['汉中',0,'middle'],['宝鸡',160,'middle'],['备选到西安',272,'end'],['咸阳',284,'start'],['西安',330,'middle']].forEach(function(c,i){el('text',{x:X(c[1]),y:Y(0)-8,'text-anchor':c[2],'font-size':10,style:'fill:var(--muted)'},s,c[0]);});
+var s=document.getElementById('strip');
+el('rect',{x:392,y:96,width:181,height:22,rx:4,style:'fill:var(--warn-soft)'},s);
+el('text',{x:482,y:90,'text-anchor':'middle','font-size':11,style:'fill:var(--warn)'},s,'广元—汉中 · 约 155 km 无大医院');
+el('path',{d:'M573 107 C 600 107, 595 205, 625 205 H 925 C 955 205, 960 160, 960 115','fill':'none',style:'stroke:var(--B)','stroke-width':7,'stroke-linecap':'round'},s);
+el('path',{d:'M40 107 H960',fill:'none',style:'stroke:var(--A)','stroke-width':8,'stroke-linecap':'round'},s);
+el('path',{d:'M40 107 H960',fill:'none',style:'stroke:var(--paper)','stroke-width':1.5,'stroke-dasharray':'10 10'},s);
+el('text',{x:306,y:26,'text-anchor':'middle','font-size':12,'font-weight':700,style:'fill:var(--muted)'},s,'共同路段 · G5 · 成都 → 汉中 约 455–510 km');
+el('text',{x:766,y:26,'text-anchor':'middle','font-size':12,'font-weight':700,style:'fill:var(--A)'},s,'A 主线 · G5 西汉 · 294 km');
+el('text',{x:766,y:262,'text-anchor':'middle','font-size':12,'font-weight':700,style:'fill:var(--B)'},s,'B 备选 · G85 → G3024/G30 · 345 km');
+el('line',{x1:573,y1:32,x2:573,y2:76,stroke:'var(--muted)','stroke-dasharray':'3 4'},s);
+var cities=[['成都',40,'0'],['德阳',122,'70'],['绵阳',181,'120'],['广元',392,'300'],['宁强',497,'390'],['汉中',573,'455+'],['洋县',665,''],['宁陕',770,''],['鄠邑',890,''],['西安',960,'']];
+cities.forEach(function(c){var big=(c[0]==='成都'||c[0]==='汉中'||c[0]==='西安');var town=(c[0]==='洋县'||c[0]==='宁陕'||c[0]==='鄠邑'||c[0]==='宁强');
+  el('circle',{cx:c[1],cy:107,r:big?8:5,style:'fill:'+(town?'var(--paper)':'var(--A)')+';stroke:var(--A)','stroke-width':2},s);
+  el('text',{x:c[1],y:144,'text-anchor':'middle','font-size':12.5,'font-weight':700,style:'fill:var(--ink)'},s,c[0]);
+  if(c[2])el('text',{x:c[1],y:159,'text-anchor':'middle','font-size':10.5,style:'fill:var(--muted)'},s,c[2]+' km');});
+[['留坝',655],['坪坎',715],['天台山隧道',785],['宝鸡方向',865]].forEach(function(c){el('circle',{cx:c[1],cy:205,r:c[0]==='宝鸡方向'?6:4,style:'fill:'+(c[0]==='宝鸡方向'?'var(--B)':'var(--paper)')+';stroke:var(--B)','stroke-width':2},s);el('text',{x:c[1],y:232,'text-anchor':'middle','font-size':11.5,style:'fill:var(--ink)'},s,c[0]);});
+[[122,'1'],[181,'2'],[382,'3'],[402,'4'],[563,'5'],[583,'6'],[960,'8']].forEach(function(h){circ(s,h[0],62,h[1]);});
+circ(s,865,180,'7');
+el('text',{x:715,y:124,'text-anchor':'middle','font-size':10.5,style:'fill:var(--med)'},s,'秦岭隧道群（宁陕一带）');
+el('text',{x:750,y:196,'text-anchor':'middle','font-size':10.5,style:'fill:var(--med)'},s,'隧道群 32 km');
+el('text',{x:290,y:200,'text-anchor':'middle','font-size':11,style:'fill:var(--muted)'},s,'红圈数字＝新生儿专线医院（见“医院”一节）');
+el('text',{x:290,y:217,'text-anchor':'middle','font-size':11,style:'fill:var(--muted)'},s,'实心点＝有大医院的城市　空心点＝途经县城');
+el('text',{x:290,y:234,'text-anchor':'middle','font-size':10.5,style:'fill:var(--muted)'},s,'示意图，不按比例；实际轨迹见下方');
 })();
 
-/* 07 fog speed */
-var fh=document.getElementById('fog');var fs=svg(320,150,fh);
-[['< 200 m',60],['< 100 m',40],['< 50 m',20]].forEach(function(r,i){
-  var y=12+i*44;
-  el('text',{x:0,y:y+18,'font-size':12,style:'fill:var(--ink)'},fs,'能见度 '+r[0]);
-  var w=r[1]/60*170;var b=el('rect',{x:100,y:y,width:w,height:26,rx:4,style:'fill:var(--warn)'},fs);tip(b,'最高 '+r[1]+' km/h');
-  el('text',{x:100+w+6,y:y+18,'font-size':12,'font-weight':700,style:'fill:var(--ink)',class:'num'},fs,r[1]+' km/h');
-});
+var cmp=[{t:'汉中→西安里程',u:'km',a:294,b:345,max:360},{t:'纯驾驶时间',u:'',a:233,b:250,max:260,fmt:function(v){return Math.floor(v/60)+' 小时 '+(v%60)+' 分';}},{t:'收费估计',u:'元',a:162,b:232,max:250},{t:'离大医院最远',u:'km',a:147,b:90,max:160}];
+var host=document.getElementById('cmp');
+cmp.forEach(function(c){var p=document.createElement('div');p.className='panel';p.innerHTML='<h3 style="font-size:.92rem">'+c.t+'<small>'+c.u+'</small></h3><div class="chart"></div>';host.appendChild(p);
+  var s=svg(240,74,p.querySelector('.chart'));
+  [['A',c.a,'var(--A)'],['B',c.b,'var(--B)']].forEach(function(r,i){var y=8+i*32;el('text',{x:0,y:y+15,'font-size':12,'font-weight':700,style:'fill:var(--muted)'},s,r[0]);var w=r[1]/c.max*130;var b=el('rect',{x:22,y:y,width:w,height:20,rx:4,style:'fill:'+r[2]},s);tip(b,r[0]+' '+(c.fmt?c.fmt(r[1]):r[1]+' '+c.u));el('text',{x:22+w+6,y:y+15,'font-size':12,style:'fill:var(--ink)'},s,c.fmt?c.fmt(r[1]):r[1]);});});
 
-/* copy + checklist */
-document.querySelectorAll('.copy').forEach(function(btn){
-  btn.addEventListener('click',function(){
-    var n=btn.previousElementSibling,t=n.textContent.trim();
-    function done(m){btn.textContent=m;setTimeout(function(){btn.textContent='复制';},1500);}
-    function fb(){var r=document.createRange();r.selectNodeContents(n);var s=getSelection();s.removeAllRanges();s.addRange(r);done('已选中');}
-    try{navigator.clipboard.writeText(t).then(function(){done('已复制');},fb);}catch(e){fb();}
-  });
-});
-document.querySelectorAll('#pack input').forEach(function(cb){
-  try{cb.checked=localStorage.getItem('rb-'+cb.id)==='1';}catch(e){}
-  cb.addEventListener('change',function(){try{localStorage.setItem('rb-'+cb.id,cb.checked?'1':'0');}catch(e){}});
-});
+function icon(t){var rain=/雨/.test(t),sun=/晴/.test(t);
+  var s='<svg class="ic" viewBox="0 0 34 34" aria-hidden="true">';
+  if(sun&&!rain&&!/云|阴/.test(t)){s+='<circle cx="17" cy="17" r="7" style="fill:var(--sun)"/>';for(var i=0;i<8;i++){var a=i*Math.PI/4;s+='<line x1="'+(17+11*Math.cos(a)).toFixed(1)+'" y1="'+(17+11*Math.sin(a)).toFixed(1)+'" x2="'+(17+14*Math.cos(a)).toFixed(1)+'" y2="'+(17+14*Math.sin(a)).toFixed(1)+'" style="stroke:var(--sun)" stroke-width="2" stroke-linecap="round"/>';}return s+'</svg>';}
+  if(sun)s+='<circle cx="22" cy="11" r="6" style="fill:var(--sun)"/>';
+  s+='<path d="M9 24a6 6 0 0 1 1-12 8 8 0 0 1 15 2 5 5 0 0 1 0 10z" style="fill:var(--cloud)"/>';
+  if(rain)s+='<path d="M12 27l-2 5M18 27l-2 5M24 27l-2 5" style="stroke:var(--rain)" stroke-width="2" stroke-linecap="round"/>';
+  return s+'</svg>';}
+var WX=[['成都','共同',['多云→阴',15,21],['小雨',14,18],['多云',12,22]],['德阳','共同',['小雨→阴',15,21],['小雨',14,17],['多云',11,20]],['绵阳','共同',['多云→阴',14,20],['小雨',13,17],['多云',11,21]],['广元','共同',['多云→小雨',13,20],['小雨',11,16],['多云',8,22]],['宁强','共同',['阴→小雨',9,15],['小雨',6,12],['阴→多云',5,13]],['汉中','共同',['多云→小雨',11,19],['小雨→阴',11,16],['阴→多云',10,18]],['洋县','A',['阴',14,20],['小雨',11,17],['阴→多云',7,15]],['宁陕','A',['多云',7,19],['小雨',4,11],['阴→晴',4,13]],['鄠邑','A',['晴',8,17],['小雨',8,11],['阴→多云',5,14]],['留坝','B',['阴',6,17],['小雨',3,10],['阴→多云',1,9]],['凤县*','B',['多云→小雨',7,17],['小雨→阴',2,12],['阴→多云',1,10]],['宝鸡','B',['晴→小雨',10,17],['小雨→多云',7,10],['阴→多云',4,13]],['西安','终点',['晴→多云',9,18],['小雨→阴',10,12],['阴→多云',7,15]]];
+var W=document.getElementById('wx');
+W.innerHTML='<div class="hd">节点</div><div class="hd">11/6 周五</div><div class="hd">11/7 周六</div><div class="hd">11/8 周日</div>';
+function rbar(lo,hi){var x=function(v){return (v/23*100).toFixed(1);};return '<svg class="rb" viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="4" width="100" height="2" style="fill:var(--faint)"/><rect x="'+x(lo)+'" y="2" width="'+(x(hi)-x(lo))+'" height="6" rx="3" style="fill:var(--cloud)"/>'+(lo<=4?'<rect x="'+(x(lo)-1.2)+'" y="0" width="2.4" height="10" style="fill:var(--cold)"/>':'')+'</svg>';}
+WX.forEach(function(r){var cls=r[1]==='A'?'rowA':r[1]==='B'?'rowB':'';var tag=r[1]==='A'?'<span class="tagA">A · G5</span>':r[1]==='B'?'<span class="tagB">B · G85</span>':'<span class="tagC">'+r[1]+'</span>';
+  W.insertAdjacentHTML('beforeend','<div class="seg '+cls+'">'+r[0]+tag+'</div>');
+  [r[2],r[3],r[4]].forEach(function(c){W.insertAdjacentHTML('beforeend','<div>'+icon(c[0])+'<span class="txt"><span>'+c[0]+'</span><b'+(c[1]<=4?' style="color:var(--cold)"':'')+'>'+c[1]+'—'+c[2]+'℃</b>'+rbar(c[1],c[2])+'</span></div>');});});
+
+function lows(id,a,b){var h=document.getElementById(id);var s=svg(440,196,h,360);var x0=44,x1=420,y0=150,ymax=12;function X(i){return x0+i*(x1-x0)/4;}function Y(v){return y0-v/ymax*120;}
+  [0,4,8,12].forEach(function(v){el('line',{x1:x0,y1:Y(v),x2:x1,y2:Y(v),style:'stroke:var(--faint)'},s);el('text',{x:x0-8,y:Y(v)+4,'text-anchor':'end','font-size':11,style:'fill:var(--muted)'},s,v+'℃');});
+  el('rect',{x:x0,y:Y(4),width:x1-x0,height:Y(0)-Y(4),style:'fill:var(--sky-soft)'},s);el('text',{x:x1-4,y:Y(0)-4,'text-anchor':'end','font-size':10,style:'fill:var(--cold)'},s,'≤ 4℃ 注意桥面、隧道口');
+  [[a,'var(--A)','A'],[b,'var(--B)','B']].forEach(function(L,j){var d=L[0].map(function(p,i){return (i?'L':'M')+X(i)+' '+Y(p[1]);}).join(' ');var path=el('path',{d:d,fill:'none',style:'stroke:'+L[1],'stroke-width':2},s);if(j)path.setAttribute('stroke-dasharray','6 4');
+    L[0].forEach(function(p,i){var c=el('circle',{cx:X(i),cy:Y(p[1]),r:4.5,style:'fill:'+L[1]+';stroke:var(--paper)','stroke-width':2},s);tip(c,L[2]+' '+p[0]+' 最低 '+p[1]+'℃');
+      if(i>0&&i<4){el('text',{x:X(i),y:Y(p[1])+(j?17:-9),'text-anchor':'middle','font-size':10.5,style:'fill:var(--ink)'},s,L[2]+' '+p[0]+' '+p[1]+'℃');}});});
+  el('text',{x:X(0),y:y0+20,'text-anchor':'middle','font-size':11,style:'fill:var(--muted)'},s,'汉中 '+a[0][1]+'℃');el('text',{x:X(4),y:y0+20,'text-anchor':'middle','font-size':11,style:'fill:var(--muted)'},s,'西安 '+a[4][1]+'℃');
+  el('text',{x:(x0+x1)/2,y:y0+40,'text-anchor':'middle','font-size':10.5,style:'fill:var(--muted)'},s,'实线 A：洋县 · 宁陕 · 鄠邑　虚线 B：留坝 · 凤县 · 宝鸡');}
+lows('low7',[['汉中',11],['洋县',11],['宁陕',4],['鄠邑',8],['西安',10]],[['汉中',11],['留坝',3],['凤县',2],['宝鸡',7],['西安',10]]);
+lows('low8',[['汉中',10],['洋县',7],['宁陕',4],['鄠邑',5],['西安',7]],[['汉中',10],['留坝',1],['凤县',1],['宝鸡',4],['西安',7]]);
+
+function toH(s){var p=s.split(':');return +p[0]+p[1]/60;}
+function gantt(id,rows,h0,h1){var host=document.getElementById(id);var H=rows.length*46+36;var s=svg(900,H,host,720);var g0=120,g1=885;function GX(t){return g0+(t-h0)/(h1-h0)*(g1-g0);}
+  for(var h=h0;h<=h1;h++){el('line',{x1:GX(h),y1:4,x2:GX(h),y2:H-26,style:'stroke:var(--faint)'},s);el('text',{x:GX(h),y:H-10,'text-anchor':'middle','font-size':11,style:'fill:var(--muted)'},s,(h<10?'0':'')+h+':00');}
+  rows.forEach(function(r,i){var y=8+i*46;el('text',{x:0,y:y+18,'font-size':12,'font-weight':700,style:'fill:var(--ink)'},s,r[0]);
+    if(r[2]){el('rect',{x:GX(r[2][0]),y:y+31,width:GX(r[2][1])-GX(r[2][0]),height:5,rx:2.5,style:'fill:var(--med)'},s);}
+    r[1].forEach(function(g){var a=toH(g[1]),b=toH(g[2]),x=GX(a)+1,w=GX(b)-GX(a)-2;var col=g[0]==='A'?'var(--A)':g[0]==='B'?'var(--B)':'var(--stop)';var rc=el('rect',{x:x,y:y,width:w,height:27,rx:4,style:'fill:'+col},s);tip(rc,g[1]+'–'+g[2]+' '+g[3]);
+      if(w>40)el('text',{x:x+w/2,y:y+18,'text-anchor':'middle','font-size':10.5,style:'fill:'+(g[0]==='s'?'var(--ink)':'#fff')},s,g[3]);});});}
+gantt('gantt3',[
+ ['11/6 成都→广元',[['A','08:00','09:30','成都→绵阳'],['s','09:30','09:50','照护'],['A','09:50','11:20','→剑阁'],['s','11:20','11:40','照护'],['A','11:40','12:40','→广元']]],
+ ['11/7 广元→汉中',[['A','09:00','10:15','广元→宁强'],['s','10:15','10:35','照护'],['A','10:35','11:50','→汉中']]],
+ ['11/8 A 汉中→西安',[['A','09:00','10:00','汉中→洋县'],['s','10:00','10:20','照护'],['A','10:20','11:50','秦岭·宁陕'],['s','11:50','12:05','停'],['A','12:05','13:20','→西安']],[10.5,11.83]],
+ ['11/8 B 汉中→西安',[['B','09:00','10:00','汉中→留坝'],['s','10:00','10:20','照护'],['B','10:20','11:30','秦岭隧道群'],['s','11:30','11:50','停'],['B','11:50','13:30','G3024/G30→西安']],[10.5,11.5]]
+],8,14);
+gantt('gantt2',[
+ ['11/6 成都→汉中',[['A','08:00','09:30','成都→绵阳'],['s','09:30','09:50','照护'],['A','09:50','11:10','→剑阁'],['s','11:10','11:30','喂奶'],['A','11:30','12:20','→广元'],['s','12:20','13:30','广元午饭'],['A','13:30','14:30','→宁强'],['s','14:30','14:50','照护'],['A','14:50','16:00','→汉中']]],
+ ['11/7 A 汉中→西安',[['A','08:30','09:30','汉中→洋县'],['s','09:30','09:50','照护'],['A','09:50','11:20','秦岭段'],['s','11:20','11:35','停'],['A','11:35','12:50','→西安']],[10,11.33]],
+ ['11/7 B 汉中→西安',[['B','08:30','09:30','汉中→留坝'],['s','09:30','09:50','照护'],['B','09:50','11:00','秦岭隧道群'],['s','11:00','11:20','停'],['B','11:20','13:00','G3024/G30']],[10,11]]
+],8,17);
+
+(function(){var h=document.getElementById('cover');var s=svg(900,200,h,720);var x0=60,x1=880,maxK=345,maxD=160;function X(k){return x0+k/maxK*(x1-x0);}function Y(d){return 160-d/maxD*130;}
+ [0,50,100,150].forEach(function(d){el('line',{x1:x0,y1:Y(d),x2:x1,y2:Y(d),style:'stroke:var(--faint)'},s);el('text',{x:x0-8,y:Y(d)+4,'text-anchor':'end','font-size':11,style:'fill:var(--muted)'},s,d+' km');});
+ [0,50,100,150,200,250,300].forEach(function(k){el('text',{x:X(k),y:180,'text-anchor':'middle','font-size':11,style:'fill:var(--muted)'},s,k);});
+ el('text',{x:x1,y:196,'text-anchor':'end','font-size':11,style:'fill:var(--muted)'},s,'距汉中 km');
+ function line(c,len,color,dash,label,lx,ly,anchor){var d='';for(var k=0;k<=len;k+=3){var m=999;c.forEach(function(v){m=Math.min(m,Math.abs(v-k));});d+=(k?' L':'M')+X(k).toFixed(1)+' '+Y(m).toFixed(1);}var p=el('path',{d:d,fill:'none',style:'stroke:'+color,'stroke-width':2.2,'stroke-linejoin':'round'},s);if(dash)p.setAttribute('stroke-dasharray',dash);tip(p,label);el('text',{x:lx,y:ly,'text-anchor':anchor||'start','font-size':11.5,'font-weight':700,style:'fill:var(--ink)'},s,label);}
+ line([0,294],294,'var(--A)',null,'实线 A：中段最远约 147 km',X(147),Y(147)-10,'middle');
+ line([0,165,345],345,'var(--B)','6 4','虚线 B：最远约 90 km（宝鸡需下高速）',X(255),Y(90)-10,'middle');
+ [['汉中',0,'start'],['宝鸡方向',165,'middle'],['A 到西安',294,'middle'],['B 到西安',345,'end']].forEach(function(c){el('text',{x:X(c[1]),y:Y(0)-6,'text-anchor':c[2],'font-size':10.5,style:'fill:var(--muted)'},s,c[0]);});
+})();
+
+(function(){var h=document.getElementById('fog');var s=svg(320,136,h);[['< 200 m',60],['< 100 m',40],['< 50 m',20]].forEach(function(r,i){var y=8+i*42;el('text',{x:0,y:y+18,'font-size':12,style:'fill:var(--ink)'},s,'能见度 '+r[0]);var w=r[1]/60*160;var b=el('rect',{x:100,y:y,width:w,height:26,rx:4,style:'fill:var(--warn)'},s);tip(b,'最高 '+r[1]+' km/h');el('text',{x:100+w+6,y:y+18,'font-size':12,'font-weight':700,style:'fill:var(--ink)'},s,r[1]+' km/h');});})();
+
+document.querySelectorAll('.copy').forEach(function(btn){btn.addEventListener('click',function(){var n=btn.previousElementSibling,t=n.textContent.trim();function done(m){btn.textContent=m;setTimeout(function(){btn.textContent='复制';},1500);}function fb(){var r=document.createRange();r.selectNodeContents(n);var g=getSelection();g.removeAllRanges();g.addRange(r);done('已选中');}try{navigator.clipboard.writeText(t).then(function(){done('已复制');},fb);}catch(e){fb();}});});
+document.querySelectorAll('.check input').forEach(function(cb){try{cb.checked=localStorage.getItem('rb-'+cb.id)==='1';}catch(e){}cb.addEventListener('change',function(){try{localStorage.setItem('rb-'+cb.id,cb.checked?'1':'0');}catch(e){}});});
+var PG=window.__PG__||null;if(PG){document.querySelectorAll('.pg').forEach(function(e){var v=PG[e.dataset.sec];if(v)e.textContent='第 '+v+' 页';});}
 })();
 </script>
