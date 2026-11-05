@@ -84,6 +84,21 @@ a{color:var(--sky)}
 .script{background:var(--paper);border:1.5px dashed var(--med);border-radius:8px;padding:8px 12px;font-size:1rem;line-height:1.7}
 .script u{text-decoration:none;border-bottom:1px solid var(--ink);display:inline-block;min-width:3.5em}
 
+.toc2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 14px}
+@media (max-width:640px){.toc2{grid-template-columns:1fr}}
+.toc2 .ch{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:6px 10px;min-width:0}
+.toc2 .ch.sos{border-color:var(--med)}
+.lead2{display:flex;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink)}
+.lead2 .dots{flex:1;border-bottom:1px dotted var(--muted);transform:translateY(-4px);min-width:12px}
+.lead2 .pg{font-family:var(--f-mono);font-size:.85rem;color:var(--muted);white-space:nowrap}
+.toc2 .ch > .lead2{font-weight:700}
+.toc2 .ch > .lead2 b{font-family:var(--f-mono);color:var(--sign);margin-right:2px}
+.toc2 .ch.sos > .lead2 b{color:var(--med)}
+.toc2 .subs{display:flex;flex-direction:column;padding-left:1.4em;font-size:.9rem}
+.idxgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px}
+.idxgrid .cat{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:6px 10px;min-width:0}
+.idxgrid .cat h3{font-size:.95rem;color:var(--sign);margin-bottom:2px}
+.idxgrid .lead2{font-size:.93rem}
 .toc{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}
 .toc a{display:flex;justify-content:space-between;align-items:baseline;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:8px 12px;text-decoration:none;color:var(--ink);min-width:0}
 .toc a .t{display:flex;gap:8px;align-items:baseline;min-width:0}
@@ -208,18 +223,19 @@ footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padd
   h2,h3{break-after:avoid}
   .pb{break-before:auto}
   .panel,.day,.box,.callout{break-inside:auto}
-  .chart,.h,.flow > div,.danger > div,tr,.big120,.script,.gap,.toc a,.wx > div{break-inside:avoid}
+  .chart,.h,.flow > div,.danger > div,tr,.big120,.script,.gap,.toc a,.wx > div,.toc2 .ch,.idxgrid .cat{break-inside:avoid}
+  .toc2{gap:4px 10px} .toc2 .subs{font-size:9pt}
   .toc{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
   .toc a{padding:4px 8px;font-size:9pt}
   .toc a small{font-size:7.5pt}
   .sos-sec{gap:9px}
   .big120 b{font-size:2.6rem}
 }
-@page{size:A4;margin:8mm 9mm 12mm}
+@page{size:A4;margin:15mm 9mm 13mm}
 </style>
 
-<div class="navbar noprint"><nav aria-label="索引">
-  <a class="sos" href="#sos">紧急速查</a><a href="#index">索引</a><a href="#route">路线</a><a href="#weather">天气</a><a href="#plan">行程</a><a href="#hospitals">医院</a><a href="#oxygen">供氧急救</a><a href="#baby">照护</a><a href="#checklist">检查</a><a href="#drive">开车</a><a href="#change">预案</a><a href="#sources">来源</a>
+<div class="navbar noprint"><nav aria-label="快速跳转">
+  <a class="sos" href="#sos">紧急速查</a><a href="#toc">目录</a><a href="#idx">索引</a><a href="#route">路线</a><a href="#weather">天气</a><a href="#plan">行程</a><a href="#hospitals">医院</a><a href="#oxygen">供氧急救</a><a href="#baby">照护</a><a href="#checklist">检查</a><a href="#drive">开车</a><a href="#change">预案</a><a href="#sources">来源</a>
 </nav></div>
 
 <div class="wrap">
@@ -277,21 +293,9 @@ footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padd
   <p class="note">隧道里没信号时用隧道内的紧急电话，或出隧道再打。圆圈数字 <span class="c">1</span>–<span class="c">8</span> 对应“医院”一节的卡片。</p>
 </section>
 
-<section id="index">
-  <h2><span class="no">≡</span>索引<span class="en">INDEX</span></h2>
-  <div class="toc">
-    <a class="sos" href="#sos"><span class="t"><b>!</b><span>紧急速查<small>120 话术、按路段找医院</small></span></span><span class="pg" data-sec="sos"></span></a>
-    <a href="#route"><span class="t"><b>01</b><span>路线与 A/B 对比<small>轨迹图、里程、收费、差异</small></span></span><span class="pg" data-sec="route"></span></a>
-    <a href="#weather"><span class="t"><b>02</b><span>天气 6–8 日<small>13 个节点、A/B 山区低温</small></span></span><span class="pg" data-sec="weather"></span></a>
-    <a href="#plan"><span class="t"><b>03</b><span>行程<small>三天方案、只住一晚、停靠、施工</small></span></span><span class="pg" data-sec="plan"></span></a>
-    <a href="#hospitals"><span class="t"><b>04</b><span>医院<small>①–⑧ 新生儿专线 + 补充医院</small></span></span><span class="pg" data-sec="hospitals"></span></a>
-    <a href="#oxygen"><span class="t"><b>05</b><span>供氧与急救<small>制氧机核对、处置流程</small></span></span><span class="pg" data-sec="oxygen"></span></a>
-    <a href="#baby"><span class="t"><b>06</b><span>宝宝乘车与照护<small>座椅、喂养、危险信号</small></span></span><span class="pg" data-sec="baby"></span></a>
-    <a href="#checklist"><span class="t"><b>07</b><span>出发检查<small>问医生、物品、停车四步、记录</small></span></span><span class="pg" data-sec="checklist"></span></a>
-    <a href="#drive"><span class="t"><b>08</b><span>开车与路况<small>团雾限速、A/B 开车要点</small></span></span><span class="pg" data-sec="drive"></span></a>
-    <a href="#change"><span class="t"><b>09</b><span>改变计划的条件<small>什么时候改走 B、什么时候不走</small></span></span><span class="pg" data-sec="change"></span></a>
-    <a href="#sources"><span class="t"><b>10</b><span>信息来源<small>天气、路线、医院、医学依据</small></span></span><span class="pg" data-sec="sources"></span></a>
-  </div>
+<section id="toc">
+  <h2><span class="no">≡</span>目录<span class="en">CONTENTS</span><span class="note" style="font-family:var(--f-body);letter-spacing:0">网页上点标题跳转；PDF 里点标题或用侧边书签。页码对应 PDF 版。关键词查找见书末“索引”。</span></h2>
+  <div class="toc2" id="tocbox"></div>
 </section>
 
 <section id="route" class="pb">
@@ -661,8 +665,15 @@ footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padd
   </div>
 </section>
 
+<section id="idx">
+  <h2><span class="no">10</span>索引<span class="en">INDEX</span><span class="note" style="font-family:var(--f-body);letter-spacing:0">按主题查关键词，右侧是页码；网页上可点击跳转。</span></h2>
+  <div class="idxgrid" id="idxbox"></div>
+  <h3>医院电话索引（按路线顺序）</h3>
+  <div class="tbl"><table id="hidx"><thead><tr><th>城市 / 路段</th><th>医院</th><th>首选电话</th><th>页</th></tr></thead><tbody></tbody></table></div>
+</section>
+
 <section id="sources" class="src">
-  <h2 style="font-size:1.1rem"><span class="no">10</span>信息来源</h2>
+  <h2 style="font-size:1.1rem"><span class="no">11</span>信息来源</h2>
   <ul>
     <li><b>路线与天气：</b><a href="https://developer.amap.com/api/webservice/guide/api/newroute">高德路径规划接口</a>、<a href="https://developer.amap.com/api/mcp-server/gettingstarted">高德 MCP</a>（11/5 查询；金额为接口估计，以实际结算为准）</li>
     <li><b>官方天气补充：</b><a href="https://www.thepaper.cn/newsDetail_forward_34406351">陕西省气象台</a>、<a href="https://www.thepaper.cn/newsDetail_forward_34405313">西安市气象台</a>、<a href="https://www.sohu.com/a/1096877682_119659">西安 7 日降温吹风</a>、<a href="https://www.thepaper.cn/newsDetail_forward_34394152">四川省气象台</a></li>
@@ -676,6 +687,7 @@ footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padd
 </section>
 </div>
 
+<script>if(window.__PG__===undefined)window.__PG__={"sos": 1, "k-8": 1, "k-9": 1, "t-1": 1, "k-10": 2, "toc": 2, "route": 3, "k-3": 4, "k-4": 4, "t-2": 4, "t-3": 4, "t-4": 4, "t-5": 4, "k-2": 4, "k-1": 5, "weather": 5, "wx": 6, "t-6": 7, "t-7": 7, "k-7": 7, "plan": 7, "t-8": 7, "k-20": 7, "t-9": 7, "low7": 7, "low8": 7, "t-10": 8, "t-11": 8, "gantt3": 8, "gantt2": 8, "t-12": 9, "t-13": 9, "k-21": 9, "hospitals": 9, "t-14": 9, "t-15": 9, "covers": 9, "t-16": 10, "t-17": 10, "t-18": 11, "h-1": 11, "h-2": 11, "t-19": 11, "h-3": 11, "h-4": 11, "t-20": 12, "h-5": 12, "t-21": 12, "h-6": 12, "h-7": 12, "t-22": 12, "h-8": 12, "h-9": 12, "t-23": 12, "h-10": 13, "h-11": 13, "t-24": 13, "h-12": 13, "h-13": 13, "h-14": 13, "t-25": 13, "h-15": 13, "h-16": 13, "k-11": 13, "oxygen": 14, "k-15": 14, "t-26": 14, "k-14": 14, "t-27": 14, "k-19": 14, "t-28": 14, "baby": 14, "k-16": 14, "k-17": 14, "k-18": 14, "t-29": 15, "t-30": 15, "t-31": 15, "k-12": 15, "k-13": 15, "checklist": 15, "k-22": 15, "t-32": 15, "k-23": 15, "t-33": 15, "t-34": 15, "k-24": 15, "t-35": 16, "k-25": 16, "k-26": 16, "t-36": 16, "drive": 16, "t-37": 17, "t-38": 17, "k-5": 17, "t-39": 17, "k-6": 17, "t-40": 17, "change": 17, "fog": 17, "idx": 18, "t-41": 18, "sources": 19};</script>
 <script>
 (function(){
 var NS='http://www.w3.org/2000/svg';
@@ -812,6 +824,31 @@ SEG.forEach(function(g){
 
 document.querySelectorAll('.copy').forEach(function(btn){btn.addEventListener('click',function(){var n=btn.previousElementSibling,t=n.textContent.trim();function done(m){btn.textContent=m;setTimeout(function(){btn.textContent='复制';},1500);}function fb(){var r=document.createRange();r.selectNodeContents(n);var g=getSelection();g.removeAllRanges();g.addRange(r);done('已选中');}try{navigator.clipboard.writeText(t).then(function(){done('已复制');},fb);}catch(e){fb();}});});
 document.querySelectorAll('.check input').forEach(function(cb){try{cb.checked=localStorage.getItem('rb-'+cb.id)==='1';}catch(e){}cb.addEventListener('change',function(){try{localStorage.setItem('rb-'+cb.id,cb.checked?'1':'0');}catch(e){}});});
-var PG=window.__PG__||null;if(PG){document.querySelectorAll('.pg').forEach(function(e){var v=PG[e.dataset.sec];if(v)e.textContent='第 '+v+' 页';});}
+/* ---- ids, TOC, index ---- */
+var PG=window.__PG__||null;
+function pgOf(id){return PG?(PG[id]||''):(window.__PG__===null?'00':'');}
+var secs=['sos','route','weather','plan','hospitals','oxygen','baby','checklist','drive','change','idx','sources'];
+var hn=0;document.querySelectorAll('section h3').forEach(function(h){if(!h.id){h.id='t-'+(++hn);}});
+function leader(href,label,id,cls){return '<a class="lead2'+(cls?' '+cls:'')+'" href="#'+href+'"><span>'+label+'</span><span class="dots"></span><span class="pg">'+(pgOf(id)?'第 '+pgOf(id)+' 页':'')+'</span></a>';}
+var tb=document.getElementById('tocbox');var html='';
+secs.forEach(function(id){var sec=document.getElementById(id);if(!sec)return;var h2=sec.querySelector('h2');var no=h2.querySelector('.no')?h2.querySelector('.no').textContent:'';var t=h2.cloneNode(true);t.querySelectorAll('.no,.en,.note,span[data-mk]').forEach(function(x){x.remove();});
+  var subs=[];sec.querySelectorAll('h3').forEach(function(h){if(h.closest('#idx')||h.closest('.idxgrid'))return;var c=h.cloneNode(true);c.querySelectorAll('small,span[data-mk],.c,.km').forEach(function(x){x.remove();});var txt=c.textContent.replace(/\s+/g,' ').trim();if(txt)subs.push(leader(h.id,txt,h.id));});
+  html+='<div class="ch'+(id==='sos'?' sos':'')+'">'+leader(id,'<b>'+no+'</b> '+t.textContent.trim(),id)+(subs.length&&id!=='sos'?'<div class="subs">'+subs.join('')+'</div>':'')+'</div>';});
+tb.innerHTML=html;
+var K=[
+ ['路线与路况',[['A 主线 / B 备选怎么选','#route .callout.ok'],['A/B 对比表','#route .tbl','比较项'],['实际轨迹图（汉中→西安）','#route .track'],['里程、时间、收费','#route .kpis'],['三处施工（汉中连接线）','#plan h3','三处施工'],['停车与补能、服务区','#plan h3','停车与补能'],['秦岭服务区（海拔 1600 m+）','#drive .box','G5 西汉段'],['天台山隧道 15.56 km','#drive .box','宝汉段'],['团雾限速','#fog'],['改走 B 的条件','#change']]],
+ ['天气',[['13 个节点 × 3 天天气表','#wx'],['7 日最低气温（A/B）','#low7'],['8 日最低气温（A/B）','#low8'],['7 日降雨、8 日低温提醒','#weather .callout','7 日']]],
+ ['紧急与就医',[['打 120 的话术','#sos .script'],['出现什么 → 立即做什么','#sos .tbl'],['按路段找最近医院','#sos h3','按路段'],['应急电话（120/110/122/12122/12328）','#sos .nums'],['沿途离最近医院有多远','#covers'],['给医院打电话的话术','#hospitals .script'],['危险信号（马上就医）','#baby .danger'],['产后妈妈要就医的情况','#baby .callout','产后']]],
+ ['宝宝与设备',[['制氧机核对 5 项','#oxygen .tbl'],['出行前提（31 周早产、用氧）','#oxygen .callout','出行前提'],['后向安全座椅','#baby .seat'],['喂养','#baby .box','喂养'],['温度与感染','#baby .box','温度与感染'],['西安新生儿转运电话','#oxygen .box','医院联络']]],
+ ['行程与准备',[['三天方案','#plan .days'],['三天方案时间表','#gantt3'],['只住一晚方案','#gantt2'],['酒店选择','#plan .callout','酒店'],['请医生明确的四件事','#checklist .box','四件事'],['每天出发前检查','#checklist .box','每天出发前'],['随车物品与安排','#checklist .tbl'],['每次停车四步','#checklist .flow4'],['行程记录（手写）','#checklist .panel']]]
+];
+var kn=0,ih='',KIDS=[];K.forEach(function(cat){ih+='<div class="cat"><h3>'+cat[0]+'</h3>';cat[1].forEach(function(e){var el2=null;document.querySelectorAll(e[1]).forEach(function(x){if(!el2&&(!e[2]||x.textContent.indexOf(e[2])>=0))el2=x;});if(!el2){console.warn('IDX MISS',e[0]);return;}if(!el2.id)el2.id='k-'+(++kn);KIDS.push(el2.id);ih+=leader(el2.id,e[0],el2.id);});ih+='</div>';});
+document.getElementById('idxbox').innerHTML=ih;
+var hb=document.querySelector('#hidx tbody'),hh='',hi=0;
+document.querySelectorAll('#hospitals .hosp-group').forEach(function(g){var city=g.querySelector('h3').cloneNode(true);city.querySelectorAll('.km,.c,span[data-mk]').forEach(function(x){x.remove();});var cityT=city.textContent.replace(/\s+/g,' ').trim();
+  g.querySelectorAll('.h').forEach(function(c){if(!c.id)c.id='h-'+(++hi);var nm=c.querySelector('.name').cloneNode(true);nm.querySelectorAll('.plus').forEach(function(x){x.remove();});var num=c.querySelector('.big a')||c.querySelector('.tel a');
+    hh+='<tr><td>'+cityT+'</td><td><a href="#'+c.id+'" style="color:var(--ink);text-decoration:none">'+nm.innerHTML+'</a></td><td>'+(num?'<a class="tel-a" href="'+num.getAttribute('href')+'">'+num.textContent+'</a>':'')+'</td><td class="num">'+(pgOf(c.id)?pgOf(c.id):'')+'</td></tr>';});});
+hb.innerHTML=hh;
+window.__IDS__=Array.prototype.map.call(document.querySelectorAll('section[id],section h3[id],[id^="k-"],[id^="h-"]'),function(e){return e.id;}).concat(KIDS.filter(function(i){return !/^k-/.test(i);}));
 })();
 </script>
