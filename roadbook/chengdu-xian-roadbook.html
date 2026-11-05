@@ -170,12 +170,14 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
     <span>全程约 <b>785</b> km</span>
     <span>纯驾驶约 <b>9</b> 小时</span>
     <span>分两天，汉中住一晚</span>
+    <span>备选：汉中后改走 G5 西汉高速，约 730 km</span>
   </div>
 </header>
 
 <section>
   <div class="kpis">
-    <div><div class="k">路线</div><div class="v">G5 到汉中，宝汉高速过秦岭，G30 进西安</div></div>
+    <div><div class="k">主线路</div><div class="v">G5 到汉中，G85 宝汉高速过秦岭，G30 进西安</div></div>
+    <div><div class="k">备选线路</div><div class="v">汉中后继续走 G5 西汉高速直达西安，少约 55 km</div></div>
     <div><div class="k">节奏</div><div class="v">6 日到汉中，7 日 8:30 出发，约 14:30 到西安</div></div>
     <div><div class="k">天气</div><div class="v">6 日多云为主；7 日陕西小雨、降温、有风</div></div>
     <div><div class="k">宝宝</div><div class="v">每 1.5–2 小时停车，停车再喂奶</div></div>
@@ -185,71 +187,82 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
 
 <!-- 01 route map -->
 <section>
-  <h2><span class="no">01</span>路线全图</h2>
+  <h2><span class="no">01</span>路线全图（主线 + 备选）</h2>
   <div class="legend">
-    <span><i class="sw" style="background:var(--sign)"></i>城市</span>
+    <span><i class="sw" style="background:var(--sign)"></i>主线路 / 城市</span>
+    <span><i class="sw" style="background:var(--alt)"></i>备选线路</span>
     <span><i class="sw" style="background:var(--med)"></i>有新生儿科的医院</span>
     <span><i class="sw" style="background:var(--sky)"></i>建议停车的服务区</span>
     <span><i class="sw" style="background:var(--warn-soft);border:1px solid var(--warn)"></i>距大医院较远的路段</span>
   </div>
-  <div class="panel chart" role="img" aria-label="成都经汉中、宝鸡到西安的路线示意图">
-  <svg viewBox="0 0 1000 240" xmlns="http://www.w3.org/2000/svg" style="min-width:860px">
-    <!-- x = 40 + km * 1.172 -->
+  <div class="panel chart" role="img" aria-label="成都经汉中到西安的路线示意图，汉中后分为宝汉主线和西汉备选两条">
+  <svg viewBox="0 0 1000 340" xmlns="http://www.w3.org/2000/svg" style="min-width:860px">
+    <!-- 主线 x = 40 + km*1.172；备选支线 x = 573 + km/275*387 -->
     <rect x="391" y="96" width="182" height="22" rx="4" style="fill:var(--warn-soft)"/>
     <rect x="573" y="96" width="187" height="22" rx="4" style="fill:var(--warn-soft)"/>
+    <rect x="600" y="248" width="340" height="22" rx="4" style="fill:var(--warn-soft)"/>
     <text x="482" y="90" text-anchor="middle" font-size="11" style="fill:var(--warn)">广元—汉中 · 约 155 km 无大医院</text>
     <text x="667" y="90" text-anchor="middle" font-size="11" style="fill:var(--warn)">秦岭山区 · 约 160 km 无大医院</text>
+    <text x="760" y="243" text-anchor="middle" font-size="11" style="fill:var(--warn)">汉中—西安之间 · 约 275 km 无地级市医院</text>
+    <path d="M573 107 C 600 107, 590 259, 625 259 H 925 C 955 259, 960 210, 960 115" stroke="var(--alt)" stroke-width="7" fill="none" stroke-linecap="round"/>
+    <path d="M573 107 C 600 107, 590 259, 625 259 H 925 C 955 259, 960 210, 960 115" stroke="var(--paper)" stroke-width="1.5" stroke-dasharray="4 8" fill="none"/>
     <path d="M40 107 H960" stroke="var(--sign)" stroke-width="8" stroke-linecap="round" fill="none"/>
     <path d="M40 107 H960" stroke="var(--paper)" stroke-width="1.5" stroke-dasharray="10 10" fill="none"/>
-    <line x1="573" y1="30" x2="573" y2="196" stroke="var(--muted)" stroke-dasharray="3 4"/>
-    <text x="306" y="30" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--muted)">第 1 天 · 11/6 · 约 455 km · G5</text>
-    <text x="766" y="30" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--muted)">第 2 天 · 11/7 · 约 330 km · G85 + G30</text>
+    <line x1="573" y1="30" x2="573" y2="78" stroke="var(--muted)" stroke-dasharray="3 4"/>
+    <text x="306" y="30" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--muted)">第 1 天 · 11/6 · 约 455 km · G5（两条线相同）</text>
+    <text x="766" y="30" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--sign)">第 2 天 主线 · G85 宝汉 + G30 · 约 330 km</text>
+    <text x="766" y="226" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--muted)">第 2 天 备选 · G5 西汉 · 约 275 km（全程约 730 km）</text>
     <g font-size="13" font-weight="700">
       <circle cx="40" cy="107" r="8" style="fill:var(--sign)"/><text x="40" y="146" text-anchor="middle" style="fill:var(--ink)">成都</text>
       <circle cx="122" cy="107" r="6" style="fill:var(--sign)"/><text x="122" y="146" text-anchor="middle" style="fill:var(--ink)">德阳</text>
       <circle cx="181" cy="107" r="6" style="fill:var(--sign)"/><text x="181" y="146" text-anchor="middle" style="fill:var(--ink)">绵阳</text>
       <circle cx="392" cy="107" r="6" style="fill:var(--sign)"/><text x="392" y="146" text-anchor="middle" style="fill:var(--ink)">广元</text>
-      <circle cx="573" cy="107" r="8" style="fill:var(--sign)"/><text x="573" y="146" text-anchor="middle" style="fill:var(--ink)">汉中（住）</text>
+      <circle cx="573" cy="107" r="9" style="fill:var(--sign)"/><text x="548" y="146" text-anchor="middle" style="fill:var(--ink)">汉中（住）</text>
       <circle cx="760" cy="107" r="7" style="fill:var(--sign)"/><text x="760" y="146" text-anchor="middle" style="fill:var(--ink)">宝鸡</text>
       <circle cx="901" cy="107" r="5" style="fill:var(--sign)"/><text x="901" y="146" text-anchor="middle" style="fill:var(--ink)">咸阳</text>
-      <circle cx="960" cy="107" r="8" style="fill:var(--sign)"/><text x="960" y="146" text-anchor="middle" style="fill:var(--ink)">西安</text>
+      <circle cx="960" cy="107" r="9" style="fill:var(--sign)"/><text x="975" y="146" text-anchor="end" style="fill:var(--ink)">西安</text>
+      <circle cx="897" cy="259" r="5" style="fill:var(--alt)"/><text x="897" y="284" text-anchor="middle" font-size="12" style="fill:var(--ink)">鄠邑</text>
     </g>
     <g font-size="11" class="num">
       <text x="40" y="162" text-anchor="middle" style="fill:var(--muted)">0</text>
       <text x="122" y="162" text-anchor="middle" style="fill:var(--muted)">70</text>
       <text x="181" y="162" text-anchor="middle" style="fill:var(--muted)">120</text>
       <text x="392" y="162" text-anchor="middle" style="fill:var(--muted)">300</text>
-      <text x="573" y="162" text-anchor="middle" style="fill:var(--muted)">455</text>
+      <text x="548" y="162" text-anchor="middle" style="fill:var(--muted)">455</text>
       <text x="760" y="162" text-anchor="middle" style="fill:var(--muted)">615</text>
       <text x="901" y="162" text-anchor="middle" style="fill:var(--muted)">735</text>
-      <text x="960" y="162" text-anchor="middle" style="fill:var(--muted)">785 km</text>
+      <text x="975" y="162" text-anchor="end" style="fill:var(--muted)">785</text>
     </g>
     <g id="hmarks"></g>
     <g font-size="11">
       <circle cx="239" cy="107" r="5" style="fill:var(--sky)"/><line x1="239" y1="113" x2="239" y2="176" stroke="var(--sky)"/><text x="239" y="190" text-anchor="middle" style="fill:var(--sky)">梓潼一带</text>
       <circle cx="345" cy="107" r="5" style="fill:var(--sky)"/><line x1="345" y1="113" x2="345" y2="176" stroke="var(--sky)"/><text x="345" y="190" text-anchor="middle" style="fill:var(--sky)">剑阁一带</text>
       <circle cx="497" cy="107" r="5" style="fill:var(--sky)"/><line x1="497" y1="113" x2="497" y2="176" stroke="var(--sky)"/><text x="497" y="190" text-anchor="middle" style="fill:var(--sky)">宁强服务区</text>
-      <circle cx="655" cy="107" r="5" style="fill:var(--sky)"/><line x1="655" y1="113" x2="655" y2="176" stroke="var(--sky)"/><text x="655" y="190" text-anchor="middle" style="fill:var(--sky)">留坝一带</text>
-      <circle cx="735" cy="107" r="5" style="fill:var(--sky)"/><line x1="735" y1="113" x2="735" y2="176" stroke="var(--sky)"/><text x="735" y="190" text-anchor="middle" style="fill:var(--sky)">天台山服务区</text>
-      <circle cx="860" cy="107" r="5" style="fill:var(--sky)"/><line x1="860" y1="113" x2="860" y2="176" stroke="var(--sky)"/><text x="860" y="190" text-anchor="middle" style="fill:var(--sky)">G30 服务区</text>
-      <text x="705" y="208" text-anchor="middle" style="fill:var(--muted)">秦岭隧道群 10 座约 32 km，天台山隧道 15.56 km</text>
+      <circle cx="655" cy="107" r="5" style="fill:var(--sky)"/><line x1="655" y1="113" x2="655" y2="170" stroke="var(--sky)"/><text x="655" y="184" text-anchor="middle" style="fill:var(--sky)">留坝一带</text>
+      <circle cx="735" cy="107" r="5" style="fill:var(--sky)"/><line x1="735" y1="113" x2="735" y2="188" stroke="var(--sky)"/><text x="735" y="201" text-anchor="middle" style="fill:var(--sky)">天台山服务区</text>
+      <circle cx="860" cy="107" r="5" style="fill:var(--sky)"/><line x1="860" y1="113" x2="860" y2="170" stroke="var(--sky)"/><text x="860" y="184" text-anchor="middle" style="fill:var(--sky)">G30 服务区</text>
+      <text x="700" y="128" text-anchor="middle" style="fill:var(--med)" font-size="10.5">隧道群 32 km</text>
+      <circle cx="671" cy="259" r="5" style="fill:var(--sky)"/><text x="671" y="318" text-anchor="middle" style="fill:var(--sky)">洋县服务区 · 70 km</text><line x1="671" y1="265" x2="671" y2="304" stroke="var(--sky)"/>
+      <circle cx="838" cy="259" r="5" style="fill:var(--sky)"/><text x="810" y="318" text-anchor="middle" style="fill:var(--sky)">秦岭服务区 · 海拔 1600 m+</text><line x1="838" y1="265" x2="838" y2="304" stroke="var(--sky)"/>
     </g>
-    <text x="500" y="232" text-anchor="middle" font-size="10.5" style="fill:var(--muted)">示意图，里程为约数；服务区以导航实际显示为准</text>
+    <text x="300" y="300" text-anchor="middle" font-size="10.5" style="fill:var(--muted)">绿色＝主线（宝汉）  灰色＝备选（西汉）</text>
+    <text x="300" y="318" text-anchor="middle" font-size="10.5" style="fill:var(--muted)">示意图，两条支线比例不同；服务区以导航为准</text>
   </svg>
   </div>
 </section>
 
 <!-- 02 compare -->
 <section>
-  <h2><span class="no">02</span>宝汉线与西汉线对比</h2>
+  <h2><span class="no">02</span>主线与备选对比</h2>
   <p class="lead">成都到汉中两条线相同。从汉中到西安，宝汉线多走约 55 km、多用约 1 小时，换来的是出山就到宝鸡这样有三甲医院的城市，翻秦岭主脊靠长隧道，受天气影响较小。</p>
-  <div class="legend"><span><i class="sw" style="background:var(--sign)"></i>宝汉线（已选）</span><span><i class="sw" style="background:var(--alt)"></i>西汉线</span></div>
+  <div class="legend"><span><i class="sw" style="background:var(--sign)"></i>主线：宝汉线</span><span><i class="sw" style="background:var(--alt)"></i>备选：西汉线</span></div>
   <div class="multi" id="cmp"></div>
   <div class="tbl"><table>
     <thead><tr><th>对比项</th><th>宝汉线（已选）</th><th>西汉线</th></tr></thead>
     <tbody>
       <tr><td><b>山区路况</b></td><td>汉中到宝鸡约 160 km 山区，桥隧比约 72%；秦岭隧道群 10 座共约 32 km，天台山隧道 15.56 km。出宝鸡后是关中平原</td><td>秦岭山区约 150 km，隧道连续，到离西安约 50 km 才出山；秦岭服务区海拔 1600 多米</td></tr>
       <tr><td><b>7 日天气影响</b></td><td>秦岭主脊在长隧道里穿过；留坝、凤县高架桥多，湿冷时桥面易滑；G30 平原段早晨可能有雾</td><td>秦岭服务区一带是全程最冷、最湿的点</td></tr>
+      <tr><td><b>什么时候走</b></td><td>正常情况都走这条</td><td>宝汉高速管制、天台山隧道群事故或施工、宝鸡一带大雾时改走；或者想早点到西安（约 12:50 到）</td></tr>
       <tr><td><b>出山后的医院</b></td><td><span class="pill ok">更好</span> 宝鸡有市中心医院、市妇幼保健院（宝鸡市儿童医院）；再往东经过咸阳</td><td>出山后到西安只有区县医院</td></tr>
     </tbody>
   </table></div>
@@ -274,9 +287,9 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
   <h2><span class="no">04</span>行程时间表</h2>
   <div class="panel">
     <h3>两天的开车与休息</h3>
-    <div class="legend"><span><i class="sw" style="background:var(--sign)"></i>开车</span><span><i class="sw" style="background:var(--stop)"></i>停车休息、喂奶、吃饭</span><span><i class="sw" style="background:var(--med)"></i>秦岭隧道群</span></div>
+    <div class="legend"><span><i class="sw" style="background:var(--sign)"></i>开车（主线）</span><span><i class="sw" style="background:var(--alt)"></i>开车（备选）</span><span><i class="sw" style="background:var(--stop)"></i>停车休息、喂奶、吃饭</span><span><i class="sw" style="background:var(--med)"></i>秦岭隧道段</span></div>
     <div class="chart" id="gantt"></div>
-    <p class="note">每段开车不超过 1.5 小时左右；宝宝饿了或哭闹就进最近的服务区，时间往后推。两天都在天黑前（约 18:00）到达。</p>
+    <p class="note">备选西汉线全程少约 55 km，不在宝鸡吃午饭，约 12:50 到西安，午饭在西安吃。每段开车不超过 1.5 小时左右；宝宝饿了或哭闹就进最近的服务区，时间往后推。两天都在天黑前（约 18:00）到达。</p>
   </div>
   <div class="days">
     <article class="day">
@@ -302,6 +315,17 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
         <li><time>14:30</time><div><div class="t">到达西安</div><div class="d">雨天进城路面湿，保持车距。</div></div></li>
       </ol>
     </article>
+    <article class="day" style="border-style:dashed">
+      <header><h3>11 月 7 日 · 备选西汉线</h3><small>汉中 → 洋县 → 秦岭 → 西安 · 约 275 km · G5</small></header>
+      <ol class="steps">
+        <li><time>08:00</time><div><div class="t">确认改走西汉线</div><div class="d">宝汉高速管制、事故或宝鸡大雾时改走。导航设为“汉中 → 西安，走京昆高速”。</div></div></li>
+        <li><time>08:30</time><div><div class="t">汉中出发</div><div class="d">出发前喂奶。</div></div></li>
+        <li><time>09:30</time><div><div class="t">洋县服务区</div><div class="d">约 70 km。上秦岭前最后一次从容休息：喂奶、换尿布、加满油或充满电，车内调暖。</div></div></li>
+        <li><time>10:00</time><div><div class="t">秦岭隧道段</div><div class="d">隧道连续、弯道多，按 80 km/h 左右开。开近光灯，不变道，空调切内循环。</div></div></li>
+        <li><time>11:20</time><div><div class="t">秦岭服务区（短停）</div><div class="d">海拔 1600 多米，可能湿冷有雾。宝宝留在车里，开暖风，只检查不抱出去。</div></div></li>
+        <li><time>12:50</time><div><div class="t">到达西安</div><div class="d">约 87 km 后进入西安，在西安吃午饭。</div></div></li>
+      </ol>
+    </article>
   </div>
 </section>
 
@@ -311,7 +335,13 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
   <div class="panel">
     <h3>离最近大医院的距离<small>沿路线每个位置，km</small></h3>
     <div class="chart" id="cover"></div>
-    <p class="note">柱越高，说明这里离最近的“有新生儿科的地级市医院”越远。最远的点在广元—汉中之间和秦岭山区中段，约 80 km。</p>
+    <p class="note">曲线越高，说明这里离最近的“有新生儿科的地级市医院”越远。主线最远的点在广元—汉中之间和秦岭山区中段，约 80 km。</p>
+  </div>
+  <div class="panel">
+    <h3>第 2 天：主线与备选的医疗覆盖<small>从汉中出发的里程，km</small></h3>
+    <div class="legend"><span><i class="sw" style="background:var(--sign)"></i>主线：宝汉线</span><span><i class="sw" style="background:var(--alt)"></i>备选：西汉线</span></div>
+    <div class="chart" id="cover2"></div>
+    <p class="note">西汉线从汉中到西安约 275 km 中间没有地级市，最远处离大医院约 140 km；中途只有洋县人民医院、鄠邑区人民医院这类县区医院。宝汉线在 160 km 处就到宝鸡。</p>
   </div>
   <div class="callout med">电话来自医院官网和好大夫、百度健康等平台，不同来源有出入。<b>出发前一晚逐个拨打确认。</b>宝宝情况紧急时直接打 <b>120</b>，报出高速名称、方向和路边的公里桩号（K 开头的数字）。</div>
 
@@ -348,16 +378,25 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
       <div class="tel"><div><span class="lbl">急救</span><span class="n">0916-2523201</span><button class="copy" type="button">复制</button></div><div><span class="lbl">总机</span><span class="n">0916-2383201</span><button class="copy" type="button">复制</button></div></div></div>
   </div></div>
 
-  <div class="gap"><b>汉中 → 宝鸡（约 160 km 秦岭山区）</b>只有留坝、凤县县医院。长隧道里手机可能没信号：出隧道再打 120，或用隧道内每隔一段设置的紧急电话；到最近的服务区等救护车。过了天台山隧道离宝鸡就不远了。</div>
+  <div class="gap"><b>主线 · 汉中 → 宝鸡（约 160 km 秦岭山区）</b>只有县医院：<b>留坝县医院</b>（城关镇南环路 101 号，<span class="num">0916-3921187</span>，急诊 24 小时），可做初步处理，没有 NICU。长隧道里手机可能没信号：出隧道再打 120，或用隧道内每隔一段设置的紧急电话；到最近的服务区等救护车。过了天台山隧道离宝鸡就不远了。</div>
 
-  <div class="hosp-group"><h3>宝鸡 <span class="km">约 615 km · 第 2 天午饭点</span></h3><div class="hosps">
+  <div class="hosp-group"><h3>宝鸡 <span class="km">主线 · 约 615 km · 第 2 天午饭点</span></h3><div class="hosps">
     <div class="h"><div class="name">宝鸡市妇幼保健院 · 宝鸡市儿童医院</div><div class="addr">儿童医院：渭滨区经二路 15 号<br>妇产医院：新建路东段 2 号</div><div class="tag">陕西省首家三甲妇幼保健院</div>
       <div class="tel"><div><span class="lbl">24 小时热线</span><span class="n">18991738120</span><button class="copy" type="button">复制</button></div><div><span class="lbl">总值班</span><span class="n">0917-3250092</span><button class="copy" type="button">复制</button></div></div></div>
     <div class="h"><div class="name">宝鸡市中心医院</div><div class="addr">渭滨区姜谭路 8 号</div><div class="tag">三甲综合医院，设产科、儿科</div>
       <div class="tel"><div><span class="lbl">急救</span><span class="n">0917-3397120</span><button class="copy" type="button">复制</button></div><div><span class="lbl">总值班</span><span class="n">0917-3395999</span><button class="copy" type="button">复制</button></div></div></div>
   </div></div>
 
-  <div class="hosp-group"><h3>西安 <span class="km">约 785 km · 目的地</span></h3><div class="hosps">
+  <div class="hosp-group"><h3>备选西汉线沿途 <span class="km">汉中 → 西安 · 只有县区医院</span></h3>
+    <div class="gap" style="margin-bottom:2px">走备选线时，汉中之后到西安之间没有地级市医院。下面两家可以做初步处理和转运，没有 NICU；宝宝情况严重时打 120，往西安方向走。</div>
+    <div class="hosps">
+    <div class="h"><div class="name">洋县人民医院</div><div class="addr">洋县北环东路 581 号（洋县服务区附近下高速）</div><div class="tag">县级综合医院，设急诊科、儿科，承担全县 120 急救</div>
+      <div class="tel"><div><span class="lbl">总机</span><span class="n">0916-8222583</span><button class="copy" type="button">复制</button></div></div></div>
+    <div class="h"><div class="name">西安市鄠邑区人民医院</div><div class="addr">鄠邑区甘亭街道渼陂西路 5 号（出秦岭后第一个城区）</div><div class="tag">二级甲等综合医院，设急诊医学科、儿科</div>
+      <div class="tel"><div><span class="lbl">总机</span><span class="n">029-84812533</span><button class="copy" type="button">复制</button></div></div></div>
+  </div></div>
+
+  <div class="hosp-group"><h3>西安 <span class="km">主线约 785 km / 备选约 730 km · 目的地</span></h3><div class="hosps">
     <div class="h"><div class="name">西北妇女儿童医院 · 曲江院区</div><div class="addr">雁翔路 1616 号；后宰门院区：北大街后宰门 73 号</div><div class="tag">陕西省新生儿急救转运中心</div>
       <div class="tel"><div><span class="lbl">儿科急诊</span><span class="n">029-89551122</span><button class="copy" type="button">复制</button></div><div><span class="lbl">24 小时咨询</span><span class="n">029-89550001</span><button class="copy" type="button">复制</button></div></div></div>
     <div class="h"><div class="name">西安市儿童医院</div><div class="addr">莲湖区西举院巷 69 号（另有多个院区）</div><div class="tag">儿童专科医院，设新生儿科</div>
@@ -441,12 +480,18 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
       <div class="chart" id="fog"></div>
       <p class="note">同时开雾灯、双闪，不急刹，从最近的出口下高速。秋冬早晨 6–8 点、桥面和雨后山区最容易出现团雾。</p>
     </div>
-    <div class="box"><h3>宝汉线开车</h3><ul>
+    <div class="box"><h3>主线 · 宝汉线开车</h3><ul>
       <li>留坝服务区之后到天台山服务区之间不要等油电报警，进山前加满油或充满电。电动车低温爬坡耗电明显增加。</li>
       <li>长隧道里开近光灯，不变道，不停车，保持车距；出隧道注意明暗变化和横风。</li>
       <li>高架桥多，雨天湿冷时减速，避免急刹。</li>
       <li>G30 关中段 7 日有 5–6 级阵风，双手握方向盘，远离大货车。</li>
       <li>雨天车距拉大到平时两倍。</li>
+    </ul></div>
+    <div class="box" style="border-style:dashed"><h3>备选 · 西汉线开车</h3><ul>
+      <li>洋县服务区之后进入秦岭，到秦岭服务区约 120 km，进山前加满油或充满电。</li>
+      <li>秦岭服务区海拔 1600 多米，是全程最冷的地方，7 日可能有雨雾，车内开暖风。</li>
+      <li>隧道连续、弯道多，按 80 km/h 左右开，不变道，不超车。</li>
+      <li>下山进关中前长下坡，用低挡控速，不要一直踩刹车。</li>
     </ul></div>
   </div>
   <div class="cols">
@@ -474,7 +519,9 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
   <div class="flow">
     <div><div class="if">宝宝出发前一晚或当天早上发热、吃奶差、黄疸加重</div><div class="ar">→</div><div class="then">取消出发，先在成都就医</div></div>
     <div><div class="if">6 日到广元已过 13:30，或宝宝哭闹频繁</div><div class="ar">→</div><div class="then">广元住一晚，7 日广元 → 汉中 → 宝鸡 → 西安（约 485 km，注意 7 日陕西有雨）</div></div>
-    <div><div class="if">6 日晚预报秦岭雨夹雪、道路结冰，或宝汉高速管制</div><div class="ar">→</div><div class="then">汉中多住一天，等路况恢复</div></div>
+    <div><div class="if">6 日晚预报秦岭雨夹雪、道路结冰，或宝汉高速管制</div><div class="ar">→</div><div class="then">先看西汉线是否正常：正常就改走备选，否则汉中多住一天</div></div>
+    <div><div class="if">宝汉高速管制、天台山隧道群事故或施工，或宝鸡一带大雾</div><div class="ar">→</div><div class="then">改走备选西汉线（汉中东上 G5 京昆高速），约 12:50 到西安</div></div>
+    <div><div class="if">西汉高速秦岭段也管制，或两条线都有结冰预警</div><div class="ar">→</div><div class="then">汉中多住一天，不翻秦岭</div></div>
     <div><div class="if">7 日早上汉中或宝鸡有大雾</div><div class="ar">→</div><div class="then">等雾散后再出发，通常 10 点前后</div></div>
     <div><div class="if">路上宝宝出现“马上去医院”里的任何一条</div><div class="ar">→</div><div class="then">打 120，按医院列表就近处理，不再赶路</div></div>
   </div>
@@ -490,7 +537,7 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
     <div><b>110</b><span>报警</span></div>
     <div><b>12121</b><span>天气预报</span></div>
   </div>
-  <div class="callout">求助时报出：<b>高速名称（G5 / G85 / G30）+ 去往哪个方向 + 路边公里桩号</b>。隧道里没信号时用隧道紧急电话。</div>
+  <div class="callout">求助时报出：<b>高速名称（G5 京昆 / G85 银昆宝汉段 / G30 连霍）+ 去往哪个方向 + 路边公里桩号</b>。隧道里没信号时用隧道紧急电话。</div>
 </section>
 
 <section class="src">
@@ -499,7 +546,7 @@ footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);paddi
     <li>天气：<a href="https://www.thepaper.cn/newsDetail_forward_34406351">陕西省气象台</a>、<a href="https://www.thepaper.cn/newsDetail_forward_34405313">西安市气象台</a>、<a href="https://www.sohu.com/a/1096877682_119659">西安 7 日降温吹风</a>、<a href="https://www.thepaper.cn/newsDetail_forward_34394152">四川省气象台</a>、<a href="https://m.gmw.cn/2026-11/03/content_1304582148.htm">光明网</a>、<a href="https://www.weather.com.cn/weather/101110801.shtml">中国天气网·汉中</a>、<a href="https://www.nmc.cn/publish/forecast/ASN/hanzhong.html">中央气象台·汉中</a></li>
     <li>宝汉高速：<a href="https://sx.sina.cn/news/gedi/2021-10-05/detail-iktzscyx7962820.d.html">宝坪高速通车</a>、<a href="https://shx.chinadaily.com.cn/a/202109/08/WS61386721a3101e7ce9762902.html">中国日报</a>、<a href="https://www.cnr.cn/sxpd/sx/20171228/t20171228_524079975.shtml">坪坎至汉中段</a>、<a href="https://news.qq.com/rain/a/20211012A04JTB00">天台山服务区</a>；团雾限速：<a href="https://society.huanqiu.com/article/40pj4souBFY">环球网</a></li>
     <li>医院（四川）：<a href="https://m.motherchildren.com/m_guide_notes/">华西二院</a>、<a href="https://zhuanlan.zhihu.com/p/22278290">知乎</a>、<a href="https://www.haodf.com/hospital/1838/jieshao.html">成都市妇女儿童中心医院</a>、<a href="https://www.haodf.com/hospital/1207/jieshao.html">德阳市人民医院</a>、<a href="https://www.haodf.com/hospital/589/jieshao.html">绵阳市中心医院</a>、<a href="https://www.haodf.com/hospital/2834/jieshao.html">广元市中心医院</a>、<a href="https://regional.chinadaily.com.cn/sichuan/guangyuan/2020-02/12/c_629369.htm">广元市妇幼保健院</a></li>
-    <li>医院（陕西）：<a href="https://m.youlai.cn/yyk/hospindex/3937/hospintro.html">汉中市中心医院</a>、<a href="https://zyy.yilianmeiti.com/8323/">3201 医院</a>、<a href="https://www.haodf.com/hospital/1699/jieshao.html">宝鸡市妇幼保健院</a>、<a href="https://bjsfby.com/">其官网</a>、<a href="https://www.haodf.com/hospital/786/jieshao.html">宝鸡市中心医院</a>、<a href="https://wjw.baoji.gov.cn/col2223/col2270/202408/t20240827_652370.html">宝鸡市卫健委</a>、<a href="https://www.dayi.org.cn/hospital/1126835.html">西北妇女儿童医院</a>、<a href="https://govt.chinadaily.com.cn/s/202002/13/WS5e45484e498ea01b9aea0f32/designated-hospitals-and-fever-clinics-in-xian-city-shaanxi.html">西安市儿童医院</a></li>
+    <li>医院（陕西）：<a href="https://m.youlai.cn/yyk/hospindex/3937/hospintro.html">汉中市中心医院</a>、<a href="https://zyy.yilianmeiti.com/8323/">3201 医院</a>、<a href="https://www.haodf.com/hospital/1699/jieshao.html">宝鸡市妇幼保健院</a>、<a href="https://bjsfby.com/">其官网</a>、<a href="https://www.haodf.com/hospital/786/jieshao.html">宝鸡市中心医院</a>、<a href="https://wjw.baoji.gov.cn/col2223/col2270/202408/t20240827_652370.html">宝鸡市卫健委</a>、<a href="https://www.dayi.org.cn/hospital/1126835.html">西北妇女儿童医院</a>、<a href="https://govt.chinadaily.com.cn/s/202002/13/WS5e45484e498ea01b9aea0f32/designated-hospitals-and-fever-clinics-in-xian-city-shaanxi.html">西安市儿童医院</a>、<a href="https://www.dayi.org.cn/hospital/1157154">留坝县医院</a>、<a href="https://www.haodf.com/hospital/1494/jieshao.html">洋县人民医院</a>、<a href="http://www.xahy.gov.cn/zwgk/ggqsydw/wsjk/1768168024516980738.html">鄠邑区医疗机构信息表</a>；西汉高速服务区：<a href="https://www.icauto.com.cn/fuwuqu/215196.html">icauto</a></li>
   </ol>
   <footer>2026 年 11 月 5 日整理。天气以出发当天气象台发布为准，医院电话以医院官方公布为准。本路书不能代替医生的判断。</footer>
 </section>
@@ -559,14 +606,16 @@ var wx=[
   ['成都—德阳—绵阳','G5 · 第 1 天',['rain','阴有小雨','约 13–20℃'],['rain','小雨','降温 2–4℃']],
   ['广元—宁强','G5 · 第 1 天',['rain','转阴有小雨，偏北风',''],['rain','小雨','最高气温下降']],
   ['汉中','住宿地',['cloud','阴（局地小雨 0.1–2 mm）','11–17℃'],['rain','小雨','9–14℃']],
-  ['留坝—凤县—秦岭','G85 · 第 2 天',['cloud','无单独预报','比汉中低 5–8℃'],['rain','小雨，桥面湿滑','无雨夹雪预报']],
-  ['宝鸡—咸阳','G30 · 第 2 天',['cloudsun','晴到多云',''],['rain','小雨，阵风 5–6 级','降温 4–6℃']],
+  ['留坝—凤县—秦岭','主线 · G85 · 第 2 天',['cloud','无单独预报','比汉中低 5–8℃'],['rain','小雨，桥面湿滑','无雨夹雪预报']],
+  ['宝鸡—咸阳','主线 · G30 · 第 2 天',['cloudsun','晴到多云',''],['rain','小雨，阵风 5–6 级','降温 4–6℃']],
+  ['洋县—佛坪—秦岭服务区','备选 · G5 西汉 · 第 2 天',['cloud','无单独预报','海拔 1600 m+，比汉中低 5–8℃'],['rain','小雨，可能有雾','全程最冷、最湿']],
+  ['鄠邑','备选 · G5 西汉 · 第 2 天',['cloudsun','晴到多云',''],['rain','阴有小雨，有风','降温 4–6℃']],
   ['西安','目的地',['cloudsun','晴到多云','9–19℃'],['rain','阴有小雨，有风','9–13℃']]
 ];
 var W=document.getElementById('wx');
 W.innerHTML='<div class="hd">路段</div><div class="hd">11 月 6 日 周五</div><div class="hd">11 月 7 日 周六</div>';
 wx.forEach(function(r){
-  W.insertAdjacentHTML('beforeend','<div class="seg">'+r[0]+'<small>'+r[1]+'</small></div>');
+  W.insertAdjacentHTML('beforeend','<div class="seg">'+r[0]+'<small>'+(r[1].indexOf('备选')===0?'<span class="pill" style="background:var(--faint);color:var(--muted)">备选</span> ':(r[1].indexOf('主线')===0?'<span class="pill ok">主线</span> ':''))+r[1].replace(/^(主线|备选) · /,'')+'</small></div>');
   [r[2],r[3]].forEach(function(c){W.insertAdjacentHTML('beforeend','<div>'+icon(c[0])+'<span class="txt"><span>'+c[1]+'</span>'+(c[2]?'<b>'+c[2]+'</b>':'')+'</span></div>');});
 });
 
@@ -594,21 +643,21 @@ T.forEach(function(r,i){
 function toH(s){var p=s.split(':');return +p[0]+p[1]/60;}
 var days=[
   ['11/6 周五',[['d','07:30','09:00','成都→梓潼'],['s','09:00','09:20','停'],['d','09:20','10:40','→剑阁'],['s','10:40','11:00','喂奶'],['d','11:00','11:50','→广元'],['s','11:50','13:00','广元午饭'],['d','13:00','14:00','→宁强'],['s','14:00','14:20','停'],['d','14:20','15:30','→汉中']]],
-  ['11/7 周六',[['d','08:30','09:30','汉中→留坝'],['s','09:30','09:50','喂奶'],['d','09:50','11:00','秦岭→宝鸡'],['s','11:00','12:30','宝鸡午饭'],['d','12:30','13:40','G30'],['s','13:40','13:55','停'],['d','13:55','14:30','→西安']]]
+  ['11/7 主线',[['d','08:30','09:30','汉中→留坝'],['s','09:30','09:50','喂奶'],['d','09:50','11:00','秦岭→宝鸡'],['s','11:00','12:30','宝鸡午饭'],['d','12:30','13:40','G30'],['s','13:40','13:55','停'],['d','13:55','14:30','→西安']],[10,11]],
+  ['11/7 备选',[['a','08:30','09:30','汉中→洋县'],['s','09:30','09:50','喂奶'],['a','09:50','11:20','秦岭段'],['s','11:20','11:35','停'],['a','11:35','12:50','→西安']],[10,11.3]]
 ];
-var gh=document.getElementById('gantt');var gs=svg(900,175,gh,720);
+var gh=document.getElementById('gantt');var gs=svg(900,240,gh,720);
 var g0=90,g1=880,h0=7,h1=16;function GX(t){return g0+(t-h0)/(h1-h0)*(g1-g0);}
-for(var h=h0;h<=h1;h++){el('line',{x1:GX(h),y1:14,x2:GX(h),y2:142,style:'stroke:var(--faint)'},gs);el('text',{x:GX(h),y:160,'text-anchor':'middle','font-size':11,style:'fill:var(--muted)',class:'num'},gs,(h<10?'0':'')+h+':00');}
-el('rect',{x:GX(10),y:84,width:GX(11)-GX(10),height:5,rx:2.5,style:'fill:var(--med)'},gs);
-el('text',{x:GX(10.5),y:79,'text-anchor':'middle','font-size':10,style:'fill:var(--med)'},gs,'秦岭隧道群');
+for(var h=h0;h<=h1;h++){el('line',{x1:GX(h),y1:14,x2:GX(h),y2:212,style:'stroke:var(--faint)'},gs);el('text',{x:GX(h),y:230,'text-anchor':'middle','font-size':11,style:'fill:var(--muted)',class:'num'},gs,(h<10?'0':'')+h+':00');}
 days.forEach(function(d,i){
-  var y=18+i*74;
+  var y=18+i*70;
+  if(d[2]){el('rect',{x:GX(d[2][0]),y:y+34,width:GX(d[2][1])-GX(d[2][0]),height:5,rx:2.5,style:'fill:var(--med)'},gs);el('text',{x:GX(d[2][1])+6,y:y+40,'font-size':10,style:'fill:var(--med)'},gs,'秦岭隧道段');}
   el('text',{x:0,y:y+20,'font-size':13,'font-weight':700,style:'fill:var(--ink)'},gs,d[0]);
   d[1].forEach(function(seg){
     var a=toH(seg[1]),b=toH(seg[2]),x=GX(a)+1,w=GX(b)-GX(a)-2;
-    var r=el('rect',{x:x,y:y,width:w,height:30,rx:4,style:'fill:'+(seg[0]==='d'?'var(--sign)':'var(--stop)')},gs);
+    var r=el('rect',{x:x,y:y,width:w,height:30,rx:4,style:'fill:'+(seg[0]==='d'?'var(--sign)':seg[0]==='a'?'var(--alt)':'var(--stop)')},gs);
     tip(r,seg[1]+'–'+seg[2]+' '+seg[3]);
-    if(w>44)el('text',{x:x+w/2,y:y+19,'text-anchor':'middle','font-size':11,style:'fill:'+(seg[0]==='d'?'#fff':'var(--ink)')},gs,seg[3]);
+    if(w>44)el('text',{x:x+w/2,y:y+19,'text-anchor':'middle','font-size':11,style:'fill:'+(seg[0]==='s'?'var(--ink)':'#fff')},gs,seg[3]);
   });
 });
 
@@ -625,6 +674,22 @@ cities.forEach(function(c,i){var g=el('g',{transform:'translate('+(CX(c)-6)+','+
   el('text',{x:CX(c),y:154,'text-anchor':'middle','font-size':11,style:'fill:var(--ink)'},cs,names[i]);});
 el('text',{x:CX(377),y:CY(78)-6,'text-anchor':'middle','font-size':11,style:'fill:var(--warn)'},cs,'广元—汉中 最远约 78 km');
 el('text',{x:CX(535),y:CY(80)-6,'text-anchor':'middle','font-size':11,style:'fill:var(--warn)'},cs,'秦岭山区 最远约 80 km');
+
+/* coverage day 2 compare */
+(function(){
+var h=document.getElementById('cover2');var s=svg(900,190,h,720);
+var x0=60,x1=880,maxK=330,maxD=150;function X(k){return x0+k/maxK*(x1-x0);}function Y(d){return 150-d/maxD*120;}
+[0,50,100,150].forEach(function(d){el('line',{x1:x0,y1:Y(d),x2:x1,y2:Y(d),style:'stroke:var(--faint)'},s);el('text',{x:x0-8,y:Y(d)+4,'text-anchor':'end','font-size':11,style:'fill:var(--muted)'},s,d+' km');});
+[0,50,100,150,200,250,300].forEach(function(k){el('text',{x:X(k),y:172,'text-anchor':'middle','font-size':11,style:'fill:var(--muted)'},s,k);});
+el('text',{x:x1,y:188,'text-anchor':'end','font-size':11,style:'fill:var(--muted)'},s,'距汉中 km');
+function line(cities,len,color,dash,label,lx,ly){var d='';for(var k=0;k<=len;k+=5){var m=999;cities.forEach(function(c){m=Math.min(m,Math.abs(c-k));});d+=(k?' L':'M')+X(k).toFixed(1)+' '+Y(m).toFixed(1);}
+  var p=el('path',{d:d,fill:'none',style:'stroke:'+color,'stroke-width':2,'stroke-linejoin':'round'},s);if(dash)p.setAttribute('stroke-dasharray',dash);tip(p,label);
+  cities.forEach(function(c){el('circle',{cx:X(c),cy:Y(0),r:4,style:'fill:'+color+';stroke:var(--paper)','stroke-width':2},s);});
+  el('text',{x:lx,y:ly,'font-size':11,'font-weight':700,style:'fill:var(--ink)'},s,label);}
+line([0,275],275,'var(--alt)','6 4','虚线：备选西汉线 · 最远约 137 km',X(137)-90,Y(137)-8);
+line([0,160,280,330],330,'var(--sign)',null,'实线：主线宝汉线 · 最远约 80 km',X(0)+12,Y(140));
+[['汉中',0,'middle'],['宝鸡',160,'middle'],['备选到西安',272,'end'],['咸阳',284,'start'],['西安',330,'middle']].forEach(function(c,i){el('text',{x:X(c[1]),y:Y(0)-8,'text-anchor':c[2],'font-size':10,style:'fill:var(--muted)'},s,c[0]);});
+})();
 
 /* 07 fog speed */
 var fh=document.getElementById('fog');var fs=svg(320,150,fh);
