@@ -259,8 +259,8 @@ footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padd
       <tr><td>成都 → 德阳</td><td><span class="c">1</span> 德阳市妇幼保健院（急诊）</td><td><a class="tel-a" href="tel:0838-6611120">0838-6611120</a></td></tr>
       <tr><td>德阳 → 绵阳</td><td><span class="c">2</span> 绵阳市中心医院（急诊）</td><td><a class="tel-a" href="tel:0816-2231777">0816-2231777</a></td></tr>
       <tr><td>绵阳 → 广元</td><td><span class="c">3</span> 广元妇幼保健医院 · <span class="c">4</span> 广元市中心医院妇产儿童分院</td><td><a class="tel-a" href="tel:0839-2880211">0839-2880211</a> / <a class="tel-a" href="tel:0839-3291126">0839-3291126</a></td></tr>
-      <tr><td>广元 → 汉中<br><span class="note">约 155 km 无大医院</span></td><td><span class="c">5</span> 三二〇一医院 · <span class="c">6</span> 汉中市中心医院（离广元近就回广元）</td><td><a class="tel-a" href="tel:0916-2523201">0916-2523201</a> / <a class="tel-a" href="tel:0916-2681101">0916-2681101</a></td></tr>
-      <tr><td><span class="tagA">A</span> 汉中 → 西安<br><span class="note">山区无地级市医院</span></td><td>洋县人民医院、鄠邑区人民医院（县区级，初步处理）→ <span class="c">8</span> 西安市儿童医院</td><td><a class="tel-a" href="tel:0916-8222583">0916-8222583</a> / <a class="tel-a" href="tel:029-84812533">029-84812533</a> / <a class="tel-a" href="tel:029-87692378">029-87692378</a></td></tr>
+      <tr><td>广元 → 汉中<br><span class="note">约 176 km，中间无已核实的新生儿救治医院</span></td><td><span class="c">5</span> 三二〇一医院 · <span class="c">6</span> 汉中市中心医院（离广元近就回广元）</td><td><a class="tel-a" href="tel:0916-2523201">0916-2523201</a> / <a class="tel-a" href="tel:0916-2681101">0916-2681101</a></td></tr>
+      <tr><td><span class="tagA">A</span> 汉中 → 西安<br><span class="note">中间无已核实的新生儿救治医院</span></td><td>洋县人民医院、鄠邑区人民医院（县区级，先做急诊处理）→ <span class="c">8</span> 西安市儿童医院</td><td><a class="tel-a" href="tel:0916-8222583">0916-8222583</a> / <a class="tel-a" href="tel:029-84812533">029-84812533</a> / <a class="tel-a" href="tel:029-87692378">029-87692378</a></td></tr>
       <tr><td><span class="tagB">B</span> 汉中 → 宝鸡 → 西安</td><td>留坝县医院（县级）→ <span class="c">7</span> 宝鸡市妇幼保健院儿童医院 → <span class="c">8</span></td><td><a class="tel-a" href="tel:0916-3921187">0916-3921187</a> / <a class="tel-a" href="tel:0917-3535161">0917-3535161</a> / <a class="tel-a" href="tel:18991738120">18991738120</a></td></tr>
     </tbody>
   </table></div>
@@ -306,7 +306,7 @@ footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padd
       <div class="kpis">
         <div class="A"><div class="k">A · G5 直达</div><div class="v">294<small>km</small></div><div class="note">约 3 小时 53 分 · 收费约 162 元</div></div>
         <div class="B"><div class="k">B · G85 经宝鸡方向</div><div class="v">345<small>km</small></div><div class="note">约 4 小时 10 分 · 收费约 232 元</div></div>
-        <div><div class="k">B 相对 A</div><div class="v">+52<small>km</small></div><div class="note">约多 18 分钟、多约 70 元</div></div>
+        <div><div class="k">B 相对 A</div><div class="v">+52<small>km</small></div><div class="note">约多 18 分钟、多约 70 元（按接口米数、秒数四舍五入）</div></div>
       </div>
       <p class="note">比较口径：汉中民主街附近 → 西安凤城八路附近，B 不进宝鸡城区。高德 11/5 查询，不含休息和就医时间，不是成都全程时间。</p>
     </div>
@@ -330,13 +330,13 @@ footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padd
   <h2><span class="no">02</span>天气：13 个节点 × 3 天<span class="en">WEATHER 06–08 NOV</span></h2>
   <p class="lead">每格写白天 → 夜间天气、最低—最高气温；下面的小条是气温区间（统一刻度 0–23℃，蓝色竖线表示最低气温 ≤ 4℃）。</p>
   <div class="chart"><div class="wx" id="wx"></div></div>
-  <p class="note">来源：高德 11/5 查询，接口没有返回发布时间。*凤县是坪坎所属县的代表预报，不是坪坎实况。各点风力预报 1–3 级，不代表山口阵风。县城气温不能判断桥面是否结冰。</p>
+  <p class="note">来源：高德 11/5 查询，接口没有返回发布时间。*凤县是坪坎所属县的代表预报，不是坪坎实况；宁陕同理，是 A 线秦岭段所属县的代表预报，宁陕县城不在高速旁（距秦岭服务区约 70 km）。各点风力预报 1–3 级，不代表山口阵风。县城气温不能判断桥面是否结冰。</p>
   <div class="two">
     <div class="panel"><h3>7 日 · A/B 沿线最低气温<small>℃</small></h3><div class="chart" id="low7"></div></div>
     <div class="panel"><h3>8 日 · A/B 沿线最低气温<small>℃</small></h3><div class="chart" id="low8"></div></div>
   </div>
   <div class="two">
-    <div class="callout"><b>7 日：两条线山区都有雨。</b>宁陕、留坝、凤县都预报小雨，不能把宝鸡线当成避雨路线。陕西省气象台 11/4 预报 7 日全省有降水、降温，西安阵风 5–6 级，最高气温降约 6℃。</div>
+    <div class="callout"><b>7 日：两条线山区都有雨。</b>宁陕、留坝、凤县都预报小雨，不能把宝鸡线当成避雨路线。陕西省气象台 11/4 预报 7 日全省有降水，陕北南部、关中大部日平均气温降 4–6℃；西安市气象台预报西安阵风 5–6 级、最高气温降约 6℃。</div>
     <div class="callout"><b>8 日：降雨减弱，宝鸡线更冷。</b>留坝、凤县最低约 1℃，宁陕约 4℃。注意早晚、桥面和隧道口。</div>
   </div>
   <p class="note">山口能见度、结冰、逐小时降水和临时封路，临行前再查一次。网页是快照，不会自动刷新。</p>
@@ -366,10 +366,10 @@ footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padd
   <div class="two">
     <div class="day"><b>11/6 · 成都 → 汉中</b><ol class="steps">
       <li><time>08:00</time><div><div class="t">成都出发</div><div class="d">出发前喂奶、检查氧源和电源。</div></div></li>
-      <li><time>09:30</time><div><div class="t">绵阳 / 梓潼一带服务区</div><div class="d">约 170 km，离座休息、照护。</div></div></li>
-      <li><time>11:10</time><div><div class="t">剑阁一带服务区</div><div class="d">约 260 km，喂奶，司机换手。</div></div></li>
-      <li><time>12:20</time><div><div class="t">广元午饭、长休息</div><div class="d">约 300 km。状态不好就住广元，改三天方案。</div></div></li>
-      <li><time>14:30</time><div><div class="t">宁强服务区</div><div class="d">约 390 km，进入陕西。</div></div></li>
+      <li><time>09:30</time><div><div class="t">绵阳 / 梓潼一带服务区</div><div class="d">以导航显示为准；离座休息、照护。</div></div></li>
+      <li><time>11:10</time><div><div class="t">剑阁一带服务区</div><div class="d">以导航显示为准；喂奶，司机换手。</div></div></li>
+      <li><time>12:20</time><div><div class="t">广元午饭、长休息</div><div class="d">成都—广元约 290–320 km。状态不好就住广元，改三天方案。</div></div></li>
+      <li><time>14:30</time><div><div class="t">宁强服务区</div><div class="d">距广元约 89 km、距汉中约 87 km，进入陕西。</div></div></li>
       <li><time>16:00</time><div><div class="t">到汉中入住</div><div class="d">避开汉中东连接线施工，按导航和现场指引进城。晚上查 7 日秦岭天气。</div></div></li>
     </ol></div>
     <div class="day"><b>11/7 · 汉中 → 西安</b><ol class="steps">
@@ -386,10 +386,10 @@ footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padd
   <div class="tbl"><table>
     <thead><tr><th>路段</th><th>停靠安排</th><th>执行要点</th></tr></thead>
     <tbody>
-      <tr><td>成都—广元</td><td>德阳、绵阳方向，梓潼、剑阁一带服务区；按医嘱时限选择开放的服务区</td><td>到了医生规定的每日上限，可以在绵阳结束当天行程</td></tr>
-      <tr><td>广元—汉中</td><td>宁强、勉县方向，提前看下一处合法停车点（宁强服务区距汉中约 87 km）</td><td>不要为了等大服务区超过医嘱时限；广元、汉中都能住</td></tr>
+      <tr><td>成都—广元</td><td>德阳、绵阳方向，梓潼、剑阁一带服务区（名称以导航为准）；按医嘱时限选择开放的服务区</td><td>到了医生规定的每日上限，可以在绵阳结束当天行程</td></tr>
+      <tr><td>广元—汉中</td><td>宁强、勉县方向，提前看下一处合法停车点（宁强服务区距广元约 89 km、距汉中约 87 km）</td><td>不要为了等大服务区超过医嘱时限；广元、汉中都能住</td></tr>
       <tr><td><span class="tagA">A</span> 汉中—西安</td><td>洋县、宁陕、秦岭服务区为候选（秦岭服务区距西安约 87 km），核实西安方向是否开放</td><td>进秦岭前检查宝宝、氧源、电源和燃油或电量</td></tr>
-      <tr><td><span class="tagB">B</span> 汉中—宝鸡—西安</td><td>汉中先补能；留坝一带、天台山服务区；宝鸡可停留或住宿</td><td>G85 全部服务区的设施、母婴室和开放状态没有核实，不做固定停车承诺</td></tr>
+      <tr><td><span class="tagB">B</span> 汉中—宝鸡—西安</td><td>汉中先补能；留坝一带、天台山服务区（出天台山隧道后）；G30 眉县服务区距宝鸡约 70 km、距西安约 108 km；宝鸡可停留或住宿</td><td>G85 全部服务区的设施、母婴室和开放状态没有核实，不做固定停车承诺</td></tr>
     </tbody>
   </table></div>
 
@@ -410,14 +410,18 @@ footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padd
   <h2><span class="no">04</span>医院：按路线顺序<span class="en">HOSPITALS</span></h2>
   <div class="callout med">红框 <span class="c">1</span>–<span class="c">8</span> 是新生儿专线（共同节点 11/4 核验，宝鸡 11/5 核验）；虚线框是补充医院（第三方平台资料）。<b>公开电话都没有试拨</b>，床位和接诊年龄要先确认。实际日龄 ≠ 矫正年龄，打电话时说明：31 周早产、出生日期、当前体重、用氧情况。急症不要挨个打咨询电话，直接 120。</div>
   <div class="panel">
-    <h3>离最近大医院有多远<small>汉中 → 西安段，km</small></h3>
-    <div class="legend"><span><i class="sw" style="background:var(--A)"></i>A 主线</span><span><i class="sw" style="background:var(--B)"></i>B 备选</span></div>
-    <div class="chart" id="cover"></div>
-    <p class="note">按地级市医院计算（县区医院不计）。A 线中段离汉中、西安都约 140 多 km；B 线在约 165 km 处靠近宝鸡，但要下高速进城。汉中—宝鸡山区仍不能保证很快到达 NICU。成都—汉中段最远处在广元—汉中之间，约 78 km。</p>
+    <h3>沿途离最近医院有多远<small>沿路线每个位置，km</small></h3>
+    <div class="legend"><span><i class="sw" style="background:var(--med)"></i>实线：到最近的新生儿救治医院（①–⑧、华西二院、成都市妇女儿童中心、西北妇儿）</span><span><i class="sw" style="background:var(--muted)"></i>虚线：到最近的已核实医院（再加上县区医院、咸阳市中心医院，可先做急诊处理）</span></div>
+    <div class="multi" style="grid-template-columns:1fr" id="covers"></div>
+    <div class="tbl"><table>
+      <thead><tr><th>节点</th><th>里程位置</th><th>算作</th><th>里程依据</th></tr></thead>
+      <tbody id="covtbl"></tbody>
+    </table></div>
+    <p class="note">计算方法：沿路线每 1 km 取最近一个医院节点的路线距离（不含下高速进城的距离）。里程位置一部分有公开资料，一部分是按城镇间距估算，误差可能有 10–20 km，表中逐项注明。宁强、勉县、梓潼、剑阁、城固、佛坪、宁陕、凤县、眉县、杨凌、兴平等沿途县市的医院没有查到可核实的资料，<b>没有算进去</b>，图上用空心点标出位置。</p>
   </div>
 
   <div class="hosp-group"><h3>成都 <span class="km">出发地 · 补充</span></h3><div class="hosps">
-    <div class="h sup"><div class="name"><span class="plus">+</span>四川大学华西第二医院（华西妇产儿童医院）</div><div class="addr">武侯区人民南路三段 20 号（地铁 1 号线华西坝站 B 口）</div><div class="tag">西南地区新生儿救治水平最高的医院之一</div>
+    <div class="h sup"><div class="name"><span class="plus">+</span>四川大学华西第二医院（华西妇产儿童医院）</div><div class="addr">武侯区人民南路三段 20 号（地铁 1 号线华西坝站 B 口）</div><div class="tag">四川大学附属妇产儿童专科医院，设新生儿科</div>
       <div class="tel"><div><span class="lbl">咨询</span><a class="tel-a n" href="tel:028-85503960">028-85503960</a><button class="copy" type="button">复制</button></div><div><span class="lbl">急诊（旧资料）</span><a class="tel-a n" href="tel:028-85501340">028-85501340</a><button class="copy" type="button">复制</button></div><div><span class="lbl">锦江院区</span><a class="tel-a n" href="tel:028-88570307">028-88570307</a><button class="copy" type="button">复制</button></div></div></div>
     <div class="h sup"><div class="name"><span class="plus">+</span>成都市妇女儿童中心医院 · 中心院区</div><div class="addr">青羊区日月大道 1617 号（西三环外，成温路口）</div><div class="tag">新生儿科为市级重点学科，设新生儿危急重症呼叫转运站</div>
       <div class="tel"><div><span class="lbl">总机</span><a class="tel-a n" href="tel:028-61866000">028-61866000</a><button class="copy" type="button">复制</button></div><div><span class="lbl">门诊</span><a class="tel-a n" href="tel:028-87467888">028-87467888</a><button class="copy" type="button">复制</button></div></div></div>
@@ -427,7 +431,7 @@ footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padd
     <div class="h core"><div class="name"><span class="c">1</span>德阳市妇幼保健院</div><div class="big"><a class="n" href="tel:0838-6611120">0838-6611120</a></div><div class="note">急诊</div><div class="addr">庐山南路二段 63 号</div><div class="tag">有创 / 无创呼吸支持；官网写的 0–28 天接诊范围需核实</div>
       <div class="tel"><div><span class="lbl">科室</span><a class="tel-a n" href="tel:0838-2502817">0838-2502817</a><button class="copy" type="button">复制</button></div></div>
       <div class="links"><a href="https://uri.amap.com/search?keyword=%E5%BE%B7%E9%98%B3%E5%B8%82%E5%A6%87%E5%B9%BC%E4%BF%9D%E5%81%A5%E9%99%A2&city=%E5%BE%B7%E9%98%B3&view=map&src=roadbook">高德地点 ↗</a><a href="https://deyangbjy.cn/lists/128.html">来源 ↗</a></div></div>
-    <div class="h sup"><div class="name"><span class="plus">+</span>德阳市人民医院</div><div class="addr">旌阳区泰山北路一段 173 号</div><div class="tag">德阳市儿童急救中心，新生儿室在儿科病房</div>
+    <div class="h sup"><div class="name"><span class="plus">+</span>德阳市人民医院</div><div class="addr">旌阳区泰山北路一段 173 号</div><div class="tag">德阳市儿童急救中心，新生儿室在儿科病房（资料较旧）</div>
       <div class="tel"><div><span class="lbl">急诊（旧资料）</span><a class="tel-a n" href="tel:0838-2418999">0838-2418999</a><button class="copy" type="button">复制</button></div><div><span class="lbl">门诊咨询</span><a class="tel-a n" href="tel:0838-2418820">0838-2418820</a><button class="copy" type="button">复制</button></div><div><span class="lbl">儿科</span><a class="tel-a n" href="tel:0838-2418283">0838-2418283</a><button class="copy" type="button">复制</button></div></div></div>
   </div></div>
 
@@ -446,9 +450,9 @@ footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padd
       <div class="links"><a href="https://uri.amap.com/search?keyword=%E5%B9%BF%E5%85%83%E5%B8%82%E4%B8%AD%E5%BF%83%E5%8C%BB%E9%99%A2%E5%A6%87%E4%BA%A7%E5%84%BF%E7%AB%A5%E5%88%86%E9%99%A2&city=%E5%B9%BF%E5%85%83&view=map&src=roadbook">高德地点 ↗</a><a href="https://www.gyszxyy.cn/lcks.html?cls1=3&cls2=21">来源 ↗</a></div></div>
   </div></div>
 
-  <div class="gap"><b>广元 → 汉中（约 155 km）</b>只有宁强、勉县县医院，没有 NICU。宝宝有异常：打 120，同时往广元或汉中较近的一头开。</div>
+  <div class="gap"><b>广元 → 汉中（约 176 km：广元—宁强服务区 89 km，宁强服务区—汉中 87 km）</b>途经宁强、勉县，县医院的新生儿救治能力未核实。宝宝有异常：打 120，同时往广元或汉中较近的一头开。</div>
 
-  <div class="hosp-group"><h3><span class="c">5</span><span class="c">6</span> 汉中 <span class="km">约 455–510 km · A/B 分叉点</span></h3><div class="hosps">
+  <div class="hosp-group"><h3><span class="c">5</span><span class="c">6</span> 汉中 <span class="km">约 450–510 km · A/B 分叉点</span></h3><div class="hosps">
     <div class="h core"><div class="name"><span class="c">5</span>三二〇一医院</div><div class="big"><a class="n" href="tel:0916-2523201">0916-2523201</a></div><div class="note">医院急救</div><div class="addr">汉台区天汉大道 783 号（院区先确认）</div><div class="tag">集团报道有 NICU、危重新生儿转运</div>
       <div class="tel"><div><span class="lbl">总值班</span><a class="tel-a n" href="tel:0916-2383507">0916-2383507</a><button class="copy" type="button">复制</button></div><div><span class="lbl">总机</span><a class="tel-a n" href="tel:0916-2383201">0916-2383201</a><button class="copy" type="button">复制</button></div></div>
       <div class="links"><a href="https://uri.amap.com/search?keyword=%E4%B8%89%E4%BA%8C%E3%80%87%E4%B8%80%E5%8C%BB%E9%99%A2&city=%E6%B1%89%E4%B8%AD&view=map&src=roadbook">高德地点 ↗</a><a href="https://www.hz3201.com/">来源 ↗</a></div></div>
@@ -458,21 +462,21 @@ footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padd
   </div></div>
 
   <div class="hosp-group"><h3><span class="tagA">A</span> 主线 汉中 → 西安沿途 <span class="km">只有县区医院</span></h3>
-    <div class="gap">A 线汉中之后到西安没有地级市医院。下面两家可以做初步处理和转运，没有 NICU；情况严重打 120，往西安方向走。长隧道里可能没信号，出隧道再打。</div>
+    <div class="gap">A 线汉中之后到西安之间没有已核实的新生儿救治医院。下面两家县区医院可以先做急诊处理，新生儿救治能力未核实；情况严重打 120，往西安方向走。长隧道里可能没信号，出隧道再打。</div>
     <div class="hosps">
-    <div class="h sup"><div class="name"><span class="plus">+</span>洋县人民医院</div><div class="addr">洋县北环东路 581 号（洋县服务区附近下高速）</div><div class="tag">县级综合医院，设急诊科、儿科，承担全县 120 急救</div>
+    <div class="h sup"><div class="name"><span class="plus">+</span>洋县人民医院</div><div class="addr">洋县北环东路 581 号（洋县服务区距县城约 3 km）</div><div class="tag">县级综合医院，设急诊科、儿科，承担全县 120 急救；新生儿救治能力未核实</div>
       <div class="tel"><div><span class="lbl">总机</span><a class="tel-a n" href="tel:0916-8222583">0916-8222583</a><button class="copy" type="button">复制</button></div></div></div>
-    <div class="h sup"><div class="name"><span class="plus">+</span>西安市鄠邑区人民医院</div><div class="addr">鄠邑区甘亭街道渼陂西路 5 号（出秦岭后第一个城区）</div><div class="tag">二级甲等综合医院，设急诊医学科、儿科</div>
+    <div class="h sup"><div class="name"><span class="plus">+</span>西安市鄠邑区人民医院</div><div class="addr">鄠邑区甘亭街道渼陂西路 5 号</div><div class="tag">二级甲等综合医院，设急诊医学科、儿科；新生儿救治能力未核实</div>
       <div class="tel"><div><span class="lbl">总机</span><a class="tel-a n" href="tel:029-84812533">029-84812533</a><button class="copy" type="button">复制</button></div></div></div>
   </div></div>
 
   <div class="hosp-group"><h3><span class="tagB">B</span> 备选 汉中 → 宝鸡 → 西安沿途 <span class="km"><span class="c">7</span> 在宝鸡</span></h3><div class="hosps">
-    <div class="h sup"><div class="name"><span class="plus">+</span>留坝县医院</div><div class="addr">留坝县城关镇南环路 101 号</div><div class="tag">县级，急诊 24 小时，可做初步处理，没有 NICU</div>
+    <div class="h sup"><div class="name"><span class="plus">+</span>留坝县医院</div><div class="addr">留坝县城关镇南环路 101 号</div><div class="tag">县级医院，急诊 24 小时；新生儿救治能力未核实</div>
       <div class="tel"><div><span class="lbl">电话</span><a class="tel-a n" href="tel:0916-3921187">0916-3921187</a><button class="copy" type="button">复制</button></div></div></div>
     <div class="h core"><div class="name"><span class="c">7</span>宝鸡市妇幼保健院儿童医院</div><div class="big"><a class="n" href="tel:0917-3535161">0917-3535161</a></div><div class="note">新生儿科医办</div><div class="addr">渭滨区经二路 15 号（儿童医院 / 北院）；妇产医院：新建路东段 2 号</div><div class="tag">国家临床重点专科；高频呼吸支持及高危儿转运；陕西首家三甲妇幼保健院</div>
       <div class="tel"><div><span class="lbl">护士站</span><a class="tel-a n" href="tel:0917-3535175">0917-3535175</a><button class="copy" type="button">复制</button></div><div><span class="lbl">24 小时热线</span><a class="tel-a n" href="tel:18991738120">18991738120</a><button class="copy" type="button">复制</button></div><div><span class="lbl">总值班</span><a class="tel-a n" href="tel:0917-3250092">0917-3250092</a><button class="copy" type="button">复制</button></div></div>
       <div class="links"><a href="https://www.amap.com/place/B03950PJMM">高德地点 ↗</a><a href="https://www.bjsfby.com/kssz/html/?138.html=">来源 ↗</a></div></div>
-    <div class="h sup"><div class="name"><span class="plus">+</span>宝鸡市中心医院</div><div class="addr">渭滨区姜谭路 8 号</div><div class="tag">三甲综合医院，设产科、儿科</div>
+    <div class="h sup"><div class="name"><span class="plus">+</span>宝鸡市中心医院</div><div class="addr">渭滨区姜谭路 8 号</div><div class="tag">综合医院，列入宝鸡市卫健委助产机构名单；新生儿科情况未核实</div>
       <div class="tel"><div><span class="lbl">急救</span><a class="tel-a n" href="tel:0917-3397120">0917-3397120</a><button class="copy" type="button">复制</button></div><div><span class="lbl">总值班</span><a class="tel-a n" href="tel:0917-3395999">0917-3395999</a><button class="copy" type="button">复制</button></div></div></div>
   </div></div>
 
@@ -628,16 +632,16 @@ footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padd
   </div>
   <div class="two">
     <div class="box" style="border-top:4px solid var(--A)"><h3><span class="tagA">A</span> 主线 · G5 西汉段</h3><ul>
-      <li>洋县服务区之后进入秦岭，到秦岭服务区约 120 km，进山前加满油或充满电，检查氧源。</li>
+      <li>洋县之后进入秦岭山区；秦岭服务区距西安约 87 km、距宁陕县城约 70 km。进山前加满油或充满电，检查氧源。</li>
       <li>秦岭服务区海拔 1600 多米，是 A 线最冷的地方；7 日可能有雨雾，车内开暖风。</li>
       <li>隧道连续、弯道多，开近光灯，不变道，不超车，空调切内循环；出隧道注意明暗变化和横风。</li>
       <li>下山进关中前长下坡，用低挡控速，不要一直踩刹车。</li>
     </ul></div>
     <div class="box" style="border-top:4px solid var(--B)"><h3><span class="tagB">B</span> 备选 · G85 宝汉段 + G30</h3><ul>
       <li>留坝一带之后到天台山服务区之间不要等油电报警。电动车低温爬坡耗电明显增加。</li>
-      <li>秦岭隧道群 10 座约 32 km，天台山隧道 15.56 km（约 12 分钟）。</li>
+      <li>秦岭隧道群 10 座约 32 km，其中天台山隧道 15.56 km（按 80 km/h 约 12 分钟）。</li>
       <li>高架桥多，8 日留坝、凤县最低约 1℃，早晚桥面可能结冰，减速，不急刹。</li>
-      <li>G30 关中平原段 7 日有 5–6 级阵风，双手握方向盘，远离大货车。</li>
+      <li>西安市气象台预报 7 日阵风 5–6 级，G30 关中平原段注意侧风，双手握方向盘，远离大货车。</li>
     </ul></div>
   </div>
 </section>
@@ -661,9 +665,9 @@ footer{font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);padd
     <li><b>路线与天气：</b><a href="https://developer.amap.com/api/webservice/guide/api/newroute">高德路径规划接口</a>、<a href="https://developer.amap.com/api/mcp-server/gettingstarted">高德 MCP</a>（11/5 查询；金额为接口估计，以实际结算为准）</li>
     <li><b>官方天气补充：</b><a href="https://www.thepaper.cn/newsDetail_forward_34406351">陕西省气象台</a>、<a href="https://www.thepaper.cn/newsDetail_forward_34405313">西安市气象台</a>、<a href="https://www.sohu.com/a/1096877682_119659">西安 7 日降温吹风</a>、<a href="https://www.thepaper.cn/newsDetail_forward_34394152">四川省气象台</a></li>
     <li><b>施工：</b><a href="https://www.thepaper.cn/newsDetail_forward_34311187">汉中连接线施工公告</a>；团雾限速：<a href="https://society.huanqiu.com/article/40pj4souBFY">环球网</a></li>
-    <li><b>宝汉高速：</b><a href="https://sx.sina.cn/news/gedi/2021-10-05/detail-iktzscyx7962820.d.html">宝坪高速通车</a>、<a href="https://shx.chinadaily.com.cn/a/202109/08/WS61386721a3101e7ce9762902.html">中国日报</a>、<a href="https://news.qq.com/rain/a/20211012A04JTB00">天台山服务区</a>；西汉高速服务区：<a href="https://www.icauto.com.cn/fuwuqu/215196.html">icauto</a></li>
+    <li><b>宝汉高速：</b><a href="https://sx.sina.cn/news/gedi/2021-10-05/detail-iktzscyx7962820.d.html">宝坪高速通车</a>、<a href="https://shx.chinadaily.com.cn/a/202109/08/WS61386721a3101e7ce9762902.html">中国日报</a>、<a href="https://news.qq.com/rain/a/20211012A04JTB00">天台山服务区</a>；西汉高速服务区：<a href="https://www.icauto.com.cn/fuwuqu/215196.html">秦岭服务区</a>、<a href="https://www.icauto.com.cn/fuwuqu/215201.html">洋县服务区</a>；G30：<a href="https://www.icauto.com.cn/fuwuqu/482528.html">眉县服务区</a>；宝汉分段里程：<a href="https://m.thepaper.cn/baijiahao_14414935">澎湃</a>、<a href="https://www.cnr.cn/sxpd/sx/20171228/t20171228_524079975.shtml">央广网</a></li>
     <li><b>医院 ①–⑧：</b><a href="https://deyangbjy.cn/lists/128.html">德阳市妇幼保健院</a>、<a href="https://www.myszxyy.cn/departments_erkea0/">绵阳市中心医院</a>、<a href="https://gyfybj.cn/ksdh.html?ksids=6">广元妇幼保健医院</a>、<a href="https://www.gyszxyy.cn/lcks.html?cls1=3&cls2=21">广元市中心医院</a>、<a href="https://www.gyszxyy.cn/list.html?cls1=91&cls2=92">其院区</a>、<a href="https://www.hz3201.com/">三二〇一医院</a>、<a href="https://gtmed.com.cn/xwzx/gsxw/index_25.html">通用医疗集团</a>、<a href="https://s.dayi.org.cn/mip/s/hospital/1140155.html">大医网</a>、<a href="https://s.dayi.org.cn/mip/s/hospital/1135701.html">汉中市中心医院</a>、<a href="https://health.people.com.cn/n1/2018/0929/c421586-30321342.html">人民网健康</a>、<a href="https://csp.ncmi.cn/UsersInfo/UserUnit/UserUnitDetailWeb?uid=00298">国家医学信息平台</a>、<a href="https://www.xachyy.com/ksdh/lcks/xsezzyxk_NICU_.htm">西安市儿童医院 NICU</a>、<a href="https://www.xachyy.com/fwzn/yygh1.htm">其就诊指南</a>、<a href="https://xawjw.xa.gov.cn/xxgk/zzjg/zsjg/6124694af8fd1c0bdc4a1b53.html">西安市卫健委</a>、<a href="https://www.bjsfby.com/kssz/html/?138.html=">宝鸡妇幼新生儿科</a>、<a href="https://www.bjsfby.com/page/ksdh/index.php">宝鸡妇幼科室导航</a></li>
-    <li><b>补充医院：</b><a href="https://m.motherchildren.com/m_guide_notes/">华西二院</a>、<a href="https://www.haodf.com/hospital/1838/jieshao.html">成都市妇女儿童中心医院</a>、<a href="https://www.haodf.com/hospital/1207/jieshao.html">德阳市人民医院</a>、<a href="https://www.haodf.com/hospital/589/jieshao.html">绵阳市中心医院（好大夫）</a>、<a href="https://www.haodf.com/hospital/2834/jieshao.html">广元市中心医院（好大夫）</a>、<a href="https://m.youlai.cn/yyk/hospindex/3937/hospintro.html">汉中市中心医院（有来）</a>、<a href="https://zyy.yilianmeiti.com/8323/">3201 医院（医联）</a>、<a href="https://www.haodf.com/hospital/1699/jieshao.html">宝鸡市妇幼保健院（好大夫）</a>、<a href="https://www.haodf.com/hospital/786/jieshao.html">宝鸡市中心医院</a>、<a href="https://www.dayi.org.cn/hospital/1126835.html">西北妇女儿童医院</a>、<a href="https://www.dayi.org.cn/hospital/1157154">留坝县医院</a>、<a href="https://www.haodf.com/hospital/1494/jieshao.html">洋县人民医院</a>、<a href="http://www.xahy.gov.cn/zwgk/ggqsydw/wsjk/1768168024516980738.html">鄠邑区医疗机构信息表</a></li>
+    <li><b>补充医院：</b><a href="https://m.motherchildren.com/m_guide_notes/">华西二院</a>、<a href="https://www.haodf.com/hospital/1838/jieshao.html">成都市妇女儿童中心医院</a>、<a href="https://www.haodf.com/hospital/1207/jieshao.html">德阳市人民医院</a>、<a href="https://www.haodf.com/hospital/589/jieshao.html">绵阳市中心医院（好大夫）</a>、<a href="https://www.haodf.com/hospital/2834/jieshao.html">广元市中心医院（好大夫）</a>、<a href="https://m.youlai.cn/yyk/hospindex/3937/hospintro.html">汉中市中心医院（有来）</a>、<a href="https://zyy.yilianmeiti.com/8323/">3201 医院（医联）</a>、<a href="https://www.haodf.com/hospital/1699/jieshao.html">宝鸡市妇幼保健院（好大夫）</a>、<a href="https://www.haodf.com/hospital/786/jieshao.html">宝鸡市中心医院</a>、<a href="https://www.dayi.org.cn/hospital/1126835.html">西北妇女儿童医院</a>、<a href="https://www.dayi.org.cn/hospital/1157154">留坝县医院</a>、<a href="https://www.haodf.com/hospital/1494/jieshao.html">洋县人民医院</a>、<a href="https://www.chinaservicesinfo.com/s/202002/13/WS5e454850498ea01b9aea0f34/designated-hospitals-and-fever-clinics-in-xianyang-city-shaanxi.html">咸阳市中心医院（2020 名录）</a>、<a href="http://www.xahy.gov.cn/zwgk/ggqsydw/wsjk/1768168024516980738.html">鄠邑区医疗机构信息表</a></li>
     <li><b>医学依据：</b><a href="https://publications.aap.org/pediatrics/article/123/5/1424/71504/Safe-Transportation-of-Preterm-and-Low-Birth">AAP 早产儿与低体重儿安全乘车</a>、<a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6802853/">儿童氧疗</a>、<a href="https://www.nice.org.uk/guidance/qs37/chapter/Quality-statement-3-Symptoms-and-signs-of-illness-in-babies">NICE 婴儿疾病症状</a></li>
   </ul>
   <footer>2026-11-05 合并版：合并了用户提供的《成都至西安｜完整图表路书》（高德 11/5 查询）与此前整理的资料。天气以出发当天气象台发布为准，医院电话以医院官方为准。本路书不能代替医生的判断。</footer>
@@ -681,30 +685,30 @@ function circ(parent,x,y,n,r){var g=el('g',{},parent);el('circle',{cx:x,cy:y,r:r
 (function(){
 var s=document.getElementById('strip');
 el('rect',{x:392,y:96,width:181,height:22,rx:4,style:'fill:var(--warn-soft)'},s);
-el('text',{x:482,y:90,'text-anchor':'middle','font-size':11,style:'fill:var(--warn)'},s,'广元—汉中 · 约 155 km 无大医院');
+el('text',{x:482,y:90,'text-anchor':'middle','font-size':11,style:'fill:var(--warn)'},s,'广元—汉中 · 约 176 km 无已核实新生儿救治医院');
 el('path',{d:'M573 107 C 600 107, 595 205, 625 205 H 925 C 955 205, 960 160, 960 115','fill':'none',style:'stroke:var(--B)','stroke-width':7,'stroke-linecap':'round'},s);
 el('path',{d:'M40 107 H960',fill:'none',style:'stroke:var(--A)','stroke-width':8,'stroke-linecap':'round'},s);
 el('path',{d:'M40 107 H960',fill:'none',style:'stroke:var(--paper)','stroke-width':1.5,'stroke-dasharray':'10 10'},s);
-el('text',{x:306,y:26,'text-anchor':'middle','font-size':12,'font-weight':700,style:'fill:var(--muted)'},s,'共同路段 · G5 · 成都 → 汉中 约 455–510 km');
+el('text',{x:306,y:26,'text-anchor':'middle','font-size':12,'font-weight':700,style:'fill:var(--muted)'},s,'共同路段 · G5 · 成都 → 汉中 约 450–510 km');
 el('text',{x:766,y:26,'text-anchor':'middle','font-size':12,'font-weight':700,style:'fill:var(--A)'},s,'A 主线 · G5 西汉 · 294 km');
 el('text',{x:766,y:262,'text-anchor':'middle','font-size':12,'font-weight':700,style:'fill:var(--B)'},s,'B 备选 · G85 → G3024/G30 · 345 km');
 el('line',{x1:573,y1:32,x2:573,y2:76,stroke:'var(--muted)','stroke-dasharray':'3 4'},s);
-var cities=[['成都',40,'0'],['德阳',122,'70'],['绵阳',181,'120'],['广元',392,'300'],['宁强',497,'390'],['汉中',573,'455+'],['洋县',665,''],['宁陕',770,''],['鄠邑',890,''],['西安',960,'']];
+var cities=[['成都',40,''],['德阳',122,'70'],['绵阳',181,'120'],['广元',392,'300'],['宁强',497,'390'],['汉中',573,'约 476'],['洋县',665,''],['宁陕',770,''],['鄠邑',890,''],['西安',960,'']];
 cities.forEach(function(c){var big=(c[0]==='成都'||c[0]==='汉中'||c[0]==='西安');var town=(c[0]==='洋县'||c[0]==='宁陕'||c[0]==='鄠邑'||c[0]==='宁强');
   el('circle',{cx:c[1],cy:107,r:big?8:5,style:'fill:'+(town?'var(--paper)':'var(--A)')+';stroke:var(--A)','stroke-width':2},s);
   el('text',{x:c[1],y:144,'text-anchor':'middle','font-size':12.5,'font-weight':700,style:'fill:var(--ink)'},s,c[0]);
-  if(c[2])el('text',{x:c[1],y:159,'text-anchor':'middle','font-size':10.5,style:'fill:var(--muted)'},s,c[2]+' km');});
+  if(c[2])el('text',{x:c[1],y:159,'text-anchor':'middle','font-size':10.5,style:'fill:var(--muted)'},s,c[2].indexOf('约')===0?c[2]+' km':'约 '+c[2]+' km');});
 [['留坝',655],['坪坎',715],['天台山隧道',785],['宝鸡方向',865]].forEach(function(c){el('circle',{cx:c[1],cy:205,r:c[0]==='宝鸡方向'?6:4,style:'fill:'+(c[0]==='宝鸡方向'?'var(--B)':'var(--paper)')+';stroke:var(--B)','stroke-width':2},s);el('text',{x:c[1],y:232,'text-anchor':'middle','font-size':11.5,style:'fill:var(--ink)'},s,c[0]);});
 [[122,'1'],[181,'2'],[382,'3'],[402,'4'],[563,'5'],[583,'6'],[960,'8']].forEach(function(h){circ(s,h[0],62,h[1]);});
 circ(s,865,180,'7');
-el('text',{x:715,y:124,'text-anchor':'middle','font-size':10.5,style:'fill:var(--med)'},s,'秦岭隧道群（宁陕一带）');
+el('text',{x:715,y:124,'text-anchor':'middle','font-size':10.5,style:'fill:var(--med)'},s,'秦岭隧道群');
 el('text',{x:750,y:196,'text-anchor':'middle','font-size':10.5,style:'fill:var(--med)'},s,'隧道群 32 km');
 el('text',{x:290,y:200,'text-anchor':'middle','font-size':11,style:'fill:var(--muted)'},s,'红圈数字＝新生儿专线医院（见“医院”一节）');
 el('text',{x:290,y:217,'text-anchor':'middle','font-size':11,style:'fill:var(--muted)'},s,'实心点＝有大医院的城市　空心点＝途经县城');
 el('text',{x:290,y:234,'text-anchor':'middle','font-size':10.5,style:'fill:var(--muted)'},s,'示意图，不按比例；实际轨迹见下方');
 })();
 
-var cmp=[{t:'汉中→西安里程',u:'km',a:294,b:345,max:360},{t:'纯驾驶时间',u:'',a:233,b:250,max:260,fmt:function(v){return Math.floor(v/60)+' 小时 '+(v%60)+' 分';}},{t:'收费估计',u:'元',a:162,b:232,max:250},{t:'离大医院最远',u:'km',a:147,b:90,max:160}];
+var cmp=[{t:'汉中→西安里程',u:'km',a:294,b:345,max:360},{t:'纯驾驶时间',u:'',a:233,b:250,max:260,fmt:function(v){return Math.floor(v/60)+' 小时 '+(v%60)+' 分';}},{t:'收费估计',u:'元',a:162,b:232,max:250},{t:'离新生儿救治医院最远',u:'km',a:147,b:92,max:160}];
 var host=document.getElementById('cmp');
 cmp.forEach(function(c){var p=document.createElement('div');p.className='panel';p.innerHTML='<h3 style="font-size:.92rem">'+c.t+'<small>'+c.u+'</small></h3><div class="chart"></div>';host.appendChild(p);
   var s=svg(240,74,p.querySelector('.chart'));
@@ -755,7 +759,7 @@ gantt('gantt2',[
  ['11/7 B 汉中→西安',[['B','08:30','09:30','汉中→留坝'],['s','09:30','09:50','照护'],['B','09:50','11:00','秦岭隧道群'],['s','11:00','11:20','停'],['B','11:20','13:00','G3024/G30']],[10,11]]
 ],8,17);
 
-(function(){var h=document.getElementById('cover');var s=svg(900,200,h,720);var x0=60,x1=880,maxK=345,maxD=160;function X(k){return x0+k/maxK*(x1-x0);}function Y(d){return 160-d/maxD*130;}
+(function(){return;var h=document.getElementById('cover');var s=svg(900,200,h,720);var x0=60,x1=880,maxK=345,maxD=160;function X(k){return x0+k/maxK*(x1-x0);}function Y(d){return 160-d/maxD*130;}
  [0,50,100,150].forEach(function(d){el('line',{x1:x0,y1:Y(d),x2:x1,y2:Y(d),style:'stroke:var(--faint)'},s);el('text',{x:x0-8,y:Y(d)+4,'text-anchor':'end','font-size':11,style:'fill:var(--muted)'},s,d+' km');});
  [0,50,100,150,200,250,300].forEach(function(k){el('text',{x:X(k),y:180,'text-anchor':'middle','font-size':11,style:'fill:var(--muted)'},s,k);});
  el('text',{x:x1,y:196,'text-anchor':'end','font-size':11,style:'fill:var(--muted)'},s,'距汉中 km');
@@ -765,6 +769,43 @@ gantt('gantt2',[
  [['汉中',0,'start'],['宝鸡方向',165,'middle'],['A 到西安',294,'middle'],['B 到西安',345,'end']].forEach(function(c){el('text',{x:X(c[1]),y:Y(0)-6,'text-anchor':c[2],'font-size':10.5,style:'fill:var(--muted)'},s,c[0]);});
 })();
 
+
+/* ---- coverage: three segments, two tiers ---- */
+(function(){
+var SEG=[
+ {t:'共同路段 · 成都 → 汉中',len:476,col:'var(--A)',nodes:[
+   ['成都（华西二院等）',0,1,'起点'],['德阳 ①',70,1,'估算'],['绵阳 ②',120,1,'估算'],['梓潼',170,0,'估算'],['剑阁',245,0,'估算'],['广元 ③④',300,1,'成都—广元 290–320 km（高德粗估）'],['宁强',389,0,'宁强服务区距广元 89 km（服务区资料）'],['勉县',440,0,'估算'],['汉中 ⑤⑥',476,1,'宁强服务区距汉中 87 km（服务区资料）']]},
+ {t:'A 主线 · 汉中 → 西安（G5）',len:294,col:'var(--A)',nodes:[
+   ['汉中 ⑤⑥',0,1,'起点'],['城固',30,0,'估算'],['洋县人民医院',60,2,'估算'],['佛坪',120,0,'估算'],['秦岭服务区',207,0,'距西安约 87 km（服务区资料）'],['鄠邑区人民医院',255,2,'估算'],['西安 ⑧',294,1,'高德 294 km']]},
+ {t:'B 备选 · 汉中 → 宝鸡方向 → 西安（G85 → G30）',len:345,col:'var(--B)',nodes:[
+   ['汉中 ⑤⑥',0,1,'起点'],['留坝县医院',50,2,'估算（央广网：汉中到留坝约 40 分钟）'],['坪坎',88,0,'坪坎—汉中段约 88 km（通车报道）'],['宝鸡 ⑦',160,1,'宝鸡—汉中约 160 km（通车报道）'],['眉县',237,0,'眉县服务区距宝鸡约 70 km、距西安约 108 km'],['咸阳市中心医院',315,2,'估算'],['西安 ⑧',345,1,'高德 345 km']]}
+];
+function maxGap(nodes,len,tiers){var pts=nodes.filter(function(n){return tiers.indexOf(n[2])>=0;}).map(function(n){return n[1];});var best=[0,0];for(var k=0;k<=len;k++){var m=1e9;pts.forEach(function(p){m=Math.min(m,Math.abs(p-k));});if(m>best[1])best=[k,m];}return best;}
+var host=document.getElementById('covers');var tb=document.getElementById('covtbl');
+SEG.forEach(function(g){
+  var p=document.createElement('div');p.className='panel';p.style.border='0';p.style.padding='0';
+  var g1=maxGap(g.nodes,g.len,[1]),g2=maxGap(g.nodes,g.len,[1,2]);
+  p.innerHTML='<h3 style="font-size:.95rem">'+g.t+'<small>新生儿救治医院最远约 '+Math.round(g1[1])+' km'+(g2[1]<g1[1]?'；算上县区医院最远约 '+Math.round(g2[1])+' km':'；没有已核实的县区医院可补位')+'</small></h3><div class="chart"></div>';
+  host.appendChild(p);
+  var W=900,H=190,x0=50,x1=880,maxD=160;var s=svg(W,H,p.querySelector('.chart'),720);
+  function X(k){return x0+k/g.len*(x1-x0);}function Y(d){return 120-d/maxD*100;}
+  [0,50,100,150].forEach(function(d){el('line',{x1:x0,y1:Y(d),x2:x1,y2:Y(d),style:'stroke:var(--faint)'},s);el('text',{x:x0-6,y:Y(d)+4,'text-anchor':'end','font-size':10.5,style:'fill:var(--muted)'},s,d);});
+  el('text',{x:x0-6,y:Y(160)+2,'text-anchor':'end','font-size':10,style:'fill:var(--muted)'},s,'km');
+  function line(tiers,color,dash){var pts=g.nodes.filter(function(n){return tiers.indexOf(n[2])>=0;}).map(function(n){return n[1];});var d='';for(var k=0;k<=g.len;k+=2){var m=1e9;pts.forEach(function(v){m=Math.min(m,Math.abs(v-k));});d+=(k?' L':'M')+X(k).toFixed(1)+' '+Y(m).toFixed(1);}var e=el('path',{d:d,fill:'none',style:'stroke:'+color,'stroke-width':2,'stroke-linejoin':'round'},s);if(dash)e.setAttribute('stroke-dasharray',dash);}
+  line([1],'var(--med)',null);line([1,2],'var(--muted)','5 4');
+  el('circle',{cx:X(g1[0]),cy:Y(g1[1]),r:4,style:'fill:var(--med)'},s);el('text',{x:X(g1[0]),y:Y(g1[1])-8,'text-anchor':'middle','font-size':11,'font-weight':700,style:'fill:var(--ink)'},s,'约 '+Math.round(g1[1])+' km');
+  el('line',{x1:x0,y1:Y(0)+18,x2:x1,y2:Y(0)+18,style:'stroke:'+g.col,'stroke-width':5,'stroke-linecap':'round'},s);
+  var lastX=-99,row=0;
+  g.nodes.forEach(function(n){var x=X(n[1]);var y=Y(0)+18;
+    if(n[2]===1){el('circle',{cx:x,cy:y,r:7,style:'fill:var(--med);stroke:var(--paper)','stroke-width':2},s);}
+    else if(n[2]===2){el('rect',{x:x-6,y:y-6,width:12,height:12,rx:2,style:'fill:var(--muted);stroke:var(--paper)','stroke-width':2},s);}
+    else{el('circle',{cx:x,cy:y,r:5,style:'fill:var(--paper);stroke:var(--muted)','stroke-width':2},s);}
+    row=(x-lastX<110)?1-row:0;lastX=x;
+    el('text',{x:x,y:y+22+row*13,'text-anchor':n[1]===0?'start':(n[1]===g.len?'end':'middle'),'font-size':10.5,style:'fill:'+(n[2]===0?'var(--muted)':'var(--ink)')},s,n[0]);
+    var tr=document.createElement('tr');tr.innerHTML='<td>'+n[0]+'</td><td class="num">约 '+n[1]+' km（'+g.t.split(' · ')[0]+'）</td><td>'+(n[2]===1?'新生儿救治医院':n[2]===2?'已核实的县区 / 综合医院':'未核实，不计入')+'</td><td>'+n[3]+'</td>';tb.appendChild(tr);
+  });
+});
+})();
 (function(){var h=document.getElementById('fog');var s=svg(320,136,h);[['< 200 m',60],['< 100 m',40],['< 50 m',20]].forEach(function(r,i){var y=8+i*42;el('text',{x:0,y:y+18,'font-size':12,style:'fill:var(--ink)'},s,'能见度 '+r[0]);var w=r[1]/60*160;var b=el('rect',{x:100,y:y,width:w,height:26,rx:4,style:'fill:var(--warn)'},s);tip(b,'最高 '+r[1]+' km/h');el('text',{x:100+w+6,y:y+18,'font-size':12,'font-weight':700,style:'fill:var(--ink)'},s,r[1]+' km/h');});})();
 
 document.querySelectorAll('.copy').forEach(function(btn){btn.addEventListener('click',function(){var n=btn.previousElementSibling,t=n.textContent.trim();function done(m){btn.textContent=m;setTimeout(function(){btn.textContent='复制';},1500);}function fb(){var r=document.createRange();r.selectNodeContents(n);var g=getSelection();g.removeAllRanges();g.addRange(r);done('已选中');}try{navigator.clipboard.writeText(t).then(function(){done('已复制');},fb);}catch(e){fb();}});});
